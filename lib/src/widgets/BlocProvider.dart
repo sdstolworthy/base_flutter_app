@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Combines application level bloc stores above the rest of the application
 class AppBlocProviders extends StatelessWidget {
   final Widget child;
   AppBlocProviders({this.child});
