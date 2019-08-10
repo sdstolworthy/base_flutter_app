@@ -5,9 +5,9 @@ class CardFeed extends StatelessWidget {
   build(context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).accentColor,
+          backgroundColor: Theme.of(context).primaryColor,
           leading: FlatButton(
-            child: Icon(Icons.menu),
+            child: Icon(Icons.menu, color: Theme.of(context).accentColor),
             onPressed: () {},
           ),
         ),

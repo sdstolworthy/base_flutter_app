@@ -5,24 +5,23 @@ import 'package:flutter_base_app/src/widgets/NoGlowConfiguration.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
-  final backgroundBlack = Color.fromRGBO(90, 90, 90, 1);
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   build(context) {
     return Scaffold(
       body: Container(
-        color: backgroundBlack,
+        color: Theme.of(context).primaryColor,
         child: ScrollConfiguration(
           behavior: NoGlowScroll(),
           child: ListView(
             children: [
               AppBar(
-                backgroundColor: backgroundBlack,
+                backgroundColor: Theme.of(context).primaryColor,
                 elevation: 0,
                 leading: FlatButton(
                   child: Icon(
                     Icons.arrow_back,
-                    color: Colors.white60,
+                    color: Theme.of(context).accentColor,
                   ),
                   onPressed: () {},
                 ),
@@ -61,7 +60,8 @@ class LoginScreen extends StatelessWidget {
                             ),
                             child: Text('Log In',
                                 style: TextStyle(
-                                    color: Colors.white60, fontSize: 25)),
+                                    color: Theme.of(context).accentColor,
+                                    fontSize: 25)),
                             color: Color.fromRGBO(0, 0, 0, 0.9),
                             highlightColor: Color.fromRGBO(55, 55, 55, 1),
                             onPressed: _handleSignIn(context),
