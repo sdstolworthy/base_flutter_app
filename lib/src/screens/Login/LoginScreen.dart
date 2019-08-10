@@ -63,6 +63,7 @@ class LoginScreen extends StatelessWidget {
                                 style: TextStyle(
                                     color: Colors.white60, fontSize: 25)),
                             color: Color.fromRGBO(0, 0, 0, 0.9),
+                            highlightColor: Color.fromRGBO(55, 55, 55, 1),
                             onPressed: _handleSignIn(context),
                           ),
                         )),
