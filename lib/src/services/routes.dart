@@ -20,27 +20,18 @@ class Router {
     return MaterialPageRoute(builder: (_) => widget);
   }
 
-  static _authGuard(MaterialPageRoute route, AuthenticationState state) {
-    if (state is Uninitialized || state is Unauthenticated) {
-      return _pageRoute(WelcomeScreen());
+  static generatedRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case FlutterAppRoutes.login:
+        final LoginScreenArguments args = settings.arguments;
+        return _pageRoute(LoginScreen(args.isLogin));
+      case FlutterAppRoutes.itemDetails:
+        final ItemDetailsArguments args = settings.arguments;
+        return _pageRoute(ItemDetails(args.item));
+      case FlutterAppRoutes.itemFeed:
+        return _pageRoute(ItemFeed());
+      default:
+        return _pageRoute(WelcomeScreen());
     }
-    return route;
-  }
-
-  static CurriedRouter generatedRoute(AuthenticationState state) {
-    return (RouteSettings settings) {
-      switch (settings.name) {
-        case FlutterAppRoutes.login:
-          final LoginScreenArguments args = settings.arguments;
-          return _pageRoute(LoginScreen(args.isLogin));
-        case FlutterAppRoutes.itemDetails:
-          final ItemDetailsArguments args = settings.arguments;
-          return _authGuard(_pageRoute(ItemDetails(args.item)), state);
-        case FlutterAppRoutes.itemFeed:
-          return _authGuard(_pageRoute(ItemFeed()), state);
-        default:
-          return _authGuard(_pageRoute(ItemFeed()), state);
-      }
-    };
   }
 }

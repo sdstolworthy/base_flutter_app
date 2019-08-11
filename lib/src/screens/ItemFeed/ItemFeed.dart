@@ -13,9 +13,7 @@ class ItemFeed extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           leading: FlatButton(
             child: Icon(Icons.menu, color: Theme.of(context).accentColor),
-            onPressed: () {
-              navigationService.navigateTo(FlutterAppRoutes.itemDetails);
-            },
+            onPressed: () {},
           ),
         ),
         body: ListView.builder(

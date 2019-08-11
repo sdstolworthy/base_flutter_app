@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
-import 'package:flutter_base_app/src/screens/Welcome/WelcomeScreen.dart';
 
 class AuthenticationFilter extends StatelessWidget {
   final Widget authenticatedNavigator;

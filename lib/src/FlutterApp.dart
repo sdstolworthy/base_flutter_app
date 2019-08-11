@@ -3,7 +3,6 @@ import 'package:flutter_base_app/src/blocs/authentication/authentication_bloc.da
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/theme/theme.dart';
-import 'package:flutter_base_app/src/widgets/AuthenticationFilter.dart';
 import 'package:flutter_base_app/src/widgets/BlocProvider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,11 +16,11 @@ class FlutterApp extends StatelessWidget {
         builder: (authBlocContext, state) {
           return MaterialApp(
               theme: flutterAppTheme,
-              home: AuthenticationFilter(
-                  state: state,
-                  authenticatedNavigator: Navigator(
-                      onGenerateRoute: Router.generatedRoute(state),
-                      key: navigationService.navigatorKey)));
+              home: Navigator(
+                  onGenerateRoute: (settings) {
+                    return Router.generatedRoute(settings);
+                  },
+                  key: navigationService.navigatorKey));
         },
       );
     }));

@@ -17,7 +17,11 @@ class ItemDetails extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Color.fromRGBO(0, 0, 0, 0),
-          leading: FlatButton(child: Icon(Icons.arrow_back), onPressed: () {}),
+          leading: FlatButton(
+              child: Icon(Icons.arrow_back),
+              onPressed: () {
+                navigationService.goBack();
+              }),
         ),
         body: SingleChildScrollView(
           child: Padding(
