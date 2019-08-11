@@ -12,6 +12,9 @@ class _NavigationService {
     return navigatorKey.currentState
         .popUntil(ModalRoute.withName(FlutterAppRoutes.login));
   }
+  Future<dynamic> goBack() async {
+    return navigatorKey.currentState.pop();
+  }
 }
 
 final navigationService = new _NavigationService();

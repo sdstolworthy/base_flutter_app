@@ -4,11 +4,7 @@ import 'package:flutter_base_app/src/services/preferences.dart';
 
 class UserRepository {
   Future<User> signIn(String username, String password) async {
-    return new User(
-        email: 'spencer@test.com',
-        firstName: 'Spencer',
-        lastName: 'Stolworthy',
-        photoUrl: 'https://via.placeholder.com/70');
+    return new User.random();
   }
 
   Future<bool> isSignedIn() async {
