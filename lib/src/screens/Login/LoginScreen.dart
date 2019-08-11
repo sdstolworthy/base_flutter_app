@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
+import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/widgets/LoginFormField.dart';
 import 'package:flutter_base_app/src/widgets/NoGlowConfiguration.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+class LoginScreenArguments {
+  final bool isLogin;
+  LoginScreenArguments(this.isLogin);
+}
+
 class LoginScreen extends StatelessWidget {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final bool isLogin;
+  LoginScreen(this.isLogin);
   build(context) {
     return Scaffold(
       body: Container(
@@ -23,7 +32,9 @@ class LoginScreen extends StatelessWidget {
                     Icons.arrow_back,
                     color: Theme.of(context).accentColor,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    navigationService.goBack();
+                  },
                 ),
               ),
               Padding(
@@ -37,17 +48,9 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 80,
                     ),
-                    LoginFormField(
-                      icon: Icons.person,
-                      label: 'Username',
-                      controller: usernameController,
-                    ),
-                    LoginFormField(
-                      icon: Icons.lock,
-                      label: 'Password',
-                      isObscured: true,
-                      controller: passwordController,
-                    ),
+                    ...(this.isLogin
+                        ? _renderLoginForm()
+                        : _renderSignUpForm()),
                     Row(
                       children: <Widget>[
                         Expanded(
@@ -79,10 +82,48 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  _renderLoginForm() {
+    return [
+      LoginFormField(
+        icon: Icons.person,
+        label: 'Username',
+        controller: usernameController,
+      ),
+      LoginFormField(
+        icon: Icons.lock,
+        label: 'Password',
+        isObscured: true,
+        controller: passwordController,
+      ),
+    ];
+  }
+
+  _renderSignUpForm() {
+    return [
+      LoginFormField(
+        icon: Icons.person,
+        label: 'Username',
+        controller: usernameController,
+      ),
+      LoginFormField(
+        icon: Icons.lock,
+        label: 'Password',
+        isObscured: true,
+        controller: passwordController,
+      ),
+      LoginFormField(
+        icon: Icons.lock,
+        label: 'Confirm Password',
+        isObscured: true,
+        controller: confirmPasswordController,
+      ),
+    ];
+  }
+
   _handleSignIn(context) {
-    final username = usernameController.text;
-    final password = passwordController.text;
     return () {
+      final username = usernameController.text;
+      final password = passwordController.text;
       BlocProvider.of<AuthenticationBloc>(context)
           .dispatch(LogIn(username, password));
     };

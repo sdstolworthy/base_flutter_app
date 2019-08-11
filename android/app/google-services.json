@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "525829593903",
+    "firebase_url": "https://flutter-base-app-20492.firebaseio.com",
+    "project_id": "flutter-base-app-20492",
+    "storage_bucket": "flutter-base-app-20492.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525829593903:android:a12a63332192275b",
+        "android_client_info": {
+          "package_name": "com.stolworthy.flutter_base_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "525829593903-ilscf1bgroe2537trljpn3bj6e1k4rhj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrEWIKd_F0gS8p--Sv_Z6SFBsh3IR8OF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "525829593903-ilscf1bgroe2537trljpn3bj6e1k4rhj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

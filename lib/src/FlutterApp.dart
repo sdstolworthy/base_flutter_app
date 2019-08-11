@@ -19,8 +19,8 @@ class FlutterApp extends StatelessWidget {
               theme: flutterAppTheme,
               home: AuthenticationFilter(
                   state: state,
-                  child: Navigator(
-                      onGenerateRoute: Router.generatedRoute,
+                  authenticatedNavigator: Navigator(
+                      onGenerateRoute: Router.generatedRoute(state),
                       key: navigationService.navigatorKey)));
         },
       );
