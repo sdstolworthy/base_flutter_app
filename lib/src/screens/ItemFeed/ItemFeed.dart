@@ -21,7 +21,7 @@ class ItemFeed extends StatelessWidget {
             return ItemCard(
               item: items[index],
               onPressed: () {
-                navigationService.navigateTo(FlutterAppRoutes.itemDetails,
+                rootNavigationService.navigateTo(FlutterAppRoutes.itemDetails,
                     arguments: ItemDetailsArguments(item: items[index]));
               },
             );

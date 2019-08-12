@@ -20,7 +20,7 @@ class ItemDetails extends StatelessWidget {
           leading: FlatButton(
               child: Icon(Icons.arrow_back),
               onPressed: () {
-                navigationService.goBack();
+                rootNavigationService.goBack();
               }),
         ),
         body: SingleChildScrollView(
