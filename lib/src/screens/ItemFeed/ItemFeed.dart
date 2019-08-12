@@ -7,15 +7,21 @@ import 'package:flutter_base_app/src/widgets/ItemCard.dart';
 
 class ItemFeed extends StatelessWidget {
   final items = List.generate(20, (_) => Item.random());
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   build(context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           leading: FlatButton(
             child: Icon(Icons.menu, color: Theme.of(context).accentColor),
-            onPressed: () {},
+            onPressed: () {
+              _scaffoldKey.currentState.openDrawer();
+            },
           ),
         ),
+        drawer: Drawer(),
         body: ListView.builder(
           itemBuilder: (context, index) {
             return ItemCard(
