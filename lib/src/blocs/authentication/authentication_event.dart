@@ -12,3 +12,9 @@ class LogIn extends AuthenticationEvent {
 }
 
 class LogOut extends AuthenticationEvent {}
+
+class SignUp extends AuthenticationEvent {
+  final String username;
+  final String password;
+  SignUp(this.username, this.password);
+}

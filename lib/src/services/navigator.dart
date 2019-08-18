@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 
-class _NavigationService {
+class _RootNavigationService {
   final GlobalKey<NavigatorState> navigatorKey =
       new GlobalKey<NavigatorState>();
   Future<dynamic> navigateTo(String routeName, {Object arguments}) {
@@ -10,11 +10,11 @@ class _NavigationService {
 
   Future<dynamic> returnToLogin() async {
     return navigatorKey.currentState
-        .popUntil(ModalRoute.withName(FlutterAppRoutes.login));
+        .popUntil(ModalRoute.withName(FlutterAppRoutes.onboarding));
   }
   Future<dynamic> goBack() async {
     return navigatorKey.currentState.pop();
   }
 }
 
-final navigationService = new _NavigationService();
+final rootNavigationService = new _RootNavigationService();
