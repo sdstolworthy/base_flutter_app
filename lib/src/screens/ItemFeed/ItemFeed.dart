@@ -4,6 +4,7 @@ import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/widgets/ItemCard.dart';
+import 'package:flutter_base_app/src/widgets/LanguagePicker.dart';
 
 class ItemFeed extends StatelessWidget {
   final items = List.generate(20, (_) => Item.random());
@@ -21,7 +22,9 @@ class ItemFeed extends StatelessWidget {
             },
           ),
         ),
-        drawer: Drawer(),
+        drawer: Drawer(
+          child: LanguagePicker(),
+        ),
         body: ListView.builder(
           itemBuilder: (context, index) {
             return ItemCard(

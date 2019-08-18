@@ -21,6 +21,11 @@ class AppLocalizations {
     });
   }
 
+  static List<AppLocale> availableLocalizations = [
+    AppLocale(languageCode: 'en', flag: '🇺🇸'),
+    AppLocale(languageCode: 'es', flag: '🇪🇸')
+  ];
+
   static get delegate {
     return AppLocalizationDelegate();
   }
@@ -75,4 +80,12 @@ class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   bool shouldReload(LocalizationsDelegate<AppLocalizations> old) {
     return false;
   }
+}
+
+class AppLocale {
+  final String languageCode;
+  final String flag;
+  AppLocale({@required languageCode, @required flag})
+      : this.languageCode = languageCode,
+        this.flag = flag;
 }
