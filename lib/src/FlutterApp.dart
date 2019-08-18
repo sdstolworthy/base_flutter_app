@@ -20,10 +20,8 @@ class FlutterApp extends StatelessWidget {
             AppLocalizations.delegate
           ],
           locale: localizationBloc.currentState.locale,
-          supportedLocales: [
-            const Locale('en'),
-            const Locale('es'),
-          ],
+          supportedLocales: AppLocalizations.availableLocalizations
+              .map((item) => Locale(item.languageCode)),
           theme: flutterAppTheme,
           home: Navigator(
               onGenerateRoute: Router.generatedRoute,
