@@ -7,6 +7,7 @@ import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/widgets/LoginFormField.dart';
 import 'package:flutter_base_app/src/widgets/NoGlowConfiguration.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class LoginScreenArguments {
   final bool isLogin;
@@ -64,13 +65,13 @@ class LoginScreen extends StatelessWidget {
                         Text(
                             isLogin
                                 ? localizations.logIn
-                                : localizations.logOut,
+                                : localizations.signUp,
                             style:
                                 TextStyle(fontSize: 40, color: Colors.white60)),
                         SizedBox(
                           height: 80,
                         ),
-                        _renderLoginForm(context, this.isLogin),
+                        ..._renderLoginForm(context, this.isLogin),
                         Row(
                           children: <Widget>[
                             Expanded(
@@ -84,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                                 child: Text(
                                     isLogin
                                         ? localizations.logIn
-                                        : localizations.logOut,
+                                        : localizations.signUp,
                                     style: TextStyle(
                                         color: Theme.of(context).accentColor,
                                         fontSize: 25)),
@@ -111,22 +112,22 @@ class LoginScreen extends StatelessWidget {
     return [
       LoginFormField(
         icon: Icons.person,
-        label: localizations.username,
+        label: toBeginningOfSentenceCase(localizations.username),
         controller: usernameController,
       ),
       LoginFormField(
         icon: Icons.lock,
-        label: localizations.password,
+        label: toBeginningOfSentenceCase(localizations.password),
         isObscured: true,
         controller: passwordController,
       ),
-      (!isLogin ??
-          LoginFormField(
-            controller: confirmPasswordController,
-            icon: Icons.lock,
-            label: localizations.password,
-            isObscured: true,
-          ))
+      if (!isLogin)
+        LoginFormField(
+          controller: confirmPasswordController,
+          icon: Icons.lock,
+          label: toBeginningOfSentenceCase(localizations.confirmPassword),
+          isObscured: true,
+        )
     ];
   }
 

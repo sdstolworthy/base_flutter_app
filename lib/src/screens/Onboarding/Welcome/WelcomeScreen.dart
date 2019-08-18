@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
+import 'package:flutter_base_app/src/services/localizations/localizations.dart';
 
 class WelcomeScreen extends StatelessWidget {
   build(context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+
     final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(color: theme.primaryColor),
@@ -21,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Text('Log In',
+                      child: Text(localizations.logIn,
                           style: TextStyle(
                               color: Theme.of(context).accentColor,
                               fontSize: 25)),
@@ -45,7 +48,7 @@ class WelcomeScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Text('Sign Up',
+                      child: Text(localizations.signUp,
                           style: TextStyle(
                               color: Theme.of(context).accentColor,
                               fontSize: 25)),
