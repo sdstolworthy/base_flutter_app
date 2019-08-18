@@ -28,8 +28,14 @@ class AuthenticationBloc
 
   Stream<AuthenticationState> _mapLoginEventToState(
       String username, String password) async* {
-    await _userRepository.signInWithCredentials(username, password);
-    yield Authenticated();
+    try {
+      await _userRepository.signInWithCredentials(username, password);
+      yield Authenticated();
+    } catch (e, s) {
+      print(s);
+      print(e);
+      print("Error during Authentication");
+    }
   }
 
   Stream<AuthenticationState> _mapLogoutEventToState() async* {

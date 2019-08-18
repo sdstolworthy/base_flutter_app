@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
 import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
+import 'package:flutter_base_app/src/services/localizations/localizations.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/widgets/LoginFormField.dart';
@@ -19,6 +20,7 @@ class LoginScreen extends StatelessWidget {
   final bool isLogin;
   LoginScreen(this.isLogin);
   build(context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
     return BlocListener(
         bloc: authBloc,
@@ -59,15 +61,16 @@ class LoginScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.max,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Log In',
+                        Text(
+                            isLogin
+                                ? localizations.logIn
+                                : localizations.logOut,
                             style:
                                 TextStyle(fontSize: 40, color: Colors.white60)),
                         SizedBox(
                           height: 80,
                         ),
-                        ...(this.isLogin
-                            ? _renderLoginForm()
-                            : _renderSignUpForm()),
+                        _renderLoginForm(context, this.isLogin),
                         Row(
                           children: <Widget>[
                             Expanded(
@@ -78,7 +81,10 @@ class LoginScreen extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
-                                child: Text('Log In',
+                                child: Text(
+                                    isLogin
+                                        ? localizations.logIn
+                                        : localizations.logOut,
                                     style: TextStyle(
                                         color: Theme.of(context).accentColor,
                                         fontSize: 25)),
@@ -99,41 +105,28 @@ class LoginScreen extends StatelessWidget {
         ));
   }
 
-  _renderLoginForm() {
-    return [
-      LoginFormField(
-        icon: Icons.person,
-        label: 'Username',
-        controller: usernameController,
-      ),
-      LoginFormField(
-        icon: Icons.lock,
-        label: 'Password',
-        isObscured: true,
-        controller: passwordController,
-      ),
-    ];
-  }
+  _renderLoginForm(BuildContext context, bool isLogin) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
 
-  _renderSignUpForm() {
     return [
       LoginFormField(
         icon: Icons.person,
-        label: 'Username',
+        label: localizations.username,
         controller: usernameController,
       ),
       LoginFormField(
         icon: Icons.lock,
-        label: 'Password',
+        label: localizations.password,
         isObscured: true,
         controller: passwordController,
       ),
-      LoginFormField(
-        icon: Icons.lock,
-        label: 'Confirm Password',
-        isObscured: true,
-        controller: confirmPasswordController,
-      ),
+      (!isLogin ??
+          LoginFormField(
+            controller: confirmPasswordController,
+            icon: Icons.lock,
+            label: localizations.password,
+            isObscured: true,
+          ))
     ];
   }
 

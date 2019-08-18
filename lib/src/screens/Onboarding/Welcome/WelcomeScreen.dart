@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
-import 'package:flutter_base_app/src/services/navigator.dart';
 
 class WelcomeScreen extends StatelessWidget {
   build(context) {

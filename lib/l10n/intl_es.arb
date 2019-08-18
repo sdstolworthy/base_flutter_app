@@ -1,0 +1,39 @@
+{
+  "@@last_modified": "2019-08-18T11:38:51.215218",
+  "logIn": "Entrar",
+  "@logIn": {
+    "description": "The \"log in\" call to action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "logOut": "Salir",
+  "@logOut": {
+    "description": "The \"log out\" call to action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUp": "Registrarte",
+  "@signUp": {
+    "description": "The \"sign up\" call to action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "username": "nombre de usuario",
+  "@username": {
+    "description": "The nominative form of username",
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "contraseña",
+  "@password": {
+    "description": "The nominitive form of password",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmPassword": "confirmar contraseña",
+  "@confirmPassword": {
+    "description": "Confirm password text for sign up page",
+    "type": "text",
+    "placeholders": {}
+  }
+}

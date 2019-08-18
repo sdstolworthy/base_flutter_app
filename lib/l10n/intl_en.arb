@@ -1,0 +1,39 @@
+{
+  "@@last_modified": "2019-08-18T12:14:54.617606",
+  "logIn": "Log In",
+  "@logIn": {
+    "description": "The \"log in\" call to action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "logOut": "Log Out",
+  "@logOut": {
+    "description": "The \"log out\" call to action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "The \"sign up\" call to action",
+    "type": "text",
+    "placeholders": {}
+  },
+  "username": "Username",
+  "@username": {
+    "description": "The nominative form of username",
+    "type": "text",
+    "placeholders": {}
+  },
+  "password": "password",
+  "@password": {
+    "description": "The nominitive form of password",
+    "type": "text",
+    "placeholders": {}
+  },
+  "confirmPassword": "confirm password",
+  "@confirmPassword": {
+    "description": "Confirm password text for sign up page",
+    "type": "text",
+    "placeholders": {}
+  }
+}
