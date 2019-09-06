@@ -35,5 +35,29 @@
     "description": "Confirm password text for sign up page",
     "type": "text",
     "placeholders": {}
+  },
+  "language": "language",
+  "@language": {
+    "description": "The word 'language'",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginCTA": "Welcome Back.",
+  "@loginCTA": {
+    "description": "Call to Action shown on the login page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signupCTA": "Create Account.",
+  "@signupCTA": {
+    "description": "Call to Action shown on the signup page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeCTA": "Hi, There.",
+  "@welcomeCTA": {
+    "description": "Call to Action shown on the welcome page",
+    "type": "text",
+    "placeholders": {}
   }
 }

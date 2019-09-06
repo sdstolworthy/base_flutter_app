@@ -11,15 +11,22 @@ class LanguagePicker extends StatefulWidget {
 
 class _LanguagePicker extends State<LanguagePicker> {
   String selectedLanguage = 'en';
-  build(BuildContext context) {
-    final localizationBloc = BlocProvider.of<LocalizationBloc>(context);
-    return DropdownButton(
-      items: AppLocalizations.availableLocalizations.map((locale) {
-        return DropdownMenuItem(
-            child: Text(locale.flag), value: locale.languageCode);
-      }).toList(),
-      onChanged: (item) {
-        localizationBloc.dispatch(ChangeLocalization(Locale(item)));
+  build(BuildContext outerContext) {
+    final localizationBloc = BlocProvider.of<LocalizationBloc>(outerContext);
+    return BlocBuilder(
+      bloc: localizationBloc,
+      builder: (context, LocalizationState state) {
+        return DropdownButton(
+          value: state.locale.languageCode,
+          items: AppLocalizations.availableLocalizations.map((locale) {
+            return DropdownMenuItem(
+                child: Text('${locale.flag} ${locale.languageCode}'),
+                value: locale.languageCode);
+          }).toList(),
+          onChanged: (item) {
+            localizationBloc.dispatch(ChangeLocalization(Locale(item)));
+          },
+        );
       },
     );
   }

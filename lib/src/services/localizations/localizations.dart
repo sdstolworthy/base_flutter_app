@@ -64,6 +64,26 @@ class AppLocalizations {
         name: 'confirmPassword',
         desc: 'Confirm password text for sign up page');
   }
+
+  String get language {
+    return Intl.message('language',
+        name: 'language', desc: 'The word \'language\'');
+  }
+
+  String get loginCTA {
+    return Intl.message('Welcome Back.',
+        name: 'loginCTA', desc: 'Call to Action shown on the login page');
+  }
+
+  String get signupCTA {
+    return Intl.message('Create Account.',
+        name: 'signupCTA', desc: 'Call to Action shown on the signup page');
+  }
+
+  String get welcomeCTA {
+    return Intl.message('Hi, There.',
+        name: 'welcomeCTA', desc: 'Call to Action shown on the welcome page');
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

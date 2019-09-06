@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
 import 'package:flutter_base_app/src/services/localizations/localizations.dart';
 import 'package:flutter_base_app/src/widgets/LanguagePicker.dart';
+import 'package:flutter_base_app/src/widgets/OnboardingButton.dart';
+import 'package:flutter_base_app/src/widgets/layouts/FullScreenLayout.dart';
 
 class WelcomeScreen extends StatelessWidget {
   build(context) {
@@ -9,64 +11,51 @@ class WelcomeScreen extends StatelessWidget {
 
     final theme = Theme.of(context);
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(color: theme.primaryColor),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Column(
-              children: <Widget>[
-                Row(
+      body: FullScreenLayout(
+        backgroundColor: theme.backgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Column(
+            children: <Widget>[
+              Text(
+                localizations.welcomeCTA,
+                style: theme.primaryTextTheme.display3,
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Expanded(
-                        child: ButtonTheme(
-                      height: 50,
-                      child: RaisedButton(
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Text(localizations.logIn,
-                            style: TextStyle(
-                                color: Theme.of(context).accentColor,
-                                fontSize: 25)),
-                        color: Color.fromRGBO(0, 0, 0, 0.9),
-                        highlightColor: Color.fromRGBO(55, 55, 55, 1),
-                        onPressed: () {
-                          onboardingNavigator
-                              .navigateTo(OnboardingRouteNames.loginScreen);
-                        },
-                      ),
-                    )),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                            child: OnboardingButton(
+                          buttonText: localizations.logIn,
+                          onPressed: () {
+                            onboardingNavigator
+                                .navigateTo(OnboardingRouteNames.loginScreen);
+                          },
+                        )),
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                            child: OnboardingButton(
+                          buttonText: localizations.signUp,
+                          isInverted: true,
+                          onPressed: () {
+                            onboardingNavigator
+                                .navigateTo(OnboardingRouteNames.signupScreen);
+                          },
+                        )),
+                      ],
+                    )
                   ],
                 ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: ButtonTheme(
-                      height: 50,
-                      child: RaisedButton(
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Text(localizations.signUp,
-                            style: TextStyle(
-                                color: Theme.of(context).accentColor,
-                                fontSize: 25)),
-                        color: Color.fromRGBO(0, 0, 0, 0.9),
-                        highlightColor: Color.fromRGBO(55, 55, 55, 1),
-                        onPressed: () {
-                          onboardingNavigator
-                              .navigateTo(OnboardingRouteNames.signupScreen);
-                        },
-                      ),
-                    )),
-                  ],
-                ),
-                LanguagePicker()
-              ],
-            ),
+              ),
+              LanguagePicker()
+            ],
           ),
         ),
       ),

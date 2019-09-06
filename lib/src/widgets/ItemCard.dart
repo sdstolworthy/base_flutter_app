@@ -8,18 +8,20 @@ class ItemCard extends StatelessWidget {
   final Item item;
   final OnPressed onPressed;
   ItemCard({@required this.item, this.onPressed});
-  build(_) {
+  build(context) {
+    final theme = Theme.of(context);
     return Card(
+      shape: theme.cardTheme.shape,
+      color: theme.cardTheme.color,
+      margin: theme.cardTheme.margin,
       child: FlatButton(
         onPressed: onPressed,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            // mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(item.title,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              Text(item.title, style: theme.textTheme.headline),
               Row(
                 children: <Widget>[
                   Padding(

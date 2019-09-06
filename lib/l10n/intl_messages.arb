@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-08-18T12:22:39.651523",
+  "@@last_modified": "2019-09-06T15:42:09.697311",
   "logIn": "Log In",
   "@logIn": {
     "description": "The \"log in\" call to action",
@@ -33,6 +33,30 @@
   "confirmPassword": "confirm password",
   "@confirmPassword": {
     "description": "Confirm password text for sign up page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "language": "language",
+  "@language": {
+    "description": "The word 'language'",
+    "type": "text",
+    "placeholders": {}
+  },
+  "loginCTA": "Welcome Back.",
+  "@loginCTA": {
+    "description": "Call to Action shown on the login page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "signupCTA": "Create Account.",
+  "@signupCTA": {
+    "description": "Call to Action shown on the signup page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "welcomeCTA": "Hi, There.",
+  "@welcomeCTA": {
+    "description": "Call to Action shown on the welcome page",
     "type": "text",
     "placeholders": {}
   }

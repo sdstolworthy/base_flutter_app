@@ -12,13 +12,14 @@ class ItemDetails extends StatelessWidget {
   final Item item;
   ItemDetails(this.item);
   build(context) {
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Color.fromRGBO(0, 0, 0, 0),
+          backgroundColor: theme.appBarTheme.color,
           leading: FlatButton(
-              child: Icon(Icons.arrow_back),
+              child: Icon(Icons.arrow_back,
+                  color: theme.appBarTheme.iconTheme.color),
               onPressed: () {
                 rootNavigationService.goBack();
               }),
