@@ -18,7 +18,11 @@ class AuthenticationBloc
     AuthenticationEvent event,
   ) async* {
     if (event is AppStarted) {
-      yield Unauthenticated();
+      if (await _userRepository.isSignedIn()) {
+        yield Authenticated();
+      } else {
+        yield Unauthenticated();
+      }
     } else if (event is LogIn) {
       yield* _mapLoginEventToState(event.username, event.password);
     } else if (event is LogOut) {
@@ -29,16 +33,19 @@ class AuthenticationBloc
   Stream<AuthenticationState> _mapLoginEventToState(
       String username, String password) async* {
     try {
-      await _userRepository.signInWithCredentials(username, password);
+      final user =
+          await _userRepository.signInWithCredentials(username, password);
       yield Authenticated();
     } catch (e, s) {
       print(s);
       print(e);
       print("Error during Authentication");
+      yield Unauthenticated();
     }
   }
 
   Stream<AuthenticationState> _mapLogoutEventToState() async* {
     _userRepository.signOut();
+    yield Unauthenticated();
   }
 }

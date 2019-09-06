@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
 import 'package:flutter_base_app/src/screens/ItemFeed/ItemFeed.dart';
 import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/Login/LoginScreen.dart';
 import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/Welcome/WelcomeScreen.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FlutterAppRoutes {
   static const String itemDetails = 'itemDetails';
@@ -18,21 +14,22 @@ class FlutterAppRoutes {
 typedef Route CurriedRouter(RouteSettings settings);
 
 class Router {
-  static _pageRoute(Widget widget) {
-    return MaterialPageRoute(builder: (context) => widget);
+  static _pageRoute(Widget widget, String routeName) {
+    return MaterialPageRoute(
+        builder: (context) => widget, settings: RouteSettings(name: routeName));
   }
 
   static Route<dynamic> generatedRoute(RouteSettings settings) {
     switch (settings.name) {
       case FlutterAppRoutes.onboarding:
-        return _pageRoute(OnboardingRoutes());
+        return _pageRoute(OnboardingRoutes(), FlutterAppRoutes.onboarding);
       case FlutterAppRoutes.itemDetails:
         final ItemDetailsArguments args = settings.arguments;
-        return _pageRoute(ItemDetails(args.item));
+        return _pageRoute(ItemDetails(args.item), FlutterAppRoutes.itemDetails);
       case FlutterAppRoutes.itemFeed:
-        return _pageRoute(ItemFeed());
+        return _pageRoute(ItemFeed(), FlutterAppRoutes.itemFeed);
       default:
-        return _pageRoute(OnboardingRoutes());
+        return _pageRoute(OnboardingRoutes(), FlutterAppRoutes.onboarding);
     }
   }
 }

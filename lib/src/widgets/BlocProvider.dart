@@ -8,12 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppBlocProviders extends StatelessWidget {
   final Widget child;
   AppBlocProviders({this.child});
+  final AuthenticationBloc authBloc = AuthenticationBloc(new UserRepository());
   Widget build(BuildContext _) {
+    authBloc.dispatch(AppStarted());
     return BlocProvider(
-        builder: (context) => AuthenticationBloc(new UserRepository()),
+        builder: (context) => authBloc,
         child: Builder(builder: (subAuthenticationContext) {
-          final authBloc =
-              BlocProvider.of<AuthenticationBloc>(subAuthenticationContext);
           return MultiBlocProvider(providers: [
             BlocProvider<LocalizationBloc>(
               builder: (_) => LocalizationBloc(),

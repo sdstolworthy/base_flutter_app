@@ -9,9 +9,10 @@ class _RootNavigationService {
   }
 
   Future<dynamic> returnToLogin() async {
-    return navigatorKey.currentState
+    navigatorKey.currentState
         .popUntil(ModalRoute.withName(FlutterAppRoutes.onboarding));
   }
+
   Future<dynamic> goBack() async {
     return navigatorKey.currentState.pop();
   }
