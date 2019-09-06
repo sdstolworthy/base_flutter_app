@@ -16,7 +16,8 @@ class AppBlocProviders extends StatelessWidget {
               BlocProvider.of<AuthenticationBloc>(subAuthenticationContext);
           return MultiBlocProvider(providers: [
             BlocProvider<LocalizationBloc>(
-                builder: (context) => LocalizationBloc()),
+              builder: (_) => LocalizationBloc(),
+            )
           ], child: child);
         }));
   }

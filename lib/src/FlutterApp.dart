@@ -10,22 +10,25 @@ import 'package:flutter_base_app/src/blocs/localization/bloc.dart';
 
 class FlutterApp extends StatelessWidget {
   build(_) {
-    return AppBlocProviders(child: Builder(builder: (context) {
-      final localizationBloc = BlocProvider.of<LocalizationBloc>(context);
-      return MaterialApp(
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            AppLocalizations.delegate
-          ],
-          locale: localizationBloc.currentState.locale,
-          supportedLocales: AppLocalizations.availableLocalizations
-              .map((item) => Locale(item.languageCode)),
-          theme: flutterAppTheme,
-          home: Navigator(
-              onGenerateRoute: Router.generatedRoute,
-              key: rootNavigationService.navigatorKey));
+    return AppBlocProviders(child: Builder(builder: (outerContext) {
+      return BlocBuilder(
+          bloc: BlocProvider.of<LocalizationBloc>(outerContext),
+          builder: (context, LocalizationState state) {
+            return MaterialApp(
+                localizationsDelegates: [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  AppLocalizations.delegate
+                ],
+                locale: state.locale,
+                supportedLocales: AppLocalizations.availableLocalizations
+                    .map((item) => Locale(item.languageCode)),
+                theme: flutterAppTheme,
+                home: Navigator(
+                    onGenerateRoute: Router.generatedRoute,
+                    key: rootNavigationService.navigatorKey));
+          });
     }));
   }
 }
