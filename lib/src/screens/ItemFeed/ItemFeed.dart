@@ -14,6 +14,10 @@ class ItemFeed extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
         key: _scaffoldKey,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.edit),
+        ),
         appBar: AppBar(
           backgroundColor: theme.appBarTheme.color,
           textTheme: theme.appBarTheme.textTheme,

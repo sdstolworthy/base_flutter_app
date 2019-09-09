@@ -75,7 +75,9 @@ class LoginScreen extends StatelessWidget {
                         buttonText: isLogin
                             ? localizations.logIn
                             : localizations.signUp,
-                        onPressed: _handleSignIn(context),
+                        onPressed: isLogin
+                            ? _handleSignIn(context)
+                            : _handleRegistration(context),
                       )),
                     ],
                   )
@@ -84,6 +86,15 @@ class LoginScreen extends StatelessWidget {
             ),
           )),
     );
+  }
+
+  _handleRegistration(BuildContext context) {
+    return () {
+      final username = usernameController.text;
+      final password = passwordController.text;
+      BlocProvider.of<AuthenticationBloc>(context)
+          .dispatch(LogIn(username, password));
+    };
   }
 
   _renderLoginForm(BuildContext context, bool isLogin) {
