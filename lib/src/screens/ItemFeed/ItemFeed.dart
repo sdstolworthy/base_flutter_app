@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/item/bloc.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/blocs/itemFeed/bloc.dart';
 import 'package:flutter_base_app/src/repositories/items/itemRepository.dart';
 import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
@@ -31,7 +30,11 @@ class _ItemFeedState extends State<ItemFeed> {
     return Scaffold(
         key: _scaffoldKey,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            rootNavigationService.navigateTo(
+              FlutterAppRoutes.itemEdit,
+            );
+          },
           child: Icon(Icons.edit),
         ),
         appBar: AppBar(

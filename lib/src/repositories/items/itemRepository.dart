@@ -21,8 +21,21 @@ class ItemRepository {
         .toList();
     return entries.isEmpty
         ? <Item>[]
-        : entries.map(
-            (DocumentSnapshot entry) => Item.fromMap(entry.data),
-          );
+        : entries
+            .map(
+              (DocumentSnapshot entry) => Item.fromMap(entry.data),
+            )
+            .toList();
+  }
+
+  saveItem(Item item) async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    await Firestore.instance
+        .collection(_userCollectionName)
+        .document(user.uid)
+        .collection(_itemCollectionName)
+        .document(item.id.toString())
+        .setData(item.toMap());
+    return item;
   }
 }

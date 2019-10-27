@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/screens/EditItem/EditItem.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
+import 'package:flutter_base_app/src/services/routes.dart';
 
 class ItemDetailsArguments {
   Item item;
@@ -23,6 +25,18 @@ class ItemDetails extends StatelessWidget {
               onPressed: () {
                 rootNavigationService.goBack();
               }),
+          actions: <Widget>[
+            FlatButton(
+              child: Icon(
+                Icons.edit,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                rootNavigationService.navigateTo(FlutterAppRoutes.itemEdit,
+                    arguments: EditItemArgs(item: item));
+              },
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -35,10 +49,12 @@ class ItemDetails extends StatelessWidget {
                       Text(item.title, style: theme.textTheme.display1),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 20),
-                    child: Image.network(item.photoUrl),
-                  ),
+                  item.photoUrl != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 20, bottom: 20),
+                          child: Image.network(item.photoUrl),
+                        )
+                      : Container(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
