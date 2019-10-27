@@ -8,9 +8,14 @@ class _RootNavigationService {
     return navigatorKey.currentState.pushNamed(routeName, arguments: arguments);
   }
 
+  Future<dynamic> pushReplacementNamed(String routeName, {Object arguments}) {
+    return navigatorKey.currentState
+        .pushReplacementNamed(routeName, arguments: arguments);
+  }
+
   Future<dynamic> returnToLogin() async {
-    navigatorKey.currentState
-        .popUntil(ModalRoute.withName(FlutterAppRoutes.onboarding));
+    await navigatorKey.currentState
+        .pushReplacementNamed(FlutterAppRoutes.onboarding);
   }
 
   Future<dynamic> goBack() async {
