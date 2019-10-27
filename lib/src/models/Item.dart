@@ -7,7 +7,7 @@ class Item {
   String photoUrl;
 
   Item({this.title, this.description, this.photoUrl});
-  Item.fromJson(Map<String, dynamic> parsedJson) {
+  Item.fromMap(Map<String, dynamic> parsedJson) {
     title = parsedJson['title'];
     description = parsedJson['description'];
     photoUrl = parsedJson['photoUrl'];

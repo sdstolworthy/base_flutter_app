@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_base_app/src/blocs/item/bloc.dart';
 import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/repositories/items/itemRepository.dart';
 import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/widgets/AppDrawer/drawer.dart';
 import 'package:flutter_base_app/src/widgets/ItemCard.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ItemFeed extends StatelessWidget {
-  final items = List.generate(20, (_) => Item.random());
+class ItemFeed extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _ItemFeedState();
+  }
+}
+
+class _ItemFeedState extends State<ItemFeed> {
+  // final items = List.generate(20, (_) => Item.random());
+  ItemBloc _itemBloc;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  void initState() {
+    _itemBloc = ItemBloc(itemRepository: ItemRepository());
+    super.initState();
+  }
 
   build(context) {
     final theme = Theme.of(context);
@@ -29,18 +45,33 @@ class ItemFeed extends StatelessWidget {
           ),
         ),
         drawer: AppDrawer(),
-        body: SafeArea(
-            child: ListView.builder(
-          itemBuilder: (context, index) {
-            return ItemCard(
-              item: items[index],
-              onPressed: () {
-                rootNavigationService.navigateTo(FlutterAppRoutes.itemDetails,
-                    arguments: ItemDetailsArguments(item: items[index]));
-              },
-            );
+        body: BlocBuilder<ItemBloc, ItemState>(
+          bloc: _itemBloc,
+          builder: (context, state) {
+            if (state is ItemsUnloaded) {
+              _itemBloc.add(FetchItems());
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is ItemsFetched) {
+              return SafeArea(
+                  child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return ItemCard(
+                    item: state.items[index],
+                    onPressed: () {
+                      rootNavigationService.navigateTo(
+                          FlutterAppRoutes.itemDetails,
+                          arguments:
+                              ItemDetailsArguments(item: state.items[index]));
+                    },
+                  );
+                },
+                itemCount: state.items.length,
+              ));
+            }
+            return Container();
           },
-          itemCount: items.length,
-        )));
+        ));
   }
 }

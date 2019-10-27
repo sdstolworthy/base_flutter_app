@@ -24,7 +24,7 @@ class _LanguagePicker extends State<LanguagePicker> {
                 value: locale.languageCode);
           }).toList(),
           onChanged: (item) {
-            localizationBloc.dispatch(ChangeLocalization(Locale(item)));
+            localizationBloc.add(ChangeLocalization(Locale(item)));
           },
         );
       },

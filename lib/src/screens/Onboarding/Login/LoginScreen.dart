@@ -25,67 +25,80 @@ class LoginScreen extends StatelessWidget {
     final AppLocalizations localizations = AppLocalizations.of(context);
     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
     final theme = Theme.of(context);
+
     return BlocListener(
-      bloc: authBloc,
-      condition: (previousState, currentState) {
-        if ((previousState is Unauthenticated ||
-                previousState is Uninitialized) &&
-            currentState is Authenticated) {
-          return true;
-        }
-        return false;
-      },
-      listener: (context, state) {
-        rootNavigationService.pushReplacementNamed(FlutterAppRoutes.itemFeed);
-      },
-      child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: theme.backgroundColor,
-            elevation: 0,
-            leading: FlatButton(
-              child: Icon(
-                Icons.arrow_back,
-                color: theme.appBarTheme.iconTheme.color,
-              ),
-              onPressed: () {
-                onboardingNavigator.goBack();
-              },
-            ),
-          ),
-          body: FullScreenLayout(
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    isLogin ? localizations.loginCTA : localizations.signupCTA,
-                    style: theme.primaryTextTheme.display3,
-                    textAlign: TextAlign.left,
+        bloc: authBloc,
+        condition: (previousState, currentState) {
+          if ((previousState is Unauthenticated ||
+                  previousState is Uninitialized) &&
+              currentState is Authenticated) {
+            return true;
+          }
+          return false;
+        },
+        listener: (context, state) {
+          rootNavigationService.pushReplacementNamed(FlutterAppRoutes.itemFeed);
+        },
+        child: Scaffold(
+            appBar: AppBar(
+                backgroundColor: theme.backgroundColor,
+                elevation: 0,
+                leading: FlatButton(
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: theme.appBarTheme.iconTheme.color,
                   ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[..._renderLoginForm(context, isLogin)],
+                  onPressed: () => rootNavigationService.goBack(),
+                )),
+            body: LayoutBuilder(builder: (context, viewportConstraints) {
+              return SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints:
+                      BoxConstraints(minHeight: viewportConstraints.maxHeight),
+                  child: Container(
+                    color: theme.backgroundColor,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: IntrinsicHeight(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              isLogin
+                                  ? localizations.loginCTA
+                                  : localizations.signupCTA,
+                              style: theme.primaryTextTheme.display3,
+                              textAlign: TextAlign.left,
+                            ),
+                            Expanded(child: Container()),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                ..._renderLoginForm(context, isLogin)
+                              ],
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                    child: OnboardingButton(
+                                  buttonText: isLogin
+                                      ? localizations.logIn
+                                      : localizations.signUp,
+                                  onPressed: isLogin
+                                      ? _handleSignIn(context)
+                                      : _handleRegistration(context),
+                                )),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                          child: OnboardingButton(
-                        buttonText: isLogin
-                            ? localizations.logIn
-                            : localizations.signUp,
-                        onPressed: isLogin
-                            ? _handleSignIn(context)
-                            : _handleRegistration(context),
-                      )),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          )),
-    );
+                ),
+              );
+            })));
   }
 
   _handleRegistration(BuildContext context) {
@@ -93,7 +106,7 @@ class LoginScreen extends StatelessWidget {
       final username = usernameController.text;
       final password = passwordController.text;
       BlocProvider.of<AuthenticationBloc>(context)
-          .dispatch(LogIn(username, password));
+          .add(LogIn(username, password));
     };
   }
 
@@ -127,7 +140,7 @@ class LoginScreen extends StatelessWidget {
       final username = usernameController.text;
       final password = passwordController.text;
       BlocProvider.of<AuthenticationBloc>(context)
-          .dispatch(LogIn(username, password));
+          .add(LogIn(username, password));
     };
   }
 }
