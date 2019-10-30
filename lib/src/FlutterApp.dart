@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/authentication/authentication_state.dart';
-import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
-import 'package:flutter_base_app/src/services/localizations/localizations.dart';
-import 'package:flutter_base_app/src/services/navigator.dart';
-import 'package:flutter_base_app/src/services/routes.dart';
-import 'package:flutter_base_app/src/theme/theme.dart';
-import 'package:flutter_base_app/src/widgets/BlocProvider.dart';
+import 'package:grateful/src/blocs/authentication/authentication_state.dart';
+import 'package:grateful/src/blocs/authentication/bloc.dart';
+import 'package:grateful/src/services/localizations/localizations.dart';
+import 'package:grateful/src/services/navigator.dart';
+import 'package:grateful/src/services/routes.dart';
+import 'package:grateful/src/theme/theme.dart';
+import 'package:grateful/src/widgets/BlocProvider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_base_app/src/blocs/localization/bloc.dart';
+import 'package:grateful/src/blocs/localization/bloc.dart';
 
 class FlutterApp extends StatelessWidget {
   build(_) {
@@ -43,10 +43,16 @@ class FlutterApp extends StatelessWidget {
                   locale: state.locale,
                   supportedLocales: AppLocalizations.availableLocalizations
                       .map((item) => Locale(item.languageCode)),
-                  theme: flutterAppTheme,
-                  home: Navigator(
-                      onGenerateRoute: Router.generatedRoute,
-                      key: rootNavigationService.navigatorKey));
+                  home: Builder(
+                    builder: (innerContext) {
+                      return Theme(
+                        data: gratefulTheme(Theme.of(innerContext)),
+                        child: Navigator(
+                            onGenerateRoute: Router.generatedRoute,
+                            key: rootNavigationService.navigatorKey),
+                      );
+                    },
+                  ));
             }),
       );
     }));

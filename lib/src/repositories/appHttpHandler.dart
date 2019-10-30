@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_base_app/src/config/config.dart';
-import 'package:flutter_base_app/src/config/constants.dart';
+import 'package:grateful/src/config/config.dart';
+import 'package:grateful/src/config/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<String> getToken() async {

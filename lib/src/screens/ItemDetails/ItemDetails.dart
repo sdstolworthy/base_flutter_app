@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
-import 'package:flutter_base_app/src/screens/EditItem/EditItem.dart';
-import 'package:flutter_base_app/src/services/navigator.dart';
-import 'package:flutter_base_app/src/services/routes.dart';
+import 'package:grateful/src/models/Item.dart';
+import 'package:grateful/src/screens/EditItem/EditItem.dart';
+import 'package:grateful/src/services/navigator.dart';
+import 'package:grateful/src/services/routes.dart';
 
 class ItemDetailsArguments {
   Item item;

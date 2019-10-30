@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
-import 'package:flutter_base_app/src/widgets/LanguagePicker.dart';
+import 'package:grateful/src/blocs/authentication/bloc.dart';
+import 'package:grateful/src/widgets/LanguagePicker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppDrawer extends StatelessWidget {

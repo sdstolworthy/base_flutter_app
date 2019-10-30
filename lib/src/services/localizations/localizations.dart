@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/l10n/messages_all.dart';
+import 'package:grateful/l10n/messages_all.dart';
 import 'package:intl/intl.dart';
 
 ///

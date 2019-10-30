@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter_base_app/src/repositories/user/userRepository.dart';
+import 'package:grateful/src/repositories/user/userRepository.dart';
 import './bloc.dart';
 
 class AuthenticationBloc
@@ -27,7 +27,15 @@ class AuthenticationBloc
       yield* _mapLoginEventToState(event.username, event.password);
     } else if (event is LogOut) {
       yield* _mapLogoutEventToState();
+    } else if (event is SignUp) {
+      yield* _mapSignUpEventToState(event.username, event.password);
     }
+  }
+
+  Stream<AuthenticationState> _mapSignUpEventToState(
+      String username, String password) async* {
+    await _userRepository.signUp(email: username, password: password);
+    yield Authenticated();
   }
 
   Stream<AuthenticationState> _mapLoginEventToState(

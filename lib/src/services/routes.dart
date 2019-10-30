@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_app/src/screens/EditItem/EditItem.dart';
-import 'package:flutter_base_app/src/screens/ItemFeed/ItemFeed.dart';
-import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
+import 'package:grateful/src/screens/EditItem/EditItem.dart';
+import 'package:grateful/src/screens/ItemFeed/ItemFeed.dart';
+import 'package:grateful/src/screens/ItemDetails/ItemDetails.dart';
+import 'package:grateful/src/screens/Onboarding/OnboardingRoutes.dart';
 
 class FlutterAppRoutes {
   static const String itemDetails = 'itemDetails';

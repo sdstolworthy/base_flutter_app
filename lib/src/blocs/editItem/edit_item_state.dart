@@ -1,4 +1,4 @@
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:grateful/src/models/Item.dart';
 import 'package:meta/meta.dart';
 
 @immutable

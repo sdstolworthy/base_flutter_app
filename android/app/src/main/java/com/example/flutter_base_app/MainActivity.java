@@ -1,4 +1,4 @@
-package com.example.flutter_base_app;
+package com.spencerstolworthy.gratitude;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

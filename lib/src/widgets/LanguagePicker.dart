@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/localization/bloc.dart';
-import 'package:flutter_base_app/src/blocs/localization/localization_bloc.dart';
-import 'package:flutter_base_app/src/services/localizations/localizations.dart';
+import 'package:grateful/src/blocs/localization/bloc.dart';
+import 'package:grateful/src/blocs/localization/localization_bloc.dart';
+import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LanguagePicker extends StatefulWidget {
