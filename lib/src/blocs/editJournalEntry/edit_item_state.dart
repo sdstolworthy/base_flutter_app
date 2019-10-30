@@ -1,4 +1,4 @@
-import 'package:grateful/src/models/Item.dart';
+import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -7,12 +7,12 @@ abstract class EditItemState {}
 class InitialEdititemState extends EditItemState {}
 
 class ItemLoaded extends EditItemState {
-  final Item item;
+  final JournalEntry item;
   ItemLoaded(this.item);
 }
 
 class ItemSaved extends EditItemState {
-  final Item item;
+  final JournalEntry item;
   ItemSaved(this.item);
 }
 

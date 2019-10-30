@@ -1,10 +1,10 @@
-import 'package:grateful/src/models/Item.dart';
+import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:meta/meta.dart';
 
 @immutable
 abstract class EditItemEvent {}
 
 class SaveItem extends EditItemEvent {
-  final Item item;
+  final JournalEntry item;
   SaveItem(this.item);
 }

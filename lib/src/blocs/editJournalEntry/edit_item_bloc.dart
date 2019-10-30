@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:grateful/src/repositories/items/itemRepository.dart';
+import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import './bloc.dart';
 
 class EditItemBloc extends Bloc<EditItemEvent, EditItemState> {
-  final ItemRepository _itemRepository;
+  final JournalEntryRepository _itemRepository;
 
-  EditItemBloc({ItemRepository itemRepository})
-      : this._itemRepository = itemRepository ?? ItemRepository();
+  EditItemBloc({JournalEntryRepository itemRepository})
+      : this._itemRepository = itemRepository ?? JournalEntryRepository();
 
   @override
   EditItemState get initialState => InitialEdititemState();

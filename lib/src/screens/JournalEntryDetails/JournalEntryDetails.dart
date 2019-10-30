@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:grateful/src/models/Item.dart';
-import 'package:grateful/src/screens/EditItem/EditItem.dart';
+import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/screens/EditJournalEntry/EditJournalEntry.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 
 class ItemDetailsArguments {
-  Item item;
+  JournalEntry item;
 
   ItemDetailsArguments({@required this.item});
 }
 
 class ItemDetails extends StatelessWidget {
-  final Item item;
-  ItemDetails(this.item);
+  final JournalEntry journalEntry;
+  ItemDetails(this.journalEntry);
   build(context) {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
@@ -33,7 +33,8 @@ class ItemDetails extends StatelessWidget {
               ),
               onPressed: () {
                 rootNavigationService.navigateTo(FlutterAppRoutes.itemEdit,
-                    arguments: EditItemArgs(item: item));
+                    arguments:
+                        EditJournalEntryArgs(journalEntry: journalEntry));
               },
             )
           ],
@@ -46,22 +47,22 @@ class ItemDetails extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Text(item.title, style: theme.textTheme.display1),
+                      Text('', style: theme.textTheme.display1),
                     ],
                   ),
-                  item.photoUrl != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 20, bottom: 20),
-                          child: Image.network(item.photoUrl),
-                        )
-                      : Container(),
+                  // journalEntry.photographs != null
+                  //     ? Padding(
+                  //         padding: const EdgeInsets.only(top: 20, bottom: 20),
+                  //         child: Image.network(journalEntry.photoUrl),
+                  //       )
+                  //     : Container(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Flexible(
                           child: Column(
                         children: <Widget>[
-                          Text(item.description,
+                          Text(journalEntry.description,
                               style: theme.textTheme.subhead),
                         ],
                       )),
