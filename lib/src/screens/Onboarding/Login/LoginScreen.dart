@@ -6,7 +6,6 @@ import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/widgets/LoginFormField.dart';
 import 'package:flutter_base_app/src/widgets/OnboardingButton.dart';
-import 'package:flutter_base_app/src/widgets/layouts/FullScreenLayout.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
@@ -48,7 +47,7 @@ class LoginScreen extends StatelessWidget {
                     Icons.arrow_back,
                     color: theme.appBarTheme.iconTheme.color,
                   ),
-                  onPressed: () => rootNavigationService.goBack(),
+                  onPressed: () => onboardingNavigator.goBack(),
                 )),
             body: LayoutBuilder(builder: (context, viewportConstraints) {
               return SingleChildScrollView(
@@ -106,7 +105,7 @@ class LoginScreen extends StatelessWidget {
       final username = usernameController.text;
       final password = passwordController.text;
       BlocProvider.of<AuthenticationBloc>(context)
-          .add(LogIn(username, password));
+          .add(SignUp(username, password));
     };
   }
 
