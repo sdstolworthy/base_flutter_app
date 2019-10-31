@@ -17,11 +17,12 @@ class JournalEntryFeed extends StatefulWidget {
 
 class _JournalEntryFeedState extends State<JournalEntryFeed> {
   // final items = List.generate(20, (_) => Item.random());
-  JournalEntryBloc _itemBloc;
+  JournalEntryBloc _journalFeedBloc;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   void initState() {
-    _itemBloc = JournalEntryBloc(itemRepository: JournalEntryRepository());
+    _journalFeedBloc =
+        JournalEntryBloc(itemRepository: JournalEntryRepository());
     super.initState();
   }
 
@@ -31,13 +32,14 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
         key: _scaffoldKey,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            rootNavigationService.navigateTo(
-              FlutterAppRoutes.itemEdit,
+            Navigator.of(context).pushNamed(
+              FlutterAppRoutes.editJournalEntry,
             );
           },
           child: Icon(Icons.edit),
         ),
         appBar: AppBar(
+          elevation: 0,
           backgroundColor: theme.appBarTheme.color,
           textTheme: theme.appBarTheme.textTheme,
           leading: FlatButton(
@@ -49,29 +51,35 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
         ),
         drawer: AppDrawer(),
         body: BlocBuilder<JournalEntryBloc, JournalFeedState>(
-          bloc: _itemBloc,
+          bloc: _journalFeedBloc,
           builder: (context, state) {
             if (state is JournalFeedUnloaded) {
-              _itemBloc.add(FetchItems());
-              return Center(
-                child: CircularProgressIndicator(),
+              _journalFeedBloc.add(FetchFeed());
+              return Container(
+                color: theme.backgroundColor,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             } else if (state is JournalFeedFetched) {
-              return SafeArea(
-                  child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return ItemCard(
-                    item: state.journalEntries[index],
-                    onPressed: () {
-                      rootNavigationService.navigateTo(
-                          FlutterAppRoutes.itemDetails,
-                          arguments:
-                              ItemDetailsArguments(item: state.journalEntries[index]));
-                    },
-                  );
-                },
-                itemCount: state.journalEntries.length,
-              ));
+              return Container(
+                color: theme.backgroundColor,
+                child: SafeArea(
+                    child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return JournalEntryCard(
+                      journalEntry: state.journalEntries[index],
+                      onPressed: () {
+                        rootNavigationService.navigateTo(
+                            FlutterAppRoutes.journalEntryDetails,
+                            arguments: JournalEntryDetailArguments(
+                                journalEntry: state.journalEntries[index]));
+                      },
+                    );
+                  },
+                  itemCount: state.journalEntries.length,
+                )),
+              );
             }
             return Container();
           },

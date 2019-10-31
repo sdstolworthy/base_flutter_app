@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
+import 'package:grateful/src/blocs/pageView/page_view_bloc.dart';
+import 'package:grateful/src/blocs/pageView/page_view_event.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grateful/src/models/Photograph.dart';
 import 'package:grateful/src/widgets/DateSelectorButton.dart';
 import 'package:grateful/src/widgets/JournalEntryInput.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class EditJournalEntryArgs {
   JournalEntry journalEntry;
@@ -11,45 +18,38 @@ class EditJournalEntryArgs {
   EditJournalEntryArgs({this.journalEntry});
 }
 
-class EditItem extends StatefulWidget {
+class EditJournalEntry extends StatefulWidget {
   final JournalEntry item;
-  EditItem({JournalEntry item}) : this.item = item ?? JournalEntry();
+  EditJournalEntry({JournalEntry item}) : this.item = item ?? JournalEntry();
   @override
   State<StatefulWidget> createState() {
-    return _EditItemState(item: this.item);
+    return _EditJournalEntryState(journalEntry: this.item);
   }
 }
 
-class _EditItemState extends State<EditItem> {
-  JournalEntry item;
-  final EditItemBloc _editItemBloc = EditItemBloc();
+class _EditJournalEntryState extends State<EditJournalEntry> {
+  JournalEntry journalEntry;
+  final EditItemBloc _editJournalEntryBloc = EditItemBloc();
 
-  final TextEditingController _journalEntryController = TextEditingController();
+  _EditJournalEntryState({JournalEntry journalEntry})
+      : this.journalEntry = journalEntry ?? JournalEntry();
 
-  DateTime selectedDate;
+  List<Photograph> photographs = [];
 
-  _EditItemState({this.item});
   initState() {
     super.initState();
+    photographs = journalEntry.photographs ?? [];
   }
 
   dispose() {
-    _editItemBloc.close();
+    _editJournalEntryBloc.close();
     super.dispose();
   }
 
   build(_) {
     return BlocBuilder(
-        bloc: _editItemBloc,
-        builder: (BuildContext context, EditItemState state) {
-          if (state is EditItemState) {
-            _journalEntryController.text = '';
-            selectedDate = selectedDate ??
-                DateTime.fromMillisecondsSinceEpoch(
-                    DateTime.now().millisecondsSinceEpoch);
-          } else {
-            selectedDate = selectedDate ?? DateTime.now();
-          }
+        bloc: _editJournalEntryBloc,
+        builder: (BuildContext context, EditJournalEntryState state) {
           return Scaffold(
               drawer: Drawer(child: Container()),
               body: Container(
@@ -66,19 +66,79 @@ class _EditItemState extends State<EditItem> {
                         ),
                         DateSelectorButton(
                           onPressed: handlePickDate,
-                          selectedDate: selectedDate,
+                          selectedDate: journalEntry.date,
                         ),
                         SizedBox(height: 10),
                         IconButton(
                           iconSize: 36.0,
                           icon: Icon(Icons.arrow_forward),
                           color: Colors.white,
-                          onPressed: () {},
+                          onPressed: () {
+                            if (journalEntry.body != null) {
+                              _editJournalEntryBloc
+                                  .add(SaveJournalEntry(journalEntry));
+                            }
+
+                            BlocProvider.of<PageViewBloc>(context)
+                                .add(NextPage());
+                          },
                         ),
-                        JournalInput(_journalEntryController),
-                        SizedBox(
-                          height: 150,
-                        ),
+                        JournalInput(
+                            onChanged: (text) {
+                              setState(() {
+                                journalEntry.body = text;
+                              });
+                            },
+                            initialValue: journalEntry.body),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 30.0),
+                          child: Row(
+                            children: <Widget>[
+                              FlatButton(
+                                onPressed: () async {
+                                  File file = await ImagePicker.pickImage(
+                                      source: ImageSource.gallery);
+                                  if (file == null) {
+                                    return;
+                                  }
+                                  final FilePhoto photo = new FilePhoto(
+                                      location: file, guid: Uuid().v4());
+                                  setState(() {
+                                    photographs = List.from(photographs)
+                                      ..add(photo);
+                                  });
+                                },
+                                child: Container(
+                                  child: SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(Icons.add, color: Colors.white),
+                                          Text(
+                                            'Add Photos',
+                                            style: Theme.of(context)
+                                                .primaryTextTheme
+                                                .body1,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        style: BorderStyle.solid,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20)),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
                       ]),
                 ),
               ));
@@ -88,64 +148,14 @@ class _EditItemState extends State<EditItem> {
   void handlePickDate(context) async {
     DateTime newDate = await showDatePicker(
       context: context,
-      initialDate: selectedDate,
+      initialDate: journalEntry.date ?? DateTime.now(),
       firstDate: DateTime.parse('1900-01-01'),
       lastDate: DateTime.now(),
     );
     if (newDate != null) {
       setState(() {
-        selectedDate = newDate;
+        journalEntry.date = newDate;
       });
     }
   }
-  // return BlocBuilder(
-  //     bloc: _editItemBloc,
-  //     builder: (context, state) {
-  //       return Scaffold(
-  //         appBar: AppBar(
-  //           title: Text('Edit Entry'),
-  //         ),
-  //         body: SafeArea(
-  //           child: state is ItemLoading
-  //               ? Center(
-  //                   child: CircularProgressIndicator(),
-  //                 )
-  //               : ListView(
-  //                   padding: EdgeInsets.only(left: 20, right: 20),
-  //                   children: <Widget>[
-  //                     SizedBox(height: 20),
-  //                     TextFormField(
-  //                       initialValue: item.title,
-  //                       decoration: InputDecoration(labelText: 'Item Title'),
-  //                       onChanged: (t) {
-  //                         item.title = t;
-  //                       },
-  //                     ),
-  //                     TextFormField(
-  //                       initialValue: item.description,
-  //                       decoration:
-  //                           InputDecoration(labelText: 'Item Description'),
-  //                       onChanged: (t) {
-  //                         item.description = t;
-  //                       },
-  //                     ),
-  //                     TextFormField(
-  //                       initialValue: item.photoUrl,
-  //                       decoration: InputDecoration(labelText: 'Photo Url'),
-  //                       onChanged: (t) {
-  //                         item.photoUrl = t;
-  //                       },
-  //                     ),
-  //                     RaisedButton(
-  //                       onPressed: () {
-  //                         _editItemBloc.add(SaveItem(item));
-  //                       },
-  //                       child: Text('Submit'),
-  //                     )
-  //                   ],
-  //                 ),
-  //         ),
-  //       );
-  //     });
-
 }

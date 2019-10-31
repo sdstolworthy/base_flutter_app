@@ -36,7 +36,8 @@ class LoginScreen extends StatelessWidget {
           return false;
         },
         listener: (context, state) {
-          rootNavigationService.pushReplacementNamed(FlutterAppRoutes.itemFeed);
+          rootNavigationService
+              .pushReplacementNamed(FlutterAppRoutes.journalPageView);
         },
         child: Scaffold(
             appBar: AppBar(

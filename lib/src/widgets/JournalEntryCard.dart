@@ -1,13 +1,12 @@
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 
 typedef void OnPressed();
 
-class ItemCard extends StatelessWidget {
-  final JournalEntry item;
+class JournalEntryCard extends StatelessWidget {
+  final JournalEntry journalEntry;
   final OnPressed onPressed;
-  ItemCard({@required this.item, this.onPressed});
+  JournalEntryCard({@required this.journalEntry, this.onPressed});
   build(context) {
     final theme = Theme.of(context);
     return Card(
@@ -21,7 +20,8 @@ class ItemCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(item.body, style: theme.textTheme.headline),
+              Text(journalEntry.body ?? '',
+                  style: theme.primaryTextTheme.headline),
               Row(
                 children: <Widget>[
                   Padding(
@@ -33,8 +33,9 @@ class ItemCard extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          item.description,
+                          journalEntry.body ?? '',
                           softWrap: true,
+                          style: theme.primaryTextTheme.body1,
                         ),
                       ],
                     ),

@@ -1,8 +1,6 @@
 import 'package:meta/meta.dart';
 
 @immutable
-abstract class ItemEvent {}
+abstract class JournalFeedEvent {}
 
-class FetchItems extends ItemEvent {}
-
-
+class FetchFeed extends JournalFeedEvent {}

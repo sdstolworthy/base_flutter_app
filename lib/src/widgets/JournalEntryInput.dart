@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class JournalInput extends StatelessWidget {
-  final TextEditingController inputController;
+typedef void OnChanged(String text);
 
-  JournalInput(this.inputController);
-  
+class JournalInput extends StatelessWidget {
+  OnChanged onChanged;
+  final String initialValue;
+
+  JournalInput({this.onChanged, this.initialValue});
+
   build(context) {
     return TextFormField(
-      controller: inputController,
+      onChanged: this.onChanged,
       autocorrect: true,
+      initialValue: initialValue,
       autovalidate: true,
       validator: (_) => null,
       textCapitalization: TextCapitalization.sentences,

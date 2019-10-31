@@ -4,13 +4,13 @@ import 'package:grateful/src/models/JournalEntry.dart';
 
 class JournalEntryRepository {
   static const _userCollectionName = 'users';
-  static const _itemCollectionName = 'items';
+  static const _itemCollectionName = 'journal_entries';
 
   FirebaseAuth _firebaseAuth;
 
   JournalEntryRepository({FirebaseAuth firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
-  getItems({take = 50, limit = 50, skip = 50}) async {
+  getFeed({take = 50, limit = 50, skip = 50}) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     List<DocumentSnapshot> entries = (await Firestore.instance
             .collection(_userCollectionName)

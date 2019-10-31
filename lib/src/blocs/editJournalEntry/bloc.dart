@@ -1,3 +1,3 @@
-export 'edit_item_bloc.dart';
-export 'edit_item_event.dart';
-export 'edit_item_state.dart';
+export 'edit_journal_entry_bloc.dart';
+export 'edit_journal_entry_event.dart';
+export 'edit_journal_entry_state.dart';
