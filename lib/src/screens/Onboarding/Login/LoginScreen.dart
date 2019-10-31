@@ -50,55 +50,60 @@ class LoginScreen extends StatelessWidget {
                   ),
                   onPressed: () => onboardingNavigator.goBack(),
                 )),
-            body: LayoutBuilder(builder: (context, viewportConstraints) {
-              return SingleChildScrollView(
-                child: ConstrainedBox(
-                  constraints:
-                      BoxConstraints(minHeight: viewportConstraints.maxHeight),
-                  child: Container(
-                    color: theme.backgroundColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: IntrinsicHeight(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Text(
-                              isLogin
-                                  ? localizations.loginCTA
-                                  : localizations.signupCTA,
-                              style: theme.primaryTextTheme.display3,
-                              textAlign: TextAlign.left,
-                            ),
-                            Expanded(child: Container()),
-                            Column(
+            body: Container(
+              color: theme.backgroundColor,
+              child: SafeArea(
+                child: LayoutBuilder(builder: (context, viewportConstraints) {
+                  return SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                          minHeight: viewportConstraints.maxHeight),
+                      child: Container(
+                        color: theme.backgroundColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: IntrinsicHeight(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                ..._renderLoginForm(context, isLogin)
+                                Text(
+                                  isLogin
+                                      ? localizations.loginCTA
+                                      : localizations.signupCTA,
+                                  style: theme.primaryTextTheme.display3,
+                                  textAlign: TextAlign.left,
+                                ),
+                                Expanded(child: Container()),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    ..._renderLoginForm(context, isLogin)
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: OnboardingButton(
+                                      buttonText: isLogin
+                                          ? localizations.logIn
+                                          : localizations.signUp,
+                                      onPressed: isLogin
+                                          ? _handleSignIn(context)
+                                          : _handleRegistration(context),
+                                    )),
+                                  ],
+                                )
                               ],
                             ),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                    child: OnboardingButton(
-                                  buttonText: isLogin
-                                      ? localizations.logIn
-                                      : localizations.signUp,
-                                  onPressed: isLogin
-                                      ? _handleSignIn(context)
-                                      : _handleRegistration(context),
-                                )),
-                              ],
-                            )
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              );
-            })));
+                  );
+                }),
+              ),
+            )));
   }
 
   _handleRegistration(BuildContext context) {
