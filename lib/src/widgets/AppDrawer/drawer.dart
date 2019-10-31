@@ -6,21 +6,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppDrawer extends StatelessWidget {
   build(context) {
     return Drawer(
-      child: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: <Widget>[
-            RaisedButton(
-                child: Text('Log Out'),
-                onPressed: () {
-                  BlocProvider.of<AuthenticationBloc>(context)
-                      .add(LogOut());
-                }),
-            LanguagePicker(),
-          ],
-        ),
-      )),
+      child: Container(
+        color: Theme.of(context).backgroundColor,
+        child: SafeArea(
+            child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: <Widget>[
+              RaisedButton(
+                  child: Text(
+                    'Log Out',
+                  ),
+                  color: Theme.of(context).buttonColor,
+                  onPressed: () {
+                    BlocProvider.of<AuthenticationBloc>(context).add(LogOut());
+                  }),
+              LanguagePicker(),
+            ],
+          ),
+        )),
+      ),
     );
   }
 }

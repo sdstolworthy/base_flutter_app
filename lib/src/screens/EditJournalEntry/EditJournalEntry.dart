@@ -55,7 +55,10 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
         bloc: _editJournalEntryBloc,
         builder: (BuildContext context, EditJournalEntryState state) {
           return Scaffold(
-              drawer: Drawer(child: Container()),
+              drawer: Drawer(
+                  child: Container(
+                color: Theme.of(context).backgroundColor,
+              )),
               body: Container(
                 color: Theme.of(context).backgroundColor,
                 child: Padding(
