@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/authentication/authentication_state.dart';
-import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
-import 'package:flutter_base_app/src/services/localizations/localizations.dart';
-import 'package:flutter_base_app/src/services/navigator.dart';
-import 'package:flutter_base_app/src/services/routes.dart';
-import 'package:flutter_base_app/src/theme/theme.dart';
-import 'package:flutter_base_app/src/widgets/BlocProvider.dart';
+import 'package:grateful/src/blocs/authentication/authentication_state.dart';
+import 'package:grateful/src/blocs/authentication/bloc.dart';
+import 'package:grateful/src/services/localizations/localizations.dart';
+import 'package:grateful/src/services/navigator.dart';
+import 'package:grateful/src/services/routes.dart';
+import 'package:grateful/src/widgets/BlocProvider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_base_app/src/blocs/localization/bloc.dart';
+import 'package:grateful/src/blocs/localization/bloc.dart';
 
 class FlutterApp extends StatelessWidget {
   build(_) {
@@ -25,7 +24,7 @@ class FlutterApp extends StatelessWidget {
         },
         listener: (context, AuthenticationState state) {
           if (state is Authenticated) {
-            rootNavigationService.navigateTo(FlutterAppRoutes.itemFeed);
+            rootNavigationService.navigateTo(FlutterAppRoutes.journalPageView);
           } else if (state is Unauthenticated) {
             rootNavigationService.returnToLogin();
           }
@@ -34,19 +33,18 @@ class FlutterApp extends StatelessWidget {
             bloc: BlocProvider.of<LocalizationBloc>(outerContext),
             builder: (context, LocalizationState state) {
               return MaterialApp(
-                  localizationsDelegates: [
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                    AppLocalizations.delegate
-                  ],
-                  locale: state.locale,
-                  supportedLocales: AppLocalizations.availableLocalizations
-                      .map((item) => Locale(item.languageCode)),
-                  theme: flutterAppTheme,
-                  home: Navigator(
-                      onGenerateRoute: Router.generatedRoute,
-                      key: rootNavigationService.navigatorKey));
+                localizationsDelegates: [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  AppLocalizations.delegate
+                ],
+                locale: state.locale,
+                supportedLocales: AppLocalizations.availableLocalizations
+                    .map((item) => Locale(item.languageCode)),
+                onGenerateRoute: Router.generatedRoute,
+                navigatorKey: rootNavigationService.navigatorKey,
+              );
             }),
       );
     }));

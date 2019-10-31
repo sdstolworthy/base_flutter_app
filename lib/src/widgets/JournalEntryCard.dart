@@ -1,13 +1,12 @@
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:grateful/src/models/JournalEntry.dart';
 
 typedef void OnPressed();
 
-class ItemCard extends StatelessWidget {
-  final Item item;
+class JournalEntryCard extends StatelessWidget {
+  final JournalEntry journalEntry;
   final OnPressed onPressed;
-  ItemCard({@required this.item, this.onPressed});
+  JournalEntryCard({@required this.journalEntry, this.onPressed});
   build(context) {
     final theme = Theme.of(context);
     return Card(
@@ -21,20 +20,23 @@ class ItemCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(item.title, style: theme.textTheme.headline),
+              Text(journalEntry.body ?? '',
+                  style: theme.primaryTextTheme.headline),
               Row(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0, top: 8.0),
-                    child: Image.network('https://via.placeholder.com/70',
-                        height: 70),
-                  ),
+                  if (journalEntry.photographs != null && journalEntry.photographs.length > 0)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0, top: 8.0),
+                      child: Image.network(journalEntry.photographs.first.imageUrl,
+                          height: 70),
+                    ),
                   Flexible(
                     child: Column(
                       children: <Widget>[
                         Text(
-                          item.description,
+                          journalEntry.body ?? '',
                           softWrap: true,
+                          style: theme.primaryTextTheme.body1,
                         ),
                       ],
                     ),

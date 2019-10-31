@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_app/src/screens/EditItem/EditItem.dart';
-import 'package:flutter_base_app/src/screens/ItemFeed/ItemFeed.dart';
-import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
+import 'package:grateful/src/screens/EditJournalEntry/EditJournalEntry.dart';
+import 'package:grateful/src/screens/JournalEntryFeed/JournalEntryFeed.dart';
+import 'package:grateful/src/screens/JournalEntryDetails/JournalEntryDetails.dart';
+import 'package:grateful/src/screens/JournalPageView/JournalPageView.dart';
+import 'package:grateful/src/screens/Onboarding/OnboardingRoutes.dart';
+import 'package:grateful/src/theme/theme.dart';
 
 class FlutterAppRoutes {
-  static const String itemDetails = 'itemDetails';
-  static const String itemFeed = 'itemFeed';
+  static const String journalEntryDetails = 'itemDetails';
+  static const String journalFeed = 'itemFeed';
   static const String welcome = 'welcome';
   static const String onboarding = 'onboarding';
-  static const String itemEdit = 'itemEdit';
+  static const String editJournalEntry = 'itemEdit';
+  static const String journalPageView = 'journalPageView';
 }
 
 typedef Route CurriedRouter(RouteSettings settings);
@@ -18,22 +21,29 @@ typedef Route CurriedRouter(RouteSettings settings);
 class Router {
   static _pageRoute(Widget widget, String routeName) {
     return MaterialPageRoute(
-        builder: (context) => widget, settings: RouteSettings(name: routeName));
+        builder: (context) => Theme(
+              data: gratefulTheme(Theme.of(context)),
+              child: widget,
+            ),
+        settings: RouteSettings(name: routeName));
   }
 
   static Route<dynamic> generatedRoute(RouteSettings settings) {
     switch (settings.name) {
+      case FlutterAppRoutes.journalPageView:
+        return _pageRoute(JournalPageView(), FlutterAppRoutes.journalPageView);
       case FlutterAppRoutes.onboarding:
         return _pageRoute(OnboardingRoutes(), FlutterAppRoutes.onboarding);
-      case FlutterAppRoutes.itemDetails:
-        final ItemDetailsArguments args = settings.arguments;
-        return _pageRoute(ItemDetails(args.item), FlutterAppRoutes.itemDetails);
-      case FlutterAppRoutes.itemFeed:
-        return _pageRoute(ItemFeed(), FlutterAppRoutes.itemFeed);
-      case FlutterAppRoutes.itemEdit:
-        final EditItemArgs args = settings.arguments;
-        return _pageRoute(
-            EditItem(item: args?.item), FlutterAppRoutes.itemEdit);
+      case FlutterAppRoutes.journalEntryDetails:
+        final JournalEntryDetailArguments args = settings.arguments;
+        return _pageRoute(JournalEntryDetails(args.journalEntry),
+            FlutterAppRoutes.journalEntryDetails);
+      case FlutterAppRoutes.journalFeed:
+        return _pageRoute(JournalEntryFeed(), FlutterAppRoutes.journalFeed);
+      case FlutterAppRoutes.editJournalEntry:
+        final EditJournalEntryArgs args = settings.arguments;
+        return _pageRoute(EditJournalEntry(item: args?.journalEntry),
+            FlutterAppRoutes.editJournalEntry);
       default:
         return _pageRoute(OnboardingRoutes(), FlutterAppRoutes.onboarding);
     }

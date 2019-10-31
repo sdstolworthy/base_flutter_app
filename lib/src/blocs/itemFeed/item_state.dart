@@ -1,14 +1,14 @@
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-abstract class ItemState {}
+abstract class JournalFeedState {}
 
-class ItemsUnloaded extends ItemState {}
+class JournalFeedUnloaded extends JournalFeedState {}
 
-class ItemsFetched extends ItemState {
-  final List<Item> items;
-  ItemsFetched(this.items);
+class JournalFeedFetched extends JournalFeedState {
+  final List<JournalEntry> journalEntries;
+  JournalFeedFetched(this.journalEntries);
 }
 
-class FetchError extends ItemState {}
+class JournalFeedFetchError extends JournalFeedState {}

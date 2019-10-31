@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/localization/bloc.dart';
-import 'package:flutter_base_app/src/blocs/localization/localization_bloc.dart';
-import 'package:flutter_base_app/src/services/localizations/localizations.dart';
+import 'package:grateful/src/blocs/localization/bloc.dart';
+import 'package:grateful/src/blocs/localization/localization_bloc.dart';
+import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LanguagePicker extends StatefulWidget {
@@ -20,7 +20,10 @@ class _LanguagePicker extends State<LanguagePicker> {
           value: state.locale.languageCode,
           items: AppLocalizations.availableLocalizations.map((locale) {
             return DropdownMenuItem(
-                child: Text('${locale.flag} ${locale.languageCode}'),
+                child: Text(
+                  '${locale.flag} ${locale.languageCode}',
+                  style: Theme.of(outerContext).primaryTextTheme.body1,
+                ),
                 value: locale.languageCode);
           }).toList(),
           onChanged: (item) {

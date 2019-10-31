@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:grateful/src/models/JournalEntry.dart';
 
-class ItemRepository {
+class JournalEntryRepository {
   static const _userCollectionName = 'users';
-  static const _itemCollectionName = 'items';
+  static const _itemCollectionName = 'journal_entries';
 
   FirebaseAuth _firebaseAuth;
 
-  ItemRepository({FirebaseAuth firebaseAuth})
+  JournalEntryRepository({FirebaseAuth firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
-  getItems({take = 50, limit = 50, skip = 50}) async {
+  getFeed({take = 50, limit = 50, skip = 50}) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     List<DocumentSnapshot> entries = (await Firestore.instance
             .collection(_userCollectionName)
@@ -20,22 +20,22 @@ class ItemRepository {
         .documents
         .toList();
     return entries.isEmpty
-        ? <Item>[]
+        ? <JournalEntry>[]
         : entries
             .map(
-              (DocumentSnapshot entry) => Item.fromMap(entry.data),
+              (DocumentSnapshot entry) => JournalEntry.fromMap(entry.data),
             )
             .toList();
   }
 
-  saveItem(Item item) async {
+  saveItem(JournalEntry journalEntry) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     await Firestore.instance
         .collection(_userCollectionName)
         .document(user.uid)
         .collection(_itemCollectionName)
-        .document(item.id.toString())
-        .setData(item.toMap());
-    return item;
+        .document(journalEntry.id.toString())
+        .setData(journalEntry.toMap());
+    return journalEntry;
   }
 }

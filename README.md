@@ -1,4 +1,4 @@
-# flutter_base_app
+# grateful
 
 A starter project for Flutter apps.
 

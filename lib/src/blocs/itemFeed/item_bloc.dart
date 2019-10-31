@@ -1,24 +1,24 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_app/src/repositories/items/itemRepository.dart';
+import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import './bloc.dart';
 
-class ItemBloc extends Bloc<ItemEvent, ItemState> {
+class JournalEntryBloc extends Bloc<JournalFeedEvent, JournalFeedState> {
   @override
-  ItemState get initialState => ItemsUnloaded();
+  JournalFeedState get initialState => JournalFeedUnloaded();
 
-  final ItemRepository itemRepository;
+  final JournalEntryRepository itemRepository;
 
-  ItemBloc({@required this.itemRepository});
+  JournalEntryBloc({@required this.itemRepository});
 
   @override
-  Stream<ItemState> mapEventToState(
-    ItemEvent event,
+  Stream<JournalFeedState> mapEventToState(
+    JournalFeedEvent event,
   ) async* {
-    if (event is FetchItems) {
-      final items = await itemRepository.getItems();
-      yield ItemsFetched(items);
+    if (event is FetchFeed) {
+      final journalEntries = await itemRepository.getFeed();
+      yield JournalFeedFetched(journalEntries);
     }
   }
 }
