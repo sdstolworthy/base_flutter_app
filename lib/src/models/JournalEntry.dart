@@ -8,23 +8,23 @@ class JournalEntry {
   String body;
   String description;
   DateTime date;
-  List<Photograph> photographs;
+  List<NetworkPhoto> photographs;
   JournalEntry({
     String id,
     this.body,
     this.description,
     DateTime date,
-    List<Photograph> photographs,
+    List<NetworkPhoto> photographs,
   })  : this.id = id ?? Uuid().v4(),
         this.date = date ?? DateTime.now(),
-        this.photographs = photographs ?? <Photograph>[];
+        this.photographs = photographs ?? <NetworkPhoto>[];
 
   JournalEntry copyWith({
     String id,
     String body,
     String description,
     DateTime date,
-    List<Photograph> photographs,
+    List<NetworkPhoto> photographs,
   }) {
     return JournalEntry(
       id: id ?? this.id,
@@ -53,8 +53,8 @@ class JournalEntry {
       body: map['body'],
       description: map['description'],
       date: DateTime.fromMillisecondsSinceEpoch(map['date']),
-      photographs: List<Photograph>.from(
-          map['photographs']?.map((x) => Photograph.fromMap(x))),
+      photographs: List<NetworkPhoto>.from(
+          map['photographs']?.map((x) => NetworkPhoto.fromMap(x))),
     );
   }
 

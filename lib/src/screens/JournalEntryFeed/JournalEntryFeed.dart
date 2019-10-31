@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/itemFeed/bloc.dart';
+import 'package:grateful/src/blocs/pageView/bloc.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import 'package:grateful/src/screens/JournalEntryDetails/JournalEntryDetails.dart';
 import 'package:grateful/src/services/navigator.dart';
@@ -32,9 +33,7 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
         key: _scaffoldKey,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(
-              FlutterAppRoutes.editJournalEntry,
-            );
+            BlocProvider.of<PageViewBloc>(context).add(PreviousPage());
           },
           child: Icon(Icons.edit),
         ),

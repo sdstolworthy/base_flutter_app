@@ -28,14 +28,14 @@ class JournalEntryRepository {
             .toList();
   }
 
-  saveItem(JournalEntry item) async {
+  saveItem(JournalEntry journalEntry) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     await Firestore.instance
         .collection(_userCollectionName)
         .document(user.uid)
         .collection(_itemCollectionName)
-        .document(item.id.toString())
-        .setData(item.toMap());
-    return item;
+        .document(journalEntry.id.toString())
+        .setData(journalEntry.toMap());
+    return journalEntry;
   }
 }

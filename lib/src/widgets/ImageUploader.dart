@@ -10,7 +10,7 @@ typedef void OnCompleteFunction(String imageUrl);
 class ImageUploader extends StatefulWidget {
   final File file;
   final OnCompleteFunction onComplete;
-  ImageUploader(this.file, {@required this.onComplete});
+  ImageUploader({@required this.onComplete, @required this.file});
   @override
   State<StatefulWidget> createState() {
     return _ImageUploaderState(this.file, onComplete);

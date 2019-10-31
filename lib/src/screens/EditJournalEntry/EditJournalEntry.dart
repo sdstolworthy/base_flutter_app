@@ -2,12 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
+import 'package:grateful/src/blocs/imageHandler/bloc.dart';
 import 'package:grateful/src/blocs/pageView/page_view_bloc.dart';
 import 'package:grateful/src/blocs/pageView/page_view_event.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/models/Photograph.dart';
 import 'package:grateful/src/widgets/DateSelectorButton.dart';
+import 'package:grateful/src/widgets/ImageUploader.dart';
 import 'package:grateful/src/widgets/JournalEntryInput.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -35,6 +37,8 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
       : this.journalEntry = journalEntry ?? JournalEntry();
 
   List<Photograph> photographs = [];
+
+  final ImageHandlerBloc _imageHandlerBloc = ImageHandlerBloc();
 
   initState() {
     super.initState();
@@ -91,54 +95,104 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
                             },
                             initialValue: journalEntry.body),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 30.0),
-                          child: Row(
-                            children: <Widget>[
-                              FlatButton(
-                                onPressed: () async {
-                                  File file = await ImagePicker.pickImage(
-                                      source: ImageSource.gallery);
-                                  if (file == null) {
-                                    return;
+                            padding: const EdgeInsets.symmetric(vertical: 30.0),
+                            child: BlocBuilder<ImageHandlerBloc,
+                                    ImageHandlerState>(
+                                bloc: _imageHandlerBloc,
+                                builder: (context, imageHandlerState) {
+                                  if (imageHandlerState
+                                      is InitialImageHandlerState) {
+                                    _imageHandlerBloc.add(SetPhotographs(
+                                        journalEntry.photographs ??
+                                            <Photograph>[]));
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
                                   }
-                                  final FilePhoto photo = new FilePhoto(
-                                      location: file, guid: Uuid().v4());
-                                  setState(() {
-                                    photographs = List.from(photographs)
-                                      ..add(photo);
-                                  });
-                                },
-                                child: Container(
-                                  child: SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                  if (imageHandlerState is PhotographsLoaded) {
+                                    return Wrap(
+                                        alignment: WrapAlignment.start,
+                                        direction: Axis.horizontal,
                                         children: <Widget>[
-                                          Icon(Icons.add, color: Colors.white),
-                                          Text(
-                                            'Add Photos',
-                                            style: Theme.of(context)
-                                                .primaryTextTheme
-                                                .body1,
+                                          ...imageHandlerState.photographs
+                                              .map<Widget>((i) {
+                                            if (i is NetworkPhoto) {
+                                              return Image.network(
+                                                i.imageUrl,
+                                                height: 100,
+                                                width: 100,
+                                              );
+                                            } else if (i is FilePhoto) {
+                                              return ImageUploader(
+                                                file: i.file,
+                                                onComplete: (String imageUrl) {
+                                                  final newPhoto = NetworkPhoto(
+                                                      imageUrl: imageUrl);
+                                                  _imageHandlerBloc.add(
+                                                      ReplaceFilePhotoWithNetworkPhoto(
+                                                          photograph: newPhoto,
+                                                          filePhotoGuid:
+                                                              i.guid));
+
+                                                  journalEntry.photographs
+                                                      .add(newPhoto);
+                                                },
+                                              );
+                                            }
+                                            return Container();
+                                          }).toList(),
+                                          FlatButton(
+                                            onPressed: () async {
+                                              File file =
+                                                  await ImagePicker.pickImage(
+                                                      source:
+                                                          ImageSource.gallery);
+                                              if (file == null) {
+                                                return;
+                                              }
+                                              final FilePhoto photo =
+                                                  new FilePhoto(
+                                                      file: file,
+                                                      guid: Uuid().v4());
+                                              _imageHandlerBloc
+                                                  .add(AddPhotograph(photo));
+                                            },
+                                            child: Container(
+                                              child: SizedBox(
+                                                height: 100,
+                                                width: 100,
+                                                child: Center(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: <Widget>[
+                                                      Icon(Icons.add,
+                                                          color: Colors.white),
+                                                      Text(
+                                                        'Add Photos',
+                                                        style: Theme.of(context)
+                                                            .primaryTextTheme
+                                                            .body1,
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: Colors.white,
+                                                    style: BorderStyle.solid,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                            ),
                                           )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        style: BorderStyle.solid,
-                                      ),
-                                      borderRadius: BorderRadius.circular(20)),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
+                                        ]);
+                                  }
+                                  return Container();
+                                }))
                       ]),
                 ),
               ));

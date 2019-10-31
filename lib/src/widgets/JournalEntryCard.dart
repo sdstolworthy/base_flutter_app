@@ -24,11 +24,12 @@ class JournalEntryCard extends StatelessWidget {
                   style: theme.primaryTextTheme.headline),
               Row(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0, top: 8.0),
-                    child: Image.network('https://via.placeholder.com/70',
-                        height: 70),
-                  ),
+                  if (journalEntry.photographs != null && journalEntry.photographs.length > 0)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0, top: 8.0),
+                      child: Image.network(journalEntry.photographs.first.imageUrl,
+                          height: 70),
+                    ),
                   Flexible(
                     child: Column(
                       children: <Widget>[

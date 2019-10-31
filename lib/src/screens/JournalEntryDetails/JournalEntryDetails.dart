@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:grateful/src/screens/EditJournalEntry/EditJournalEntry.dart';
@@ -67,6 +68,22 @@ class JournalEntryDetails extends StatelessWidget {
                             ],
                           )),
                         ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: journalEntry.photographs != null &&
+                                journalEntry.photographs.length > 0
+                            ? CarouselSlider(
+                                height: 150,
+                                viewportFraction: 0.5,
+                                enableInfiniteScroll: false,
+                                items: <Widget>[
+                                  ...journalEntry.photographs
+                                      .map((p) => Image.network(p.imageUrl))
+                                      .toList()
+                                ],
+                              )
+                            : Container(),
                       ),
                     ],
                   )),
