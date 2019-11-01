@@ -29,7 +29,7 @@ class AboutApp extends StatelessWidget {
               Wrap(
                 children: <Widget>[
                   Text(
-                    'Grateful: Give Thanks Daily',
+                    'Base Flutter App',
                     style: theme.primaryTextTheme.headline,
                   ),
                 ],
@@ -37,21 +37,8 @@ class AboutApp extends StatelessWidget {
               Wrap(
                 children: <Widget>[
                   Text(
-                    '© ${DateFormat.y().format(DateTime.now())} Spencer Stolworthy.',
+                    '© ${DateFormat.y().format(DateTime.now())} Example Co',
                     style: theme.primaryTextTheme.body1,
-                  ),
-                  RichText(
-                    text: TextSpan(children: [
-                      TextSpan(
-                          text:
-                              'Designs graciously provided by Alicia Wilkin. See more of her work at ',
-                          style: theme.primaryTextTheme.body1),
-                      TextSpan(
-                          text: 'AliciaWilkin.com',
-                          style: theme.primaryTextTheme.body2,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = _launchUrl('https://aliciawilkin.com'))
-                    ]),
                   ),
                   RichText(
                       text: TextSpan(children: [
@@ -65,7 +52,7 @@ class AboutApp extends StatelessWidget {
                         style: theme.primaryTextTheme.body2,
                         recognizer: TapGestureRecognizer()
                           ..onTap = _launchUrl(
-                              'mailto:${Constants.supportEmail}?subject=Grateful App Support&body='))
+                              'mailto:${Constants.supportEmail}?subject=Base Flutter App Support&body='))
                   ])),
                   RichText(
                       text: TextSpan(children: [
