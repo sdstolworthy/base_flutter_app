@@ -6,7 +6,7 @@ import 'package:grateful/src/screens/JournalEntryDetails/JournalEntryDetails.dar
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/AppDrawer/drawer.dart';
-import 'package:grateful/src/widgets/JournalEntryCard.dart';
+import 'package:grateful/src/widgets/JournalFeedListItem.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class JournalEntryFeed extends StatefulWidget {
@@ -66,14 +66,17 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
                 child: SafeArea(
                     child: ListView.builder(
                   itemBuilder: (context, index) {
-                    return JournalEntryCard(
-                      journalEntry: state.journalEntries[index],
-                      onPressed: () {
-                        rootNavigationService.navigateTo(
-                            FlutterAppRoutes.journalEntryDetails,
-                            arguments: JournalEntryDetailArguments(
-                                journalEntry: state.journalEntries[index]));
-                      },
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: JournalEntryListItem(
+                        journalEntry: state.journalEntries[index],
+                        onPressed: () {
+                          rootNavigationService.navigateTo(
+                              FlutterAppRoutes.journalEntryDetails,
+                              arguments: JournalEntryDetailArguments(
+                                  journalEntry: state.journalEntries[index]));
+                        },
+                      ),
                     );
                   },
                   itemCount: state.journalEntries.length,
