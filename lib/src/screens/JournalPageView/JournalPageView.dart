@@ -33,8 +33,7 @@ class JournalPageView extends StatefulWidget {
       _JournalPageView(initialPage: initialPage, journalEntry: journalEntry);
 }
 
-class _JournalPageView extends State<JournalPageView>
-    with AutomaticKeepAliveClientMixin {
+class _JournalPageView extends State<JournalPageView> {
   @override
   bool get wantKeepAlive => true;
   final Page initialPage;

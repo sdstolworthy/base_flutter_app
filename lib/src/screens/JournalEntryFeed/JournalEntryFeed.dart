@@ -68,6 +68,10 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
                   ),
                 );
               } else if (state is JournalFeedFetched) {
+                final sortedEntries = List.from(state.journalEntries
+                  ..sort((a, b) {
+                    return a.date.isBefore(b.date) ? 1 : -1;
+                  }));
                 return Container(
                   color: theme.backgroundColor,
                   child: SafeArea(
@@ -76,17 +80,17 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: JournalEntryListItem(
-                          journalEntry: state.journalEntries[index],
+                          journalEntry: sortedEntries[index],
                           onPressed: () {
                             rootNavigationService.navigateTo(
                                 FlutterAppRoutes.journalEntryDetails,
                                 arguments: JournalEntryDetailArguments(
-                                    journalEntry: state.journalEntries[index]));
+                                    journalEntry: sortedEntries[index]));
                           },
                         ),
                       );
                     },
-                    itemCount: state.journalEntries.length,
+                    itemCount: sortedEntries.length,
                   )),
                 );
               }
