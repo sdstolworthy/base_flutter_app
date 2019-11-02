@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
+import 'package:grateful/src/services/navigator.dart';
+import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/LanguagePicker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,6 +23,12 @@ class AppDrawer extends StatelessWidget {
                   onPressed: () {
                     BlocProvider.of<AuthenticationBloc>(context).add(LogOut());
                   }),
+              RaisedButton(
+                child: Text('About Grateful'),
+                onPressed: () {
+                  rootNavigationService.navigateTo(FlutterAppRoutes.aboutApp);
+                },
+              ),
               LanguagePicker(),
             ],
           ),

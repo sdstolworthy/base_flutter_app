@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:grateful/src/screens/AboutApp/AboutApp.dart';
 import 'package:grateful/src/screens/EditJournalEntry/EditJournalEntry.dart';
 import 'package:grateful/src/screens/JournalEntryFeed/JournalEntryFeed.dart';
 import 'package:grateful/src/screens/JournalEntryDetails/JournalEntryDetails.dart';
@@ -14,6 +15,7 @@ class FlutterAppRoutes {
   static const String onboarding = 'onboarding';
   static const String editJournalEntry = 'itemEdit';
   static const String journalPageView = 'journalPageView';
+  static const String aboutApp = 'aboutApp';
 }
 
 typedef Route CurriedRouter(RouteSettings settings);
@@ -44,6 +46,8 @@ class Router {
         final EditJournalEntryArgs args = settings.arguments;
         return _pageRoute(EditJournalEntry(item: args?.journalEntry),
             FlutterAppRoutes.editJournalEntry);
+      case FlutterAppRoutes.aboutApp:
+        return _pageRoute(AboutApp(), FlutterAppRoutes.aboutApp);
       default:
         return _pageRoute(OnboardingRoutes(), FlutterAppRoutes.onboarding);
     }

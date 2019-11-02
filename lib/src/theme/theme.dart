@@ -18,6 +18,9 @@ ThemeData gratefulTheme(ThemeData appTheme) {
           primaryTextTheme: TextTheme(
               body1:
                   appTheme.primaryTextTheme.body1.copyWith(color: Colors.white),
+              body2: appTheme.primaryTextTheme.body1.copyWith(
+                  color: Colors.lightBlue,
+                  decoration: TextDecoration.underline),
               headline: appTheme.primaryTextTheme.headline
                   .copyWith(color: Colors.white)));
 }

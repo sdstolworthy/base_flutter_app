@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
@@ -79,7 +80,8 @@ class JournalEntryDetails extends StatelessWidget {
                                 enableInfiniteScroll: false,
                                 items: <Widget>[
                                   ...journalEntry.photographs
-                                      .map((p) => Image.network(p.imageUrl))
+                                      .map((p) => CachedNetworkImage(
+                                          imageUrl: p.imageUrl))
                                       .toList()
                                 ],
                               )
