@@ -23,7 +23,7 @@ class AppDrawer extends StatelessWidget {
                   onPressed: () {
                     BlocProvider.of<AuthenticationBloc>(context).add(LogOut());
                   }),
-              RaisedButton(
+              FlatButton(
                 child: Text('About Grateful'),
                 onPressed: () {
                   rootNavigationService.navigateTo(FlutterAppRoutes.aboutApp);
