@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
 import 'package:grateful/src/blocs/imageHandler/bloc.dart';
@@ -21,28 +22,41 @@ class EditJournalEntryArgs {
 }
 
 class EditJournalEntry extends StatefulWidget {
+  bool get wantKeepAlive => true;
+
   final JournalEntry item;
-  EditJournalEntry({JournalEntry item}) : this.item = item ?? JournalEntry();
+  EditJournalEntry({this.item});
   @override
   State<StatefulWidget> createState() {
     return _EditJournalEntryState(journalEntry: this.item);
   }
 }
 
-class _EditJournalEntryState extends State<EditJournalEntry> {
-  JournalEntry journalEntry;
+class _EditJournalEntryState extends State<EditJournalEntry>
+    with AutomaticKeepAliveClientMixin {
+  bool get wantKeepAlive => true;
+
+  JournalEntry _journalEntry;
+  bool isEdit;
   final EditItemBloc _editJournalEntryBloc = EditItemBloc();
 
   _EditJournalEntryState({JournalEntry journalEntry})
-      : this.journalEntry = journalEntry ?? JournalEntry();
+      : this._journalEntry = journalEntry ?? JournalEntry(),
+        isEdit = journalEntry != null {
+    _journalEntryController.value = TextEditingValue(text: '');
+  }
 
-  List<Photograph> photographs = [];
+  List<Photograph> _photographs = [];
+
+  final TextEditingController _journalEntryController = TextEditingController();
 
   final ImageHandlerBloc _imageHandlerBloc = ImageHandlerBloc();
 
   initState() {
     super.initState();
-    photographs = journalEntry.photographs ?? [];
+    _journalEntryController.value =
+        TextEditingValue(text: _journalEntry.body ?? '');
+    _photographs = _journalEntry.photographs ?? [];
   }
 
   dispose() {
@@ -50,11 +64,34 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
     super.dispose();
   }
 
-  build(_) {
+  clearEditState() {
+    setState(() {
+      _journalEntry = JournalEntry();
+      isEdit = false;
+      _photographs = [];
+      _journalEntryController.value =
+          TextEditingValue(text: _journalEntry.body ?? '');
+      _imageHandlerBloc.add(SetPhotographs([]));
+    });
+  }
+
+  build(c) {
+    super.build(c);
     return BlocBuilder(
         bloc: _editJournalEntryBloc,
         builder: (BuildContext context, EditJournalEntryState state) {
           return Scaffold(
+              appBar: AppBar(
+                elevation: 0,
+                leading: Container(),
+                actions: <Widget>[
+                  if (isEdit)
+                    FlatButton(
+                      child: Icon(Icons.clear),
+                      onPressed: clearEditState,
+                    )
+                ],
+              ),
               drawer: Drawer(
                   child: Container(
                 color: Theme.of(context).backgroundColor,
@@ -75,7 +112,7 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
                           ),
                           DateSelectorButton(
                             onPressed: handlePickDate,
-                            selectedDate: journalEntry.date,
+                            selectedDate: _journalEntry.date,
                           ),
                           SizedBox(height: 10),
                           IconButton(
@@ -83,9 +120,9 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
                             icon: Icon(Icons.arrow_forward),
                             color: Colors.white,
                             onPressed: () {
-                              if (journalEntry.body != null) {
+                              if (_journalEntry.body != null) {
                                 _editJournalEntryBloc
-                                    .add(SaveJournalEntry(journalEntry));
+                                    .add(SaveJournalEntry(_journalEntry));
                               }
 
                               BlocProvider.of<PageViewBloc>(context)
@@ -93,12 +130,13 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
                             },
                           ),
                           JournalInput(
-                              onChanged: (text) {
-                                setState(() {
-                                  journalEntry.body = text;
-                                });
-                              },
-                              initialValue: journalEntry.body),
+                            onChanged: (text) {
+                              setState(() {
+                                _journalEntry.body = text;
+                              });
+                            },
+                            controller: _journalEntryController,
+                          ),
                           Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 30.0),
@@ -109,7 +147,7 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
                                     if (imageHandlerState
                                         is InitialImageHandlerState) {
                                       _imageHandlerBloc.add(SetPhotographs(
-                                          journalEntry.photographs ??
+                                          _journalEntry.photographs ??
                                               <Photograph>[]));
                                       return Center(
                                         child: CircularProgressIndicator(),
@@ -124,8 +162,8 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
                                             ...imageHandlerState.photographs
                                                 .map<Widget>((i) {
                                               if (i is NetworkPhoto) {
-                                                return Image.network(
-                                                  i.imageUrl,
+                                                return CachedNetworkImage(
+                                                  imageUrl: i.imageUrl,
                                                   height: 100,
                                                   width: 100,
                                                 );
@@ -144,7 +182,7 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
                                                             filePhotoGuid:
                                                                 i.guid));
 
-                                                    journalEntry.photographs
+                                                    _journalEntry.photographs
                                                         .add(newPhoto);
                                                   },
                                                 );
@@ -215,13 +253,13 @@ class _EditJournalEntryState extends State<EditJournalEntry> {
   void handlePickDate(context) async {
     DateTime newDate = await showDatePicker(
       context: context,
-      initialDate: journalEntry.date ?? DateTime.now(),
+      initialDate: _journalEntry.date ?? DateTime.now(),
       firstDate: DateTime.parse('1900-01-01'),
       lastDate: DateTime.now(),
     );
     if (newDate != null) {
       setState(() {
-        journalEntry.date = newDate;
+        _journalEntry.date = newDate;
       });
     }
   }

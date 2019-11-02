@@ -4,20 +4,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/pageView/bloc.dart';
 import 'package:grateful/src/blocs/pageView/page_view_bloc.dart';
+import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:grateful/src/screens/EditJournalEntry/EditJournalEntry.dart';
 import 'package:grateful/src/screens/JournalEntryFeed/JournalEntryFeed.dart';
 
-class JournalPageView extends StatefulWidget {
-  createState() => _JournalPageView();
+enum Page { entryEdit, entryFeed }
+
+const _pageOrder = <Page>[Page.entryEdit, Page.entryFeed];
+
+class JournalPageArguments {
+  final Page page;
+  final JournalEntry entry;
+  final bool isEdit;
+
+  JournalPageArguments({page, entry})
+      : page = page ?? Page.entryEdit,
+        entry = entry ?? null,
+        isEdit = entry != null;
 }
 
-class _JournalPageView extends State<JournalPageView> {
+class JournalPageView extends StatefulWidget {
+  final Page initialPage;
+  final JournalEntry journalEntry;
+  JournalPageView({initialPage, journalEntry})
+      : initialPage = initialPage ?? Page.entryEdit,
+        journalEntry = journalEntry ?? null;
+  createState() =>
+      _JournalPageView(initialPage: initialPage, journalEntry: journalEntry);
+}
+
+class _JournalPageView extends State<JournalPageView>
+    with AutomaticKeepAliveClientMixin {
   @override
-  final PageViewBloc _pageViewBloc = PageViewBloc();
+  bool get wantKeepAlive => true;
+  final Page initialPage;
+  final JournalEntry journalEntry;
+  _JournalPageView({this.initialPage, this.journalEntry});
+
+  PageViewBloc _pageViewBloc = PageViewBloc();
   bool isActive;
   StreamSubscription<void> activeCanceller;
   void initState() {
     setActive(true);
+    _pageViewBloc =
+        PageViewBloc(initialPage: _pageOrder.indexOf(this.initialPage) ?? 0);
     super.initState();
   }
 
@@ -36,7 +66,7 @@ class _JournalPageView extends State<JournalPageView> {
     }
   }
 
-  Widget build(BuildContext _) {
+  Widget build(BuildContext c) {
     return BlocProvider<PageViewBloc>(
         builder: (context) => _pageViewBloc,
         child: BlocBuilder<PageViewBloc, PageViewState>(
@@ -51,7 +81,7 @@ class _JournalPageView extends State<JournalPageView> {
                     PageView(
                       controller: _pageViewBloc.pageController,
                       children: <Widget>[
-                        EditJournalEntry(),
+                        EditJournalEntry(item: journalEntry),
                         JournalEntryFeed(),
                       ],
                     ),

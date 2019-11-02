@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:grateful/src/screens/EditJournalEntry/EditJournalEntry.dart';
+import 'package:grateful/src/screens/JournalPageView/JournalPageView.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 import 'package:intl/intl.dart';
@@ -35,9 +36,8 @@ class JournalEntryDetails extends StatelessWidget {
               color: Colors.white,
             ),
             onPressed: () {
-              rootNavigationService.navigateTo(
-                  FlutterAppRoutes.editJournalEntry,
-                  arguments: EditJournalEntryArgs(journalEntry: journalEntry));
+              rootNavigationService.navigateTo(FlutterAppRoutes.journalPageView,
+                  arguments: JournalPageArguments(entry: journalEntry));
             },
           )
         ],

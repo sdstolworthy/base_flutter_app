@@ -5,15 +5,16 @@ typedef void OnChanged(String text);
 
 class JournalInput extends StatelessWidget {
   OnChanged onChanged;
-  final String initialValue;
+  final TextEditingController controller;
 
-  JournalInput({this.onChanged, this.initialValue});
+  JournalInput(
+      {@required this.onChanged, @required this.controller});
 
   build(context) {
     return TextFormField(
+      controller: controller,
       onChanged: this.onChanged,
       autocorrect: true,
-      initialValue: initialValue,
       autovalidate: true,
       validator: (_) => null,
       textCapitalization: TextCapitalization.sentences,

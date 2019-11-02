@@ -37,54 +37,60 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
           },
           child: Icon(Icons.edit),
         ),
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: theme.appBarTheme.color,
-          textTheme: theme.appBarTheme.textTheme,
-          leading: FlatButton(
-            child: Icon(Icons.menu, color: theme.appBarTheme.iconTheme.color),
-            onPressed: () {
-              _scaffoldKey.currentState.openDrawer();
+        drawer: AppDrawer(),
+        body: NestedScrollView(
+          headerSliverBuilder: (context, isScrolled) {
+            return [
+              SliverAppBar(
+                elevation: 0.0,
+                title: Text('Previous Entries'),
+                leading: FlatButton(
+                  child: Icon(Icons.menu,
+                      color: theme.appBarTheme.iconTheme.color),
+                  onPressed: () {
+                    _scaffoldKey.currentState.openDrawer();
+                  },
+                ),
+              ),
+            ];
+          },
+          body: BlocBuilder<JournalEntryBloc, JournalFeedState>(
+            bloc: _journalFeedBloc,
+            builder: (context, state) {
+              if (state is JournalFeedUnloaded) {
+                _journalFeedBloc.add(FetchFeed());
+                return Container(
+                  color: theme.backgroundColor,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              } else if (state is JournalFeedFetched) {
+                return Container(
+                  color: theme.backgroundColor,
+                  child: SafeArea(
+                      child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: JournalEntryListItem(
+                          journalEntry: state.journalEntries[index],
+                          onPressed: () {
+                            rootNavigationService.navigateTo(
+                                FlutterAppRoutes.journalEntryDetails,
+                                arguments: JournalEntryDetailArguments(
+                                    journalEntry: state.journalEntries[index]));
+                          },
+                        ),
+                      );
+                    },
+                    itemCount: state.journalEntries.length,
+                  )),
+                );
+              }
+              return Container();
             },
           ),
-        ),
-        drawer: AppDrawer(),
-        body: BlocBuilder<JournalEntryBloc, JournalFeedState>(
-          bloc: _journalFeedBloc,
-          builder: (context, state) {
-            if (state is JournalFeedUnloaded) {
-              _journalFeedBloc.add(FetchFeed());
-              return Container(
-                color: theme.backgroundColor,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            } else if (state is JournalFeedFetched) {
-              return Container(
-                color: theme.backgroundColor,
-                child: SafeArea(
-                    child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: JournalEntryListItem(
-                        journalEntry: state.journalEntries[index],
-                        onPressed: () {
-                          rootNavigationService.navigateTo(
-                              FlutterAppRoutes.journalEntryDetails,
-                              arguments: JournalEntryDetailArguments(
-                                  journalEntry: state.journalEntries[index]));
-                        },
-                      ),
-                    );
-                  },
-                  itemCount: state.journalEntries.length,
-                )),
-              );
-            }
-            return Container();
-          },
         ));
   }
 }
