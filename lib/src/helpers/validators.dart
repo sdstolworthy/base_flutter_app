@@ -1,3 +1,4 @@
+import 'package:flutter/painting.dart';
 import 'package:intl/intl.dart';
 
 class Validators {
@@ -16,10 +17,10 @@ class Validators {
     return _passwordRegExp.hasMatch(password);
   }
 
-  static String formatDate(DateTime date) {
+  static String formatDate(DateTime date, Locale locale) {
     if (date == null || !(date is DateTime)) {
       throw TypeError();
     }
-    return DateFormat('MMMM d, yyyy').format(date);
+    return DateFormat.yMMMMd(locale.languageCode).format(date);
   }
 }

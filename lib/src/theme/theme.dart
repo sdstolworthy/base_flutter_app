@@ -15,6 +15,7 @@ ThemeData gratefulTheme(ThemeData appTheme) {
             buttonColor: Colors.blue[600],
             textTheme: ButtonTextTheme.primary,
           ),
+          canvasColor: Colors.indigo[900],
           primaryTextTheme: TextTheme(
               body1:
                   appTheme.primaryTextTheme.body1.copyWith(color: Colors.white),

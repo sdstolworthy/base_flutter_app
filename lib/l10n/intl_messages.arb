@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-09-06T15:42:09.697311",
+  "@@last_modified": "2019-11-02T13:03:50.254662",
   "logIn": "Log In",
   "@logIn": {
     "description": "The \"log in\" call to action",
@@ -57,6 +57,24 @@
   "welcomeCTA": "Hi, There.",
   "@welcomeCTA": {
     "description": "Call to Action shown on the welcome page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gratefulPrompt": "What are you grateful for today?",
+  "@gratefulPrompt": {
+    "description": "Prompt for journal input on main page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addPhotos": "Add Photos",
+  "@addPhotos": {
+    "description": "Add Photos prompt",
+    "type": "text",
+    "placeholders": {}
+  },
+  "previousEntries": "Previous Entries",
+  "@previousEntries": {
+    "description": "Previous Entries title",
     "type": "text",
     "placeholders": {}
   }

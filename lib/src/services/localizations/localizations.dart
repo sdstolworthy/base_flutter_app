@@ -22,8 +22,8 @@ class AppLocalizations {
   }
 
   static List<AppLocale> availableLocalizations = [
-    AppLocale(languageCode: 'en', flag: '🇺🇸'),
-    AppLocale(languageCode: 'es', flag: '🇪🇸')
+    AppLocale(languageCode: 'en', flag: '🇺🇸', title: 'English'),
+    AppLocale(languageCode: 'es', flag: '🇪🇸', title: 'Español')
   ];
 
   static get delegate {
@@ -84,6 +84,21 @@ class AppLocalizations {
     return Intl.message('Hi, There.',
         name: 'welcomeCTA', desc: 'Call to Action shown on the welcome page');
   }
+
+  String get gratefulPrompt {
+    return Intl.message('What are you grateful for today?',
+        name: 'gratefulPrompt', desc: 'Prompt for journal input on main page');
+  }
+
+  String get addPhotos {
+    return Intl.message('Add Photos',
+        name: 'addPhotos', desc: 'Add Photos prompt');
+  }
+
+  String get previousEntries {
+    return Intl.message('Previous Entries',
+        name: 'previousEntries', desc: 'Previous Entries title');
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -105,7 +120,9 @@ class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
 class AppLocale {
   final String languageCode;
   final String flag;
-  AppLocale({@required languageCode, @required flag})
+  final String title;
+  AppLocale({@required languageCode, @required flag, title})
       : this.languageCode = languageCode,
-        this.flag = flag;
+        this.flag = flag,
+        title = title ?? languageCode;
 }

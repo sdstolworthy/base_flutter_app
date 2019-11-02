@@ -1,5 +1,5 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
-// This is a library that provides messages for a en locale. All the
+// This is a library that provides messages for a en_US locale. All the
 // messages from the main program should be duplicated here with the same
 // function name.
 
@@ -17,10 +17,11 @@ final messages = new MessageLookup();
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
 class MessageLookup extends MessageLookupByLibrary {
-  String get localeName => 'en';
+  String get localeName => 'en_US';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "addPhotos" : MessageLookupByLibrary.simpleMessage("Add Photos"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("confirm password"),
     "gratefulPrompt" : MessageLookupByLibrary.simpleMessage("What are you grateful for today?"),
     "language" : MessageLookupByLibrary.simpleMessage("language"),
@@ -28,6 +29,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "logOut" : MessageLookupByLibrary.simpleMessage("Log Out"),
     "loginCTA" : MessageLookupByLibrary.simpleMessage("Welcome Back."),
     "password" : MessageLookupByLibrary.simpleMessage("password"),
+    "previousEntries" : MessageLookupByLibrary.simpleMessage("Previous Entries"),
     "signUp" : MessageLookupByLibrary.simpleMessage("Sign Up"),
     "signupCTA" : MessageLookupByLibrary.simpleMessage("Create Account."),
     "username" : MessageLookupByLibrary.simpleMessage("Username"),

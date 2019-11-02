@@ -21,7 +21,7 @@ class _LanguagePicker extends State<LanguagePicker> {
           items: AppLocalizations.availableLocalizations.map((locale) {
             return DropdownMenuItem(
                 child: Text(
-                  '${locale.flag} ${locale.languageCode}',
+                  '${locale.flag} ${locale.title}',
                   style: Theme.of(outerContext).primaryTextTheme.body1,
                 ),
                 value: locale.languageCode);

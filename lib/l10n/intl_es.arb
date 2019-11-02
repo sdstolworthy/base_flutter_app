@@ -1,4 +1,5 @@
 {
+  "@@locale": "es",
   "@@last_modified": "2019-08-18T11:38:51.215218",
   "logIn": "Entrar",
   "@logIn": {
@@ -57,6 +58,24 @@
   "welcomeCTA": "Bienvenidos.",
   "@welcomeCTA": {
     "description": "Call to Action shown on the welcome page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gratefulPrompt": "¿De qué estás agradecido?",
+  "@gratefulPrompt": {
+    "description": "Grateful input prompt on edit journal entry page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addPhotos": "Agregar Fotos",
+  "@addPhotos": {
+    "description": "Add Photos prompt",
+    "type": "text",
+    "placeholders": {}
+  },
+  "previousEntries": "Entradas Anteriores",
+  "@previousEntries": {
+    "description": "Previous Entries title",
     "type": "text",
     "placeholders": {}
   }

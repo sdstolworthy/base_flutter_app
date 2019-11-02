@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
+import 'package:grateful/src/blocs/loginScreen/bloc.dart';
 import 'package:grateful/src/screens/Onboarding/OnboardingRoutes.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
@@ -19,100 +20,118 @@ class LoginScreen extends StatelessWidget {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final bool isLogin;
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
   LoginScreen(this.isLogin);
   build(context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
-    final theme = Theme.of(context);
+    final LoginScreenBloc _loginScreenBloc =
+        LoginScreenBloc(authenticationBloc: authBloc);
 
+    final theme = Theme.of(context);
     return BlocListener(
-        bloc: authBloc,
-        condition: (previousState, currentState) {
-          if ((previousState is Unauthenticated ||
-                  previousState is Uninitialized) &&
-              currentState is Authenticated) {
-            return true;
-          }
-          return false;
-        },
-        listener: (context, state) {
-          rootNavigationService
-              .pushReplacementNamed(FlutterAppRoutes.journalPageView);
-        },
-        child: Scaffold(
-            appBar: AppBar(
-                backgroundColor: theme.backgroundColor,
-                elevation: 0,
-                leading: FlatButton(
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: theme.appBarTheme.iconTheme.color,
-                  ),
-                  onPressed: () => onboardingNavigator.goBack(),
-                )),
-            body: Container(
-              color: theme.backgroundColor,
-              child: SafeArea(
-                child: LayoutBuilder(builder: (context, viewportConstraints) {
-                  return SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          minHeight: viewportConstraints.maxHeight),
-                      child: Container(
-                        color: theme.backgroundColor,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: IntrinsicHeight(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  isLogin
-                                      ? localizations.loginCTA
-                                      : localizations.signupCTA,
-                                  style: theme.primaryTextTheme.display3,
-                                  textAlign: TextAlign.left,
-                                ),
-                                Expanded(child: Container()),
-                                Column(
+      bloc: authBloc,
+      condition: (previousState, currentState) {
+        if ((previousState is Unauthenticated ||
+                previousState is Uninitialized) &&
+            currentState is Authenticated) {
+          return true;
+        }
+        return false;
+      },
+      listener: (context, state) {
+        rootNavigationService
+            .pushReplacementNamed(FlutterAppRoutes.journalPageView);
+      },
+      child: Scaffold(
+          key: _scaffoldKey,
+          appBar: AppBar(
+              backgroundColor: theme.backgroundColor,
+              elevation: 0,
+              leading: FlatButton(
+                child: Icon(
+                  Icons.arrow_back,
+                  color: theme.appBarTheme.iconTheme.color,
+                ),
+                onPressed: () => onboardingNavigator.goBack(),
+              )),
+          body: BlocBuilder<LoginScreenBloc, LoginScreenState>(
+              bloc: _loginScreenBloc,
+              builder: (context, loginState) {
+                if (loginState is LoginFailure) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _scaffoldKey.currentState.showSnackBar(SnackBar(
+                        content: Text(
+                            'Something went wrong while' +
+                                (isLogin ? ' logging in' : 'signing up'),
+                            style: theme.primaryTextTheme.body1)));
+                  });
+                }
+                return Container(
+                  color: theme.backgroundColor,
+                  child: SafeArea(
+                    child:
+                        LayoutBuilder(builder: (context, viewportConstraints) {
+                      return SingleChildScrollView(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                              minHeight: viewportConstraints.maxHeight),
+                          child: Container(
+                            color: theme.backgroundColor,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: IntrinsicHeight(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
-                                    ..._renderLoginForm(context, isLogin)
+                                    Text(
+                                      isLogin
+                                          ? localizations.loginCTA
+                                          : localizations.signupCTA,
+                                      style: theme.primaryTextTheme.display3,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    Expanded(child: Container()),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        ..._renderLoginForm(context, isLogin)
+                                      ],
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: OnboardingButton(
+                                          buttonText: isLogin
+                                              ? localizations.logIn
+                                              : localizations.signUp,
+                                          onPressed: isLogin
+                                              ? () => _handleSignIn(
+                                                  _loginScreenBloc)
+                                              : () => _handleRegistration(
+                                                  _loginScreenBloc),
+                                        )),
+                                      ],
+                                    )
                                   ],
                                 ),
-                                Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                        child: OnboardingButton(
-                                      buttonText: isLogin
-                                          ? localizations.logIn
-                                          : localizations.signUp,
-                                      onPressed: isLogin
-                                          ? _handleSignIn(context)
-                                          : _handleRegistration(context),
-                                    )),
-                                  ],
-                                )
-                              ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            )));
+                      );
+                    }),
+                  ),
+                );
+              })),
+    );
   }
 
-  _handleRegistration(BuildContext context) {
-    return () {
-      final username = usernameController.text;
-      final password = passwordController.text;
-      BlocProvider.of<AuthenticationBloc>(context)
-          .add(SignUp(username, password));
-    };
+  _handleRegistration(LoginScreenBloc _loginBloc) {
+    final username = usernameController.text;
+    final password = passwordController.text;
+    _loginBloc.add(SignUp(username, password));
   }
 
   _renderLoginForm(BuildContext context, bool isLogin) {
@@ -140,12 +159,9 @@ class LoginScreen extends StatelessWidget {
     ];
   }
 
-  _handleSignIn(context) {
-    return () {
-      final username = usernameController.text;
-      final password = passwordController.text;
-      BlocProvider.of<AuthenticationBloc>(context)
-          .add(LogIn(username, password));
-    };
+  _handleSignIn(LoginScreenBloc _loginBloc) {
+    final username = usernameController.text;
+    final password = passwordController.text;
+    _loginBloc.add(LogIn(username, password));
   }
 }

@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
-import 'package:grateful/src/screens/EditJournalEntry/EditJournalEntry.dart';
 import 'package:grateful/src/screens/JournalPageView/JournalPageView.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
+import 'package:grateful/src/widgets/Shadower.dart';
 import 'package:intl/intl.dart';
 
 class JournalEntryDetailArguments {
@@ -49,53 +49,72 @@ class JournalEntryDetails extends StatelessWidget {
                 BoxConstraints(minHeight: viewportConstraints.maxHeight),
             child: Container(
               color: theme.backgroundColor,
-              child: Padding(
-                  padding: EdgeInsets.all(30),
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 15.0),
-                        child: Row(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                  DateFormat.yMMMMd().format(journalEntry.date),
+                                  style: theme.primaryTextTheme.headline),
+                            ],
+                          ),
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(DateFormat.yMMMd().format(journalEntry.date),
-                                style: theme.primaryTextTheme.headline),
+                            Flexible(
+                                child: Column(
+                              children: <Widget>[
+                                Text(journalEntry.body ?? '',
+                                    style: theme.primaryTextTheme.body1),
+                              ],
+                            )),
                           ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Flexible(
-                              child: Column(
-                            children: <Widget>[
-                              Text(journalEntry.body ?? '',
-                                  style: theme.primaryTextTheme.body1),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: journalEntry.photographs != null &&
+                            journalEntry.photographs.length > 0
+                        ? CarouselSlider(
+                            aspectRatio: 2.0,
+                            enlargeCenterPage: true,
+                            height: 150,
+                            viewportFraction: 0.6,
+                            enableInfiniteScroll: false,
+                            items: <Widget>[
+                              ...journalEntry.photographs
+                                  .map((p) => CachedNetworkImage(
+                                        imageUrl: p.imageUrl,
+                                        placeholder: (c, i) {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        },
+                                        imageBuilder: (c, i) {
+                                          return Shadower(
+                                              child: Image(
+                                            fit: BoxFit.cover,
+                                            image: i,
+                                          ));
+                                        },
+                                      ))
+                                  .toList()
                             ],
-                          )),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        child: journalEntry.photographs != null &&
-                                journalEntry.photographs.length > 0
-                            ? CarouselSlider(
-                                aspectRatio: 2.0,
-                                enlargeCenterPage: true,
-                                height: 150,
-                                viewportFraction: 0.6,
-                                enableInfiniteScroll: false,
-                                items: <Widget>[
-                                  ...journalEntry.photographs
-                                      .map((p) => CachedNetworkImage(
-                                          imageUrl: p.imageUrl))
-                                      .toList()
-                                ],
-                              )
-                            : Container(),
-                      ),
-                    ],
-                  )),
+                          )
+                        : Container(),
+                  ),
+                ],
+              ),
             ),
           ),
         );

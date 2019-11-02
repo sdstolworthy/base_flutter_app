@@ -3,6 +3,7 @@ import 'package:grateful/src/blocs/itemFeed/bloc.dart';
 import 'package:grateful/src/blocs/pageView/bloc.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import 'package:grateful/src/screens/JournalEntryDetails/JournalEntryDetails.dart';
+import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/AppDrawer/drawer.dart';
@@ -28,6 +29,7 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
   }
 
   build(context) {
+    final localizations = AppLocalizations.of(context);
     final theme = Theme.of(context);
     return Scaffold(
         key: _scaffoldKey,
@@ -43,7 +45,7 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
             return [
               SliverAppBar(
                 elevation: 0.0,
-                title: Text('Previous Entries'),
+                title: Text(localizations.previousEntries),
                 leading: FlatButton(
                   child: Icon(Icons.menu,
                       color: theme.appBarTheme.iconTheme.color),

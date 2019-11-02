@@ -9,9 +9,11 @@ import 'package:grateful/src/blocs/pageView/page_view_event.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/models/Photograph.dart';
+import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/widgets/DateSelectorButton.dart';
 import 'package:grateful/src/widgets/ImageUploader.dart';
 import 'package:grateful/src/widgets/JournalEntryInput.dart';
+import 'package:grateful/src/widgets/Shadower.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
@@ -77,6 +79,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   build(c) {
     super.build(c);
+    final AppLocalizations localizations = AppLocalizations.of(c);
     return BlocBuilder(
         bloc: _editJournalEntryBloc,
         builder: (BuildContext context, EditJournalEntryState state) {
@@ -105,16 +108,19 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            'What are you grateful for today?',
+                            localizations.gratefulPrompt,
                             style:
                                 TextStyle(color: Colors.white, fontSize: 24.0),
                             textAlign: TextAlign.center,
                           ),
-                          DateSelectorButton(
-                            onPressed: handlePickDate,
-                            selectedDate: _journalEntry.date,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            child: DateSelectorButton(
+                              onPressed: handlePickDate,
+                              selectedDate: _journalEntry.date,
+                              locale: Localizations.localeOf(c),
+                            ),
                           ),
-                          SizedBox(height: 10),
                           IconButton(
                             iconSize: 36.0,
                             icon: Icon(Icons.arrow_forward),
@@ -161,14 +167,23 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                                           children: <Widget>[
                                             ...imageHandlerState.photographs
                                                 .map<Widget>((i) {
+                                              Widget child;
                                               if (i is NetworkPhoto) {
-                                                return CachedNetworkImage(
+                                                child = CachedNetworkImage(
                                                   imageUrl: i.imageUrl,
-                                                  height: 100,
-                                                  width: 100,
+                                                  imageBuilder: (c, p) {
+                                                    return Shadower(
+                                                        child: Image(
+                                                      fit: BoxFit.cover,
+                                                      height: 100,
+                                                      width: 100,
+                                                      image: p,
+                                                    ));
+                                                  },
                                                 );
                                               } else if (i is FilePhoto) {
-                                                return ImageUploader(
+                                                child = Shadower(
+                                                    child: ImageUploader(
                                                   file: i.file,
                                                   onComplete:
                                                       (String imageUrl) {
@@ -185,58 +200,70 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                                                     _journalEntry.photographs
                                                         .add(newPhoto);
                                                   },
-                                                );
+                                                ));
+                                              } else {
+                                                child = Container();
                                               }
-                                              return Container();
+                                              return Padding(
+                                                  padding: EdgeInsets.all(3.0),
+                                                  child: child);
                                             }).toList(),
-                                            FlatButton(
-                                              onPressed: () async {
-                                                File file =
-                                                    await ImagePicker.pickImage(
-                                                        source: ImageSource
-                                                            .gallery);
-                                                if (file == null) {
-                                                  return;
-                                                }
-                                                final FilePhoto photo =
-                                                    new FilePhoto(
-                                                        file: file,
-                                                        guid: Uuid().v4());
-                                                _imageHandlerBloc
-                                                    .add(AddPhotograph(photo));
-                                              },
-                                              child: Container(
-                                                child: SizedBox(
-                                                  height: 100,
-                                                  width: 100,
-                                                  child: Center(
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: <Widget>[
-                                                        Icon(Icons.add,
-                                                            color:
-                                                                Colors.white),
-                                                        Text(
-                                                          'Add Photos',
-                                                          style: Theme.of(
-                                                                  context)
-                                                              .primaryTextTheme
-                                                              .body1,
-                                                        )
-                                                      ],
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(3.0),
+                                              child: SizedBox(
+                                                height: 100,
+                                                width: 100,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        color: Colors.white,
+                                                        style:
+                                                            BorderStyle.solid,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20)),
+                                                  child: InkWell(
+                                                    onTap: () async {
+                                                      File file = await ImagePicker
+                                                          .pickImage(
+                                                              source:
+                                                                  ImageSource
+                                                                      .gallery);
+                                                      if (file == null) {
+                                                        return;
+                                                      }
+                                                      final FilePhoto photo =
+                                                          new FilePhoto(
+                                                              file: file,
+                                                              guid:
+                                                                  Uuid().v4());
+                                                      _imageHandlerBloc.add(
+                                                          AddPhotograph(photo));
+                                                    },
+                                                    child: Center(
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: <Widget>[
+                                                          Icon(Icons.add,
+                                                              color:
+                                                                  Colors.white),
+                                                          Text(
+                                                            localizations
+                                                                .addPhotos,
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .primaryTextTheme
+                                                                .body1,
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: Colors.white,
-                                                      style: BorderStyle.solid,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
                                               ),
                                             )
                                           ]);

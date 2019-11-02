@@ -21,7 +21,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   color: Theme.of(context).buttonColor,
                   onPressed: () {
-                    BlocProvider.of<AuthenticationBloc>(context).add(LogOut());
+                    BlocProvider.of<AuthenticationBloc>(context).add(Unauthenticate());
                   }),
               FlatButton(
                 child: Text('About Grateful'),

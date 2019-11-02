@@ -1,4 +1,5 @@
 {
+  "@@locale": "en_US",
   "@@last_modified": "2019-08-18T12:14:54.617606",
   "logIn": "Log In",
   "@logIn": {
@@ -57,6 +58,24 @@
   "welcomeCTA": "Hi, There.",
   "@welcomeCTA": {
     "description": "Call to Action shown on the welcome page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "gratefulPrompt": "What are you grateful for today?",
+  "@gratefulPrompt": {
+    "description": "Grateful input prompt on edit journal entry page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "addPhotos": "Add Photos",
+  "@addPhotos": {
+    "description": "Add Photos prompt",
+    "type": "text",
+    "placeholders": {}
+  },
+  "previousEntries": "Previous Entries",
+  "@previousEntries": {
+    "description": "Previous Entries title",
     "type": "text",
     "placeholders": {}
   }

@@ -5,11 +5,12 @@ import 'package:flutter/widgets.dart';
 class DateSelectorButton extends StatelessWidget {
   final DateTime selectedDate;
   final void Function(BuildContext context) onPressed;
-  DateSelectorButton({this.selectedDate, this.onPressed});
-
+  final Locale locale;
+  DateSelectorButton({this.selectedDate, this.onPressed, Locale locale})
+      : this.locale = locale ?? Locale('en_US');
   build(BuildContext context) {
     return FlatButton(
-      child: Text(Validators.formatDate(selectedDate),
+      child: Text(Validators.formatDate(selectedDate, locale),
           style: TextStyle(color: Colors.white)),
       onPressed: () {
         onPressed(context);

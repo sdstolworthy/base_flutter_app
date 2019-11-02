@@ -23,32 +23,10 @@ class AuthenticationBloc
       } else {
         yield Unauthenticated();
       }
-    } else if (event is LogIn) {
-      yield* _mapLoginEventToState(event.username, event.password);
-    } else if (event is LogOut) {
-      yield* _mapLogoutEventToState();
-    } else if (event is SignUp) {
-      yield* _mapSignUpEventToState(event.username, event.password);
-    }
-  }
-
-  Stream<AuthenticationState> _mapSignUpEventToState(
-      String username, String password) async* {
-    await _userRepository.signUp(email: username, password: password);
-    yield Authenticated();
-  }
-
-  Stream<AuthenticationState> _mapLoginEventToState(
-      String username, String password) async* {
-    try {
-      final user =
-          await _userRepository.signInWithCredentials(username, password);
+    } else if (event is Authenticate) {
       yield Authenticated();
-    } catch (e, s) {
-      print(s);
-      print(e);
-      print("Error during Authentication");
-      yield Unauthenticated();
+    } else if (event is Unauthenticate) {
+      yield* _mapLogoutEventToState();
     }
   }
 
