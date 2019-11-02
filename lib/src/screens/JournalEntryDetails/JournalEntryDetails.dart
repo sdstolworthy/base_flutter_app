@@ -5,6 +5,7 @@ import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:grateful/src/screens/EditJournalEntry/EditJournalEntry.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
+import 'package:intl/intl.dart';
 
 class JournalEntryDetailArguments {
   JournalEntry journalEntry;
@@ -52,11 +53,15 @@ class JournalEntryDetails extends StatelessWidget {
                   padding: EdgeInsets.all(30),
                   child: Column(
                     children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text('', style: theme.primaryTextTheme.headline),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(DateFormat.yMMMd().format(journalEntry.date),
+                                style: theme.primaryTextTheme.headline),
+                          ],
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -75,8 +80,10 @@ class JournalEntryDetails extends StatelessWidget {
                         child: journalEntry.photographs != null &&
                                 journalEntry.photographs.length > 0
                             ? CarouselSlider(
+                                aspectRatio: 2.0,
+                                enlargeCenterPage: true,
                                 height: 150,
-                                viewportFraction: 0.5,
+                                viewportFraction: 0.6,
                                 enableInfiniteScroll: false,
                                 items: <Widget>[
                                   ...journalEntry.photographs

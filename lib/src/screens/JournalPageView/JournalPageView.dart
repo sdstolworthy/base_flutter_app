@@ -61,30 +61,27 @@ class _JournalPageView extends State<JournalPageView> {
                       right: 0,
                       left: 0,
                       child: Container(
-                        color: Theme.of(context).backgroundColor,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  colors: [Colors.black, Colors.transparent],
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter)),
-                          child: BottomNavigationBar(
-                            unselectedItemColor: Colors.grey[600],
-                            backgroundColor: Colors.transparent,
-                            elevation: 100,
-                            currentIndex: state.pageIndex,
-                            onTap: (index) {
-                              _pageViewBloc.add(SetPage(index));
-                            },
-                            items: [
-                              BottomNavigationBarItem(
-                                  icon: Icon(Icons.edit),
-                                  title: Text('Write something new')),
-                              BottomNavigationBarItem(
-                                  icon: Icon(Icons.list),
-                                  title: Text('See past entries'))
-                            ],
-                          ),
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                colors: [Colors.black, Colors.transparent],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter)),
+                        child: BottomNavigationBar(
+                          unselectedItemColor: Colors.grey[600],
+                          backgroundColor: Colors.transparent,
+                          elevation: 100,
+                          currentIndex: state.pageIndex,
+                          onTap: (index) {
+                            _pageViewBloc.add(SetPage(index));
+                          },
+                          items: [
+                            BottomNavigationBarItem(
+                                icon: Icon(Icons.edit),
+                                title: Text('Write something new')),
+                            BottomNavigationBarItem(
+                                icon: Icon(Icons.list),
+                                title: Text('See past entries'))
+                          ],
                         ),
                       ),
                     )
