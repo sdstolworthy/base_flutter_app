@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
 import 'package:grateful/src/blocs/imageHandler/bloc.dart';
@@ -9,7 +10,9 @@ import 'package:grateful/src/blocs/pageView/page_view_event.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/models/Photograph.dart';
+import 'package:grateful/src/repositories/cloudMessaging/cloudMessagingRepository.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
+import 'package:grateful/src/services/messaging.dart';
 import 'package:grateful/src/widgets/DateSelectorButton.dart';
 import 'package:grateful/src/widgets/ImageUploader.dart';
 import 'package:grateful/src/widgets/JournalEntryInput.dart';
@@ -38,6 +41,8 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     with AutomaticKeepAliveClientMixin {
   bool get wantKeepAlive => true;
 
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+
   JournalEntry _journalEntry;
   bool isEdit;
   final EditItemBloc _editJournalEntryBloc = EditItemBloc();
@@ -48,8 +53,6 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     _journalEntryController.value = TextEditingValue(text: '');
   }
 
-  List<Photograph> _photographs = [];
-
   final TextEditingController _journalEntryController = TextEditingController();
 
   final ImageHandlerBloc _imageHandlerBloc = ImageHandlerBloc();
@@ -58,7 +61,17 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     super.initState();
     _journalEntryController.value =
         TextEditingValue(text: _journalEntry.body ?? '');
-    _photographs = _journalEntry.photographs ?? [];
+    _firebaseMessaging.configure(
+        onMessage: (message) async {
+          print(message);
+        },
+        onBackgroundMessage: backgroundMessageHandler,
+        onLaunch: (m) async {
+          print(m);
+        },
+        onResume: (m) async {
+          print(m);
+        });
   }
 
   dispose() {
@@ -70,7 +83,6 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     setState(() {
       _journalEntry = JournalEntry();
       isEdit = false;
-      _photographs = [];
       _journalEntryController.value =
           TextEditingValue(text: _journalEntry.body ?? '');
       _imageHandlerBloc.add(SetPhotographs([]));
@@ -78,7 +90,8 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   }
 
   build(c) {
-    super.build(c);
+    _firebaseMessaging.requestNotificationPermissions();
+    _firebaseMessaging.getToken().then(CloudMessagingRepository().setId);
     final AppLocalizations localizations = AppLocalizations.of(c);
     return BlocBuilder(
         bloc: _editJournalEntryBloc,
