@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
 import 'package:grateful/src/blocs/loginScreen/bloc.dart';
-import 'package:grateful/src/screens/Onboarding/OnboardingRoutes.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/LoginFormField.dart';
+import 'package:grateful/src/widgets/LogoHero.dart';
 import 'package:grateful/src/widgets/OnboardingButton.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -53,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                   Icons.arrow_back,
                   color: theme.appBarTheme.iconTheme.color,
                 ),
-                onPressed: () => onboardingNavigator.goBack(),
+                onPressed: () => rootNavigationService.goBack(),
               )),
           body: BlocBuilder<LoginScreenBloc, LoginScreenState>(
               bloc: _loginScreenBloc,
@@ -85,13 +86,21 @@ class LoginScreen extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
-                                    Text(
-                                      isLogin
-                                          ? localizations.loginCTA
-                                          : localizations.signupCTA,
-                                      style: theme.primaryTextTheme.display3,
-                                      textAlign: TextAlign.left,
-                                    ),
+                                    Row(children: [
+                                      Container(
+                                          constraints: BoxConstraints(
+                                              maxHeight: 100, maxWidth: 100),
+                                          child: LogoHero()),
+                                      Flexible(
+                                        child: Text(
+                                          isLogin
+                                              ? localizations.loginCTA
+                                              : localizations.signupCTA,
+                                          style:
+                                              theme.primaryTextTheme.display1,
+                                        ),
+                                      )
+                                    ]),
                                     Expanded(child: Container()),
                                     Column(
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -113,6 +122,31 @@ class LoginScreen extends StatelessWidget {
                                                   _loginScreenBloc),
                                         )),
                                       ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 20.0),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Container(
+                                              height: 50,
+                                              child: GoogleSignInButton(
+                                                darkMode: true,
+                                                onPressed: () {
+                                                  _loginScreenBloc
+                                                      .add(AuthWithGoogle());
+                                                },
+                                              ),
+                                            ),
+                                          )
+                                          // Expanded(
+                                          //   child: GoogleSignInButton(
+                                          //     onPressed: () => _loginScreenBloc
+                                          //         .add(AuthWithGoogle()),
+                                          //   ),
+                                          // )
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),

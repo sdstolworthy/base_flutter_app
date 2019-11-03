@@ -39,7 +39,7 @@ class AboutApp extends StatelessWidget {
               style: theme.primaryTextTheme.body1),
           TextSpan(
               text: 'AliciaWilkin.com',
-              style: theme.primaryTextTheme.body2,
+              style: theme.accentTextTheme.body1,
               recognizer: TapGestureRecognizer()
                 ..onTap = _launchUrl('https://aliciawilkin.com'))
         ]),
@@ -52,7 +52,7 @@ class AboutApp extends StatelessWidget {
         ),
         TextSpan(
             text: Constants.supportEmail,
-            style: theme.primaryTextTheme.body2,
+            style: theme.primaryTextTheme.body1,
             recognizer: TapGestureRecognizer()
               ..onTap = _launchUrl(
                   'mailto:${Constants.supportEmail}?subject=Grateful App Support&body='))
@@ -62,13 +62,13 @@ class AboutApp extends StatelessWidget {
         TextSpan(text: 'Please read the Grateful '),
         TextSpan(
             text: 'Privacy Policy',
-            style: theme.primaryTextTheme.body2,
+            style: theme.primaryTextTheme.body1,
             recognizer: TapGestureRecognizer()
               ..onTap = _launchUrl(Constants.privacyPolicyUrl)),
         TextSpan(text: ' and ', style: theme.primaryTextTheme.body1),
         TextSpan(
             text: 'Terms of Service.',
-            style: theme.primaryTextTheme.body2,
+            style: theme.primaryTextTheme.body1,
             recognizer: TapGestureRecognizer()
               ..onTap = _launchUrl(Constants.termsOfServiceUrl))
       ])),
@@ -84,8 +84,7 @@ class AboutApp extends StatelessWidget {
             padding: EdgeInsets.only(left: 20, right: 20, top: 40),
             itemCount: children.length,
             itemBuilder: (c, i) => Padding(
-                child: children[i],
-                padding: EdgeInsets.symmetric(vertical: 5)),
+                child: children[i], padding: EdgeInsets.symmetric(vertical: 5)),
           ),
         ),
       ),

@@ -15,7 +15,7 @@ class _RootNavigationService {
 
   Future<dynamic> returnToLogin() async {
     await navigatorKey.currentState
-        .pushReplacementNamed(FlutterAppRoutes.onboarding);
+        .pushReplacementNamed(FlutterAppRoutes.welcomeScreen);
   }
 
   Future<dynamic> goBack() async {

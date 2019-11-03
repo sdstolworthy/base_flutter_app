@@ -14,3 +14,5 @@ class SignUp extends LoginScreenEvent {
   final String password;
   SignUp(this.username, this.password);
 }
+
+class AuthWithGoogle extends LoginScreenEvent {}

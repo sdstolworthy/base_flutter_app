@@ -12,6 +12,8 @@ enum Page { entryEdit, entryFeed }
 
 const _pageOrder = <Page>[Page.entryEdit, Page.entryFeed];
 
+
+
 class JournalPageArguments {
   final Page page;
   final JournalEntry entry;
@@ -47,7 +49,6 @@ class _JournalPageView extends State<JournalPageView> {
         PageViewBloc(initialPage: _pageOrder.indexOf(this.initialPage) ?? 0);
     super.initState();
   }
-
   void setActive(active) {
     setState(() {
       isActive = active;

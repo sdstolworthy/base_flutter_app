@@ -167,6 +167,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_auth_buttons:
+    dependency: "direct main"
+    description:
+      name: flutter_auth_buttons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0"
   flutter_bloc:
     dependency: "direct main"
     description:
@@ -225,7 +232,7 @@ packages:
       name: google_sign_in
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.7"
+    version: "4.0.11"
   html:
     dependency: transitive
     description:

@@ -15,10 +15,10 @@ class LoginFormField extends StatelessWidget {
         autocorrect: false,
         cursorColor: Color.fromRGBO(255, 255, 255, 0.7),
         obscureText: isObscured,
-        style: TextStyle(color: Colors.white70, fontSize: 20),
+        style: Theme.of(_).primaryTextTheme.body2,
         decoration: InputDecoration(
             labelText: label,
-            labelStyle: TextStyle(color: Colors.white70),
+            labelStyle: Theme.of(_).inputDecorationTheme.labelStyle,
             prefixIcon: Icon(icon, color: Colors.white70),
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white60)),

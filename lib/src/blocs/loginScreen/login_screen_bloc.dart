@@ -26,6 +26,15 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       yield* _mapLoginEventToState(event.username, event.password);
     } else if (event is SignUp) {
       yield* _mapSignUpEventToState(event.username, event.password);
+    } else if (event is AuthWithGoogle) {
+      try {
+        await _userRepository.signInWithGoogle();
+        _authenticationBloc.add(Authenticate());
+      } catch (e) {
+        print(e);
+        print('Error with google auth');
+        yield LoginFailure();
+      }
     }
   }
 

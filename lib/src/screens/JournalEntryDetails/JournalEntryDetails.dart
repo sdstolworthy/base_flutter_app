@@ -8,6 +8,8 @@ import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.
 import 'package:grateful/src/screens/JournalPageView/JournalPageView.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
+import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
+import 'package:grateful/src/widgets/JournalEntryHero.dart';
 import 'package:grateful/src/widgets/Shadower.dart';
 import 'package:intl/intl.dart';
 
@@ -94,8 +96,7 @@ class JournalEntryDetails extends StatelessWidget {
                 child: ConstrainedBox(
                   constraints:
                       BoxConstraints(minHeight: viewportConstraints.maxHeight),
-                  child: Container(
-                    color: theme.backgroundColor,
+                  child: BackgroundGradientProvider(
                     child: Column(
                       children: <Widget>[
                         Padding(
@@ -110,7 +111,9 @@ class JournalEntryDetails extends StatelessWidget {
                                     Text(
                                         DateFormat.yMMMMd()
                                             .format(journalEntry.date),
-                                        style: theme.primaryTextTheme.headline),
+                                        style: theme.primaryTextTheme.headline
+                                            .copyWith(
+                                                fontStyle: FontStyle.italic)),
                                   ],
                                 ),
                               ),
@@ -120,8 +123,9 @@ class JournalEntryDetails extends StatelessWidget {
                                   Flexible(
                                       child: Column(
                                     children: <Widget>[
-                                      Text(journalEntry.body ?? '',
-                                          style: theme.primaryTextTheme.body1),
+                                      JournalEntryHero(
+                                        journalEntry: journalEntry,
+                                      )
                                     ],
                                   )),
                                 ],

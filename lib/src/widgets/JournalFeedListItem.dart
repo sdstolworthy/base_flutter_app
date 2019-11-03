@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/widgets/JournalEntryHero.dart';
 import 'package:intl/intl.dart';
 
 typedef void OnPressed();
@@ -30,11 +31,9 @@ class JournalEntryListItem extends StatelessWidget {
           ),
           Flexible(
             child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Text(
-                journalEntry.body ?? '',
-                softWrap: true,
-                style: theme.primaryTextTheme.body1,
+              padding: const EdgeInsets.only(left: 20.0),
+              child: JournalEntryHero(
+                journalEntry: journalEntry,
               ),
             ),
           )

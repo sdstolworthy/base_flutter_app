@@ -17,9 +17,8 @@ class AppDrawer extends StatelessWidget {
           child: Column(
             children: <Widget>[
               RaisedButton(
-                  child: Text(
-                    AppLocalizations.of(context).logOut,
-                  ),
+                  child: Text(AppLocalizations.of(context).logOut,
+                      style: Theme.of(context).primaryTextTheme.body1),
                   color: Theme.of(context).buttonColor,
                   onPressed: () {
                     BlocProvider.of<AuthenticationBloc>(context)

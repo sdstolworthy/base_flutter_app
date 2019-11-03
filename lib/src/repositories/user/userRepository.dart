@@ -1,17 +1,12 @@
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:grateful/src/repositories/appHttpHandler.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserRepository {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
-  final Dio _handler;
-  UserRepository(
-      {FirebaseAuth firebaseAuth, GoogleSignIn googleSignIn, Dio handler})
+  UserRepository({FirebaseAuth firebaseAuth, GoogleSignIn googleSignIn})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn(),
-        _handler = handler ?? appHttpHandler;
+        _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   Future<FirebaseUser> signInWithGoogle() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -44,5 +39,35 @@ class UserRepository {
 
   Future<String> getUser() async {
     return (await _firebaseAuth.currentUser()).email;
+  }
+
+  Future<String> signInWithGoolge() async {
+    final GoogleSignInAccount googleSignInAccount =
+        await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
+
+    final AuthResult authResult =
+        await _firebaseAuth.signInWithCredential(credential);
+    final FirebaseUser user = authResult.user;
+
+    assert(!user.isAnonymous);
+    assert(await user.getIdToken() != null);
+
+    final FirebaseUser currentUser = await _firebaseAuth.currentUser();
+    assert(user.uid == currentUser.uid);
+
+    return 'signInWithGoogle succeeded: $user';
+  }
+
+  void signOutWithGoogle() async {
+    await _googleSignIn.signOut();
+
+    print("User Sign Out");
   }
 }

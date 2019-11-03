@@ -10,8 +10,10 @@ class DateSelectorButton extends StatelessWidget {
       : this.locale = locale ?? Locale('en_US');
   build(BuildContext context) {
     return FlatButton(
-      child: Text(Validators.formatDate(selectedDate, locale),
-          style: TextStyle(color: Colors.white)),
+      child: Text(
+        Validators.formatDate(selectedDate, locale),
+        style: Theme.of(context).primaryTextTheme.body1.copyWith(fontSize: 18),
+      ),
       onPressed: () {
         onPressed(context);
       },

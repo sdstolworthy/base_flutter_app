@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:grateful/src/screens/Onboarding/OnboardingRoutes.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
+import 'package:grateful/src/services/navigator.dart';
+import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/LanguagePicker.dart';
+import 'package:grateful/src/widgets/LogoHero.dart';
 import 'package:grateful/src/widgets/OnboardingButton.dart';
 import 'package:grateful/src/widgets/layouts/FullScreenLayout.dart';
 
@@ -17,10 +19,7 @@ class WelcomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(30.0),
           child: Column(
             children: <Widget>[
-              Text(
-                localizations.welcomeCTA,
-                style: theme.primaryTextTheme.display3,
-              ),
+              LogoHero(),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -31,8 +30,8 @@ class WelcomeScreen extends StatelessWidget {
                             child: OnboardingButton(
                           buttonText: localizations.logIn,
                           onPressed: () {
-                            onboardingNavigator
-                                .navigateTo(OnboardingRouteNames.loginScreen);
+                            rootNavigationService
+                                .navigateTo(FlutterAppRoutes.loginScreen);
                           },
                         )),
                       ],
@@ -45,8 +44,8 @@ class WelcomeScreen extends StatelessWidget {
                           buttonText: localizations.signUp,
                           isInverted: true,
                           onPressed: () {
-                            onboardingNavigator
-                                .navigateTo(OnboardingRouteNames.signupScreen);
+                            rootNavigationService
+                                .navigateTo(FlutterAppRoutes.signupScreen);
                           },
                         )),
                       ],

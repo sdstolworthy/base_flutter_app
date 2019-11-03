@@ -45,6 +45,15 @@ class OnboardingRoutes extends StatelessWidget {
   }
 
   static _pageRoute(Widget widget) {
-    return MaterialPageRoute(builder: (context) => widget);
+    return PageRouteBuilder(
+        pageBuilder: (c, a, s) => widget,
+        transitionsBuilder: (c, a, s, child) {
+          return SlideTransition(
+            child: child,
+            position: new Tween<Offset>(
+                    begin: const Offset(1.0, 0.0), end: Offset.zero)
+                .animate(a),
+          );
+        });
   }
 }

@@ -25,11 +25,12 @@ dependencies:
   faker:
   cloud_firestore: ^0.12.7+1
   firebase_auth: ^0.14.0+5
-  google_sign_in: ^4.0.7
+  google_sign_in: ^4.0.11
   firebase_core: ^0.4.0+9
   firebase_storage: ^3.0.6
   firebase_analytics: ^4.0.2
   firebase_messaging: ^5.1.6
+  flutter_auth_buttons: ^0.6.0
   url_launcher:
   flutter_localizations:
     sdk: flutter
@@ -49,7 +50,7 @@ flutter_icons:
   image_path: "icon/icon.png"
   android: true
   ios: true
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -68,8 +69,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/SampleLogo.png
-    - assets/images/transparent.png
+    - assets/images/
   #  - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -86,5 +86,13 @@ flutter:
         - asset: assets/fonts/Raleway/Raleway-Regular.ttf
         - asset: assets/fonts/Raleway/Raleway-RegularItalic.ttf
           style: italic
+    - family: MontserratRegular
+      fonts:
+        - asset: assets/fonts/MontserratRegular/Montserrat-Italic.ttf
+        - asset: assets/fonts/MontserratRegular/Montserrat-Regular.ttf
+    - family: MontserratSemiBold
+      fonts:
+        - asset: assets/fonts/MontserratSemiBold/Montserrat-SemiBold.ttf
+        - asset: assets/fonts/MontserratSemiBold/Montserrat-SemiBoldItalic.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
