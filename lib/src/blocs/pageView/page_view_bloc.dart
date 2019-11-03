@@ -33,17 +33,13 @@ class PageViewBloc extends Bloc<PageViewEvent, PageViewState> {
           curve: ElasticInCurve(),
           duration: Duration(milliseconds: animationDurationInMilliseconds));
     } else if (event is PreviousPage) {
-      print(pageController.page);
       pageController.previousPage(
           curve: ElasticInCurve(),
           duration: Duration(milliseconds: animationDurationInMilliseconds));
     } else if (event is NotifyPageChange) {
       yield CurrentPage(pageController.page.toInt());
     } else if (event is SetPage) {
-      print(event.page);
-      pageController.animateToPage(event.page,
-          curve: ElasticInCurve(),
-          duration: Duration(milliseconds: animationDurationInMilliseconds));
+      pageController.jumpToPage(event.page);
     }
     yield CurrentPage(pageController.page.toInt());
   }

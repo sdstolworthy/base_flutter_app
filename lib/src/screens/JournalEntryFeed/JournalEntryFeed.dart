@@ -83,7 +83,6 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
                   previous[year].add(current);
                   return previous;
                 });
-                print(sortedEntriesYearMap.keys);
                 final compiledList =
                     sortedEntriesYearMap.keys.fold<List<Widget>>([], (p, c) {
                   return p

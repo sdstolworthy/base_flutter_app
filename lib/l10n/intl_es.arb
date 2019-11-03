@@ -61,7 +61,7 @@
     "type": "text",
     "placeholders": {}
   },
-  "gratefulPrompt": "¿De qué estás agradecido?",
+  "gratefulPrompt": "¿Qué agredeces hoy?",
   "@gratefulPrompt": {
     "description": "Grateful input prompt on edit journal entry page",
     "type": "text",

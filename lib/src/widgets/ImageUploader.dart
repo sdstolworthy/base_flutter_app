@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/fileUpload/bloc.dart';
+import 'package:grateful/src/widgets/Shadower.dart';
 import 'package:uuid/uuid.dart';
 
 typedef void OnCompleteFunction(String imageUrl);
@@ -32,27 +33,25 @@ class _ImageUploaderState extends State<ImageUploader> {
           if (state is UploadSuccess) {
             onComplete(state.imageUrl);
           }
-          return SizedBox(
-              height: 100,
-              width: 100,
-              child: Stack(
-                children: <Widget>[
-                  Image.file(
-                    file,
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
+          return Stack(
+            fit: StackFit.passthrough,
+            children: <Widget>[
+              Center(
+                  child: Shadower(
+                      child: Image.file(
+                file,
+                fit: BoxFit.contain,
+              ))),
+              if (state is FileUploadProgress)
+                Container(
+                  child: Center(
+                    child: CircularProgressIndicator(value: state.progress),
                   ),
-                  if (state is FileUploadProgress)
-                    Container(
-                      child: Center(
-                        child: CircularProgressIndicator(value: state.progress),
-                      ),
-                    )
-                  else
-                    Container()
-                ],
-              ));
+                )
+              else
+                Container()
+            ],
+          );
         },
         bloc: _fileUploadBloc);
   }
