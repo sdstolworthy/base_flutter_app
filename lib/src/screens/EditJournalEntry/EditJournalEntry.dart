@@ -65,17 +65,22 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     super.initState();
     _journalEntryController.value =
         TextEditingValue(text: _journalEntry.body ?? '');
-    _firebaseMessaging.configure(
-        onMessage: (message) async {
-          print(message);
-        },
-        onBackgroundMessage: backgroundMessageHandler,
-        onLaunch: (m) async {
-          print(m);
-        },
-        onResume: (m) async {
-          print(m);
-        });
+    try {
+      _firebaseMessaging.configure(
+          onMessage: (message) async {
+            print(message);
+          },
+          onBackgroundMessage: backgroundMessageHandler,
+          onLaunch: (m) async {
+            print(m);
+          },
+          onResume: (m) async {
+            print(m);
+          });
+    } catch (e) {
+      print(
+          'Failed to configure Firebase Cloud Messaging. Are you using the iOS simulator?');
+    }
   }
 
   dispose() {
@@ -102,111 +107,105 @@ class _EditJournalEntryState extends State<EditJournalEntry>
         bloc: _editJournalEntryBloc,
         builder: (BuildContext context, EditJournalEntryState state) {
           return Scaffold(
-              drawer: Drawer(
-                  child: Container(
-                color: Theme.of(context).backgroundColor,
-              )),
               body: NestedScrollView(
-                headerSliverBuilder: (context, isScrolled) {
-                  return [
-                    SliverAppBar(
-                      elevation: 0,
-                      floating: true,
-                      leading: Container(),
-                      actions: <Widget>[
-                        if (isEdit)
-                          FlatButton(
-                            child: Icon(
-                              Icons.clear,
-                              color: Colors.white,
-                            ),
-                            onPressed: clearEditState,
-                          )
-                      ],
-                    )
-                  ];
-                },
-                body: LayoutBuilder(builder: (context, viewportConstraints) {
-                  return ScrollConfiguration(
-                    behavior: NoGlowScroll(),
-                    child: SingleChildScrollView(
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                            minHeight: viewportConstraints.maxHeight),
-                        child: BackgroundGradientProvider(
-                          child: IntrinsicHeight(
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Text(
-                                            localizations.gratefulPrompt,
-                                            style: Theme.of(context)
-                                                .primaryTextTheme
-                                                .headline,
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 15),
-                                            child: DateSelectorButton(
-                                              onPressed: handlePickDate,
-                                              selectedDate: _journalEntry.date,
-                                              locale: Localizations.localeOf(c),
-                                            ),
-                                          ),
-                                          JournalInput(
-                                            onChanged: (text) {
-                                              setState(() {
-                                                _journalEntry.body = text;
-                                              });
-                                            },
-                                            controller: _journalEntryController,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  _editablePhotoSlider(context),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+            headerSliverBuilder: (context, isScrolled) {
+              return [
+                SliverAppBar(
+                  elevation: 0,
+                  floating: true,
+                  leading: Container(),
+                  actions: <Widget>[
+                    if (isEdit)
+                      FlatButton(
+                        child: Icon(
+                          Icons.clear,
+                          color: Colors.white,
+                        ),
+                        onPressed: clearEditState,
+                      )
+                  ],
+                )
+              ];
+            },
+            body: LayoutBuilder(builder: (context, viewportConstraints) {
+              return ScrollConfiguration(
+                behavior: NoGlowScroll(),
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                        minHeight: viewportConstraints.maxHeight),
+                    child: BackgroundGradientProvider(
+                      child: IntrinsicHeight(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      FlatButton(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: Icon(Icons.check,
-                                              color: Colors.white, size: 36),
+                                      Text(
+                                        localizations.gratefulPrompt,
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .headline,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 15),
+                                        child: DateSelectorButton(
+                                          onPressed: handlePickDate,
+                                          selectedDate: _journalEntry.date,
+                                          locale: Localizations.localeOf(c),
                                         ),
-                                        color: Colors.transparent,
-                                        onPressed: () {
-                                          if (_journalEntry.body != null) {
-                                            _editJournalEntryBloc.add(
-                                                SaveJournalEntry(
-                                                    _journalEntry));
-                                            this.clearEditState();
-                                          }
-
-                                          BlocProvider.of<PageViewBloc>(context)
-                                              .add(SetPage(1));
+                                      ),
+                                      JournalInput(
+                                        onChanged: (text) {
+                                          setState(() {
+                                            _journalEntry.body = text;
+                                          });
                                         },
+                                        controller: _journalEntryController,
                                       ),
                                     ],
                                   ),
-                                ]),
-                          ),
-                        ),
+                                ),
+                              ),
+                              _editablePhotoSlider(context),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  FlatButton(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: Icon(Icons.check,
+                                          color: Colors.white, size: 36),
+                                    ),
+                                    color: Colors.transparent,
+                                    onPressed: () {
+                                      if (_journalEntry.body != null) {
+                                        _editJournalEntryBloc.add(
+                                            SaveJournalEntry(_journalEntry));
+                                        this.clearEditState();
+                                      }
+
+                                      BlocProvider.of<PageViewBloc>(context)
+                                          .add(SetPage(1));
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ]),
                       ),
                     ),
-                  );
-                }),
-              ));
+                  ),
+                ),
+              );
+            }),
+          ));
         });
   }
 
