@@ -19,3 +19,5 @@ class JournalEntrySaved extends EditJournalEntryState {
 class JournalEntryLoading extends EditJournalEntryState {}
 
 class JournalEntrySaveError extends EditJournalEntryState {}
+
+class JournalEntryDeleted extends EditJournalEntryState {}

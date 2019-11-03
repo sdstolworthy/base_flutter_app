@@ -8,11 +8,11 @@ class PreviousPage extends PageViewEvent {}
 class NextPage extends PageViewEvent {}
 
 class SetPage extends PageViewEvent {
-  final int currentPage;
-  SetPage(this.currentPage);
+  final int page;
+  SetPage(this.page);
 }
 
 class NotifyPageChange extends PageViewEvent {
-  final int currentPage;
-  NotifyPageChange(this.currentPage);
+  final int page;
+  NotifyPageChange(this.page);
 }

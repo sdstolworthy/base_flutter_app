@@ -8,3 +8,8 @@ class SaveJournalEntry extends EditJournalEntryEvent {
   final JournalEntry journalEntry;
   SaveJournalEntry(this.journalEntry);
 }
+
+class DeleteJournalEntry extends EditJournalEntryEvent {
+  final JournalEntry journalEntry;
+  DeleteJournalEntry(this.journalEntry);
+}

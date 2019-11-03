@@ -14,6 +14,7 @@ import 'package:grateful/src/repositories/cloudMessaging/cloudMessagingRepositor
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/messaging.dart';
 import 'package:grateful/src/widgets/DateSelectorButton.dart';
+import 'package:grateful/src/widgets/DeletableResource.dart';
 import 'package:grateful/src/widgets/ImageUploader.dart';
 import 'package:grateful/src/widgets/JournalEntryInput.dart';
 import 'package:grateful/src/widgets/Shadower.dart';
@@ -45,7 +46,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   JournalEntry _journalEntry;
   bool isEdit;
-  final EditItemBloc _editJournalEntryBloc = EditItemBloc();
+  final EditJournalEntryBloc _editJournalEntryBloc = EditJournalEntryBloc();
 
   _EditJournalEntryState({JournalEntry journalEntry})
       : this._journalEntry = journalEntry ?? JournalEntry(),
@@ -120,169 +121,206 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text(
-                            localizations.gratefulPrompt,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 24.0),
-                            textAlign: TextAlign.center,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 15),
-                            child: DateSelectorButton(
-                              onPressed: handlePickDate,
-                              selectedDate: _journalEntry.date,
-                              locale: Localizations.localeOf(c),
-                            ),
-                          ),
-                          IconButton(
-                            iconSize: 36.0,
-                            icon: Icon(Icons.arrow_forward),
-                            color: Colors.white,
-                            onPressed: () {
-                              if (_journalEntry.body != null) {
-                                _editJournalEntryBloc
-                                    .add(SaveJournalEntry(_journalEntry));
-                              }
+                          Flexible(
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  localizations.gratefulPrompt,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 24.0),
+                                  textAlign: TextAlign.center,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 15),
+                                  child: DateSelectorButton(
+                                    onPressed: handlePickDate,
+                                    selectedDate: _journalEntry.date,
+                                    locale: Localizations.localeOf(c),
+                                  ),
+                                ),
+                                JournalInput(
+                                  onChanged: (text) {
+                                    setState(() {
+                                      _journalEntry.body = text;
+                                    });
+                                  },
+                                  controller: _journalEntryController,
+                                ),
+                                Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 30.0),
+                                    child: BlocBuilder<ImageHandlerBloc,
+                                            ImageHandlerState>(
+                                        bloc: _imageHandlerBloc,
+                                        builder: (context, imageHandlerState) {
+                                          if (imageHandlerState
+                                              is InitialImageHandlerState) {
+                                            _imageHandlerBloc.add(
+                                                SetPhotographs(
+                                                    _journalEntry.photographs ??
+                                                        <Photograph>[]));
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          }
+                                          if (imageHandlerState
+                                              is PhotographsLoaded) {
+                                            return Wrap(
+                                                alignment: WrapAlignment.start,
+                                                direction: Axis.horizontal,
+                                                children: <Widget>[
+                                                  ...imageHandlerState
+                                                      .photographs
+                                                      .map<Widget>((i) {
+                                                    Widget child;
+                                                    if (i is NetworkPhoto) {
+                                                      child =
+                                                          CachedNetworkImage(
+                                                        imageUrl: i.imageUrl,
+                                                        imageBuilder: (c, p) {
+                                                          return Shadower(
+                                                              child:
+                                                                  DeletableResource(
+                                                            onRemove: () {
+                                                              _imageHandlerBloc.add(SetPhotographs(List.from(_journalEntry
+                                                                  .photographs
+                                                                ..removeWhere((p) =>
+                                                                    p.imageUrl ==
+                                                                    i.imageUrl))));
+                                                            },
+                                                            child: Image(
+                                                              fit: BoxFit.cover,
+                                                              height: 100,
+                                                              width: 100,
+                                                              image: p,
+                                                            ),
+                                                          ));
+                                                        },
+                                                      );
+                                                    } else if (i is FilePhoto) {
+                                                      child = Shadower(
+                                                          child: ImageUploader(
+                                                        file: i.file,
+                                                        onComplete:
+                                                            (String imageUrl) {
+                                                          final newPhoto =
+                                                              NetworkPhoto(
+                                                                  imageUrl:
+                                                                      imageUrl);
+                                                          _imageHandlerBloc.add(
+                                                              ReplaceFilePhotoWithNetworkPhoto(
+                                                                  photograph:
+                                                                      newPhoto,
+                                                                  filePhotoGuid:
+                                                                      i.guid));
 
-                              BlocProvider.of<PageViewBloc>(context)
-                                  .add(NextPage());
-                            },
-                          ),
-                          JournalInput(
-                            onChanged: (text) {
-                              setState(() {
-                                _journalEntry.body = text;
-                              });
-                            },
-                            controller: _journalEntryController,
-                          ),
-                          Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 30.0),
-                              child: BlocBuilder<ImageHandlerBloc,
-                                      ImageHandlerState>(
-                                  bloc: _imageHandlerBloc,
-                                  builder: (context, imageHandlerState) {
-                                    if (imageHandlerState
-                                        is InitialImageHandlerState) {
-                                      _imageHandlerBloc.add(SetPhotographs(
-                                          _journalEntry.photographs ??
-                                              <Photograph>[]));
-                                      return Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                    if (imageHandlerState
-                                        is PhotographsLoaded) {
-                                      return Wrap(
-                                          alignment: WrapAlignment.start,
-                                          direction: Axis.horizontal,
-                                          children: <Widget>[
-                                            ...imageHandlerState.photographs
-                                                .map<Widget>((i) {
-                                              Widget child;
-                                              if (i is NetworkPhoto) {
-                                                child = CachedNetworkImage(
-                                                  imageUrl: i.imageUrl,
-                                                  imageBuilder: (c, p) {
-                                                    return Shadower(
-                                                        child: Image(
-                                                      fit: BoxFit.cover,
+                                                          _journalEntry
+                                                              .photographs
+                                                              .add(newPhoto);
+                                                        },
+                                                      ));
+                                                    } else {
+                                                      child = Container();
+                                                    }
+                                                    return Padding(
+                                                        padding:
+                                                            EdgeInsets.all(3.0),
+                                                        child: child);
+                                                  }).toList(),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            3.0),
+                                                    child: SizedBox(
                                                       height: 100,
                                                       width: 100,
-                                                      image: p,
-                                                    ));
-                                                  },
-                                                );
-                                              } else if (i is FilePhoto) {
-                                                child = Shadower(
-                                                    child: ImageUploader(
-                                                  file: i.file,
-                                                  onComplete:
-                                                      (String imageUrl) {
-                                                    final newPhoto =
-                                                        NetworkPhoto(
-                                                            imageUrl: imageUrl);
-                                                    _imageHandlerBloc.add(
-                                                        ReplaceFilePhotoWithNetworkPhoto(
-                                                            photograph:
-                                                                newPhoto,
-                                                            filePhotoGuid:
-                                                                i.guid));
-
-                                                    _journalEntry.photographs
-                                                        .add(newPhoto);
-                                                  },
-                                                ));
-                                              } else {
-                                                child = Container();
-                                              }
-                                              return Padding(
-                                                  padding: EdgeInsets.all(3.0),
-                                                  child: child);
-                                            }).toList(),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(3.0),
-                                              child: SizedBox(
-                                                height: 100,
-                                                width: 100,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                        color: Colors.white,
-                                                        style:
-                                                            BorderStyle.solid,
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20)),
-                                                  child: InkWell(
-                                                    onTap: () async {
-                                                      File file = await ImagePicker
-                                                          .pickImage(
-                                                              source:
-                                                                  ImageSource
-                                                                      .gallery);
-                                                      if (file == null) {
-                                                        return;
-                                                      }
-                                                      final FilePhoto photo =
-                                                          new FilePhoto(
-                                                              file: file,
-                                                              guid:
-                                                                  Uuid().v4());
-                                                      _imageHandlerBloc.add(
-                                                          AddPhotograph(photo));
-                                                    },
-                                                    child: Center(
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: <Widget>[
-                                                          Icon(Icons.add,
-                                                              color:
-                                                                  Colors.white),
-                                                          Text(
-                                                            localizations
-                                                                .addPhotos,
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .primaryTextTheme
-                                                                .body1,
-                                                          )
-                                                        ],
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                border:
+                                                                    Border.all(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  style:
+                                                                      BorderStyle
+                                                                          .solid,
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            20)),
+                                                        child: InkWell(
+                                                          onTap: () async {
+                                                            File file = await ImagePicker
+                                                                .pickImage(
+                                                                    source: ImageSource
+                                                                        .gallery);
+                                                            if (file == null) {
+                                                              return;
+                                                            }
+                                                            final FilePhoto
+                                                                photo =
+                                                                new FilePhoto(
+                                                                    file: file,
+                                                                    guid: Uuid()
+                                                                        .v4());
+                                                            _imageHandlerBloc.add(
+                                                                AddPhotograph(
+                                                                    photo));
+                                                          },
+                                                          child: Center(
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: <
+                                                                  Widget>[
+                                                                Icon(Icons.add,
+                                                                    color: Colors
+                                                                        .white),
+                                                                Text(
+                                                                  localizations
+                                                                      .addPhotos,
+                                                                  style: Theme.of(
+                                                                          context)
+                                                                      .primaryTextTheme
+                                                                      .body1,
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          ]);
-                                    }
-                                    return Container();
-                                  }))
+                                                  )
+                                                ]);
+                                          }
+                                          return Container();
+                                        })),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              IconButton(
+                                iconSize: 36.0,
+                                icon: Icon(Icons.check),
+                                color: Colors.white,
+                                onPressed: () {
+                                  if (_journalEntry.body != null) {
+                                    _editJournalEntryBloc
+                                        .add(SaveJournalEntry(_journalEntry));
+                                  }
+
+                                  BlocProvider.of<PageViewBloc>(context)
+                                      .add(SetPage(1));
+                                },
+                              ),
+                            ],
+                          ),
                         ]),
                   ),
                 ),

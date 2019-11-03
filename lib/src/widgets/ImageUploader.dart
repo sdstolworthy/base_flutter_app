@@ -41,6 +41,7 @@ class _ImageUploaderState extends State<ImageUploader> {
                     file,
                     height: 100,
                     width: 100,
+                    fit: BoxFit.cover,
                   ),
                   if (state is FileUploadProgress)
                     Container(

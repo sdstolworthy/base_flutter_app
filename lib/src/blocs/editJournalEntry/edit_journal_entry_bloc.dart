@@ -3,10 +3,10 @@ import 'package:bloc/bloc.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import './bloc.dart';
 
-class EditItemBloc extends Bloc<EditJournalEntryEvent, EditJournalEntryState> {
+class EditJournalEntryBloc extends Bloc<EditJournalEntryEvent, EditJournalEntryState> {
   final JournalEntryRepository _journalEntryRepository;
 
-  EditItemBloc({JournalEntryRepository journalEntryRepository})
+  EditJournalEntryBloc({JournalEntryRepository journalEntryRepository})
       : this._journalEntryRepository =
             journalEntryRepository ?? JournalEntryRepository();
 
@@ -25,6 +25,13 @@ class EditItemBloc extends Bloc<EditJournalEntryEvent, EditJournalEntryState> {
         yield JournalEntrySaved(journalEntry);
       } catch (e) {
         print(e);
+        yield JournalEntrySaveError();
+      }
+    } else if (event is DeleteJournalEntry) {
+      try {
+        await _journalEntryRepository.deleteItem(event.journalEntry);
+        yield JournalEntryDeleted();
+      } catch (e) {
         yield JournalEntrySaveError();
       }
     }

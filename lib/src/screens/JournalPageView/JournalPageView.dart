@@ -34,8 +34,6 @@ class JournalPageView extends StatefulWidget {
 }
 
 class _JournalPageView extends State<JournalPageView> {
-  @override
-  bool get wantKeepAlive => true;
   final Page initialPage;
   final JournalEntry journalEntry;
   _JournalPageView({this.initialPage, this.journalEntry});
@@ -84,36 +82,36 @@ class _JournalPageView extends State<JournalPageView> {
                         JournalEntryFeed(),
                       ],
                     ),
-                    AnimatedPositioned(
-                      duration: Duration(milliseconds: 100),
-                      bottom: isActive == true ? 0 : -100,
-                      right: 0,
-                      left: 0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                colors: [Colors.black, Colors.transparent],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter)),
-                        child: BottomNavigationBar(
-                          unselectedItemColor: Colors.grey[600],
-                          backgroundColor: Colors.transparent,
-                          elevation: 100,
-                          currentIndex: state.pageIndex,
-                          onTap: (index) {
-                            _pageViewBloc.add(SetPage(index));
-                          },
-                          items: [
-                            BottomNavigationBarItem(
-                                icon: Icon(Icons.edit),
-                                title: Text('Write something new')),
-                            BottomNavigationBarItem(
-                                icon: Icon(Icons.list),
-                                title: Text('See past entries'))
-                          ],
-                        ),
-                      ),
-                    )
+                    // AnimatedPositioned(
+                    //   duration: Duration(milliseconds: 100),
+                    //   bottom: isActive == true ? 0 : -100,
+                    //   right: 0,
+                    //   left: 0,
+                    //   child: Container(
+                    //     decoration: BoxDecoration(
+                    //         gradient: LinearGradient(
+                    //             colors: [Colors.black, Colors.transparent],
+                    //             begin: Alignment.bottomCenter,
+                    //             end: Alignment.topCenter)),
+                    //     child: BottomNavigationBar(
+                    //       unselectedItemColor: Colors.grey[600],
+                    //       backgroundColor: Colors.transparent,
+                    //       elevation: 100,
+                    //       currentIndex: state.pageIndex,
+                    //       onTap: (index) {
+                    //         _pageViewBloc.add(SetPage(index));
+                    //       },
+                    //       items: [
+                    //         BottomNavigationBarItem(
+                    //             icon: Icon(Icons.edit),
+                    //             title: Text('Write something new')),
+                    //         BottomNavigationBarItem(
+                    //             icon: Icon(Icons.list),
+                    //             title: Text('See past entries'))
+                    //       ],
+                    //     ),
+                    //   ),
+                    // )
                   ]),
                 );
               } else {

@@ -8,16 +8,16 @@ class JournalEntryBloc extends Bloc<JournalFeedEvent, JournalFeedState> {
   @override
   JournalFeedState get initialState => JournalFeedUnloaded();
 
-  final JournalEntryRepository itemRepository;
+  final JournalEntryRepository journalEntryRepository;
 
-  JournalEntryBloc({@required this.itemRepository});
+  JournalEntryBloc({@required this.journalEntryRepository});
 
   @override
   Stream<JournalFeedState> mapEventToState(
     JournalFeedEvent event,
   ) async* {
     if (event is FetchFeed) {
-      final journalEntries = await itemRepository.getFeed();
+      final journalEntries = await journalEntryRepository.getFeed();
       yield JournalFeedFetched(journalEntries);
     }
   }

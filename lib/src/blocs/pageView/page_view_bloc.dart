@@ -40,7 +40,8 @@ class PageViewBloc extends Bloc<PageViewEvent, PageViewState> {
     } else if (event is NotifyPageChange) {
       yield CurrentPage(pageController.page.toInt());
     } else if (event is SetPage) {
-      pageController.animateToPage(event.currentPage,
+      print(event.page);
+      pageController.animateToPage(event.page,
           curve: ElasticInCurve(),
           duration: Duration(milliseconds: animationDurationInMilliseconds));
     }

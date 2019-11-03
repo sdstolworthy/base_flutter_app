@@ -8,7 +8,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="com.spencerstolworthy.grateful.Application"
-        android:label="grateful"
+        android:label="Grateful"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

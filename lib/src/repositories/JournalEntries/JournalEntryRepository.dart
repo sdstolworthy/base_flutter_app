@@ -18,6 +18,7 @@ class JournalEntryRepository {
             .collection(_itemCollectionName)
             .getDocuments())
         .documents
+        .where((d) => !(d.data['deleted'] == true))
         .toList();
     return entries.isEmpty
         ? <JournalEntry>[]
@@ -37,5 +38,15 @@ class JournalEntryRepository {
         .document(journalEntry.id.toString())
         .setData(journalEntry.toMap());
     return journalEntry;
+  }
+
+  deleteItem(JournalEntry journalEntry) async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    await Firestore.instance
+        .collection(_userCollectionName)
+        .document(user.uid)
+        .collection(_itemCollectionName)
+        .document(journalEntry.id.toString())
+        .updateData({'deleted': true});
   }
 }

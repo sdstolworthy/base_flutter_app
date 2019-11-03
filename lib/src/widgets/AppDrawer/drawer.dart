@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
+import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/LanguagePicker.dart';
@@ -17,11 +18,12 @@ class AppDrawer extends StatelessWidget {
             children: <Widget>[
               RaisedButton(
                   child: Text(
-                    'Log Out',
+                    AppLocalizations.of(context).logOut,
                   ),
                   color: Theme.of(context).buttonColor,
                   onPressed: () {
-                    BlocProvider.of<AuthenticationBloc>(context).add(Unauthenticate());
+                    BlocProvider.of<AuthenticationBloc>(context)
+                        .add(Unauthenticate());
                   }),
               FlatButton(
                 child: Text('About Grateful'),
