@@ -21,16 +21,18 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "addPhotos" : MessageLookupByLibrary.simpleMessage("Add Photos"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("confirm password"),
+    "email" : MessageLookupByLibrary.simpleMessage("Email"),
     "gratefulPrompt" : MessageLookupByLibrary.simpleMessage("What are you grateful for today?"),
     "language" : MessageLookupByLibrary.simpleMessage("language"),
     "logIn" : MessageLookupByLibrary.simpleMessage("Log In"),
     "logOut" : MessageLookupByLibrary.simpleMessage("Log Out"),
     "loginCTA" : MessageLookupByLibrary.simpleMessage("Welcome Back."),
     "password" : MessageLookupByLibrary.simpleMessage("password"),
+    "previousEntries" : MessageLookupByLibrary.simpleMessage("Previous Entries"),
     "signUp" : MessageLookupByLibrary.simpleMessage("Sign Up"),
     "signupCTA" : MessageLookupByLibrary.simpleMessage("Create Account."),
-    "username" : MessageLookupByLibrary.simpleMessage("Username"),
     "welcomeCTA" : MessageLookupByLibrary.simpleMessage("Hi, There.")
   };
 }

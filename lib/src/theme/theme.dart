@@ -22,6 +22,12 @@ ThemeData gratefulTheme(ThemeData appTheme) {
         inputDecorationTheme: appTheme.inputDecorationTheme.copyWith(
             labelStyle:
                 TextStyle(color: Colors.white70, fontFamily: 'Raleway')),
+        primaryColorLight: Colors.white,
+        textTheme: TextTheme(
+            body1: appTheme.primaryTextTheme.body1.copyWith(
+                color: Colors.lightBlue[100],
+                decoration: TextDecoration.underline,
+                fontFamily: 'Raleway')),
         primaryTextTheme: TextTheme(
             button: appTheme.primaryTextTheme.button
                 .copyWith(fontFamily: 'Raleway'),
@@ -39,14 +45,15 @@ ThemeData gratefulTheme(ThemeData appTheme) {
                 .apply(fontFamily: 'MontSerratRegular'),
             display1: appTheme.primaryTextTheme.display1
                 .copyWith(fontFamily: 'MontserratRegular')),
+      )
+      .copyWith(
         accentTextTheme: appTheme.accentTextTheme.copyWith(
-          headline: appTheme.accentTextTheme.headline.copyWith(
-            fontFamily: 'Raleway',
-          ),
-          body1: appTheme.primaryTextTheme.body1.copyWith(
-              color: Colors.lightBlue[100],
-              decoration: TextDecoration.underline,
-              fontFamily: 'Raleway'),
-        ),
+            headline: appTheme.accentTextTheme.headline
+                .copyWith(
+                  fontFamily: 'Raleway',
+                )
+                .apply(color: Colors.black),
+            body1: appTheme.primaryTextTheme.body1.copyWith(
+                color: Colors.black, fontFamily: 'Raleway', fontSize: 16)),
       );
 }

@@ -49,9 +49,9 @@ class AppLocalizations {
         name: 'signUp', desc: 'The "sign up" call to action');
   }
 
-  String get username {
-    return Intl.message('Username',
-        name: 'username', desc: 'The nominative form of username');
+  String get email {
+    return Intl.message('Email',
+        name: 'email', desc: 'The nominative form of email');
   }
 
   String get password {

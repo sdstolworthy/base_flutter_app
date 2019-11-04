@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-11-02T13:03:50.254662",
+  "@@last_modified": "2019-11-04T09:02:07.640643",
   "logIn": "Log In",
   "@logIn": {
     "description": "The \"log in\" call to action",
@@ -18,9 +18,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "username": "Username",
-  "@username": {
-    "description": "The nominative form of username",
+  "email": "Email",
+  "@email": {
+    "description": "The nominative form of email",
     "type": "text",
     "placeholders": {}
   },

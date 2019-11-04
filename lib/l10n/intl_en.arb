@@ -1,5 +1,5 @@
 {
-  "@@locale": "en_US",
+  "@@locale": "en",
   "@@last_modified": "2019-08-18T12:14:54.617606",
   "logIn": "Log In",
   "@logIn": {
@@ -19,9 +19,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "username": "Username",
-  "@username": {
-    "description": "The nominative form of username",
+  "email": "Email",
+  "@email": {
+    "description": "The nominative form of email",
     "type": "text",
     "placeholders": {}
   },

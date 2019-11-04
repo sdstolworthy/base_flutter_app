@@ -19,9 +19,9 @@
     "type": "text",
     "placeholders": {}
   },
-  "username": "nombre de usuario",
-  "@username": {
-    "description": "The nominative form of username",
+  "email": "Correo electrónico",
+  "@email": {
+    "description": "The nominative form of email",
     "type": "text",
     "placeholders": {}
   },

@@ -134,8 +134,8 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                         minHeight: viewportConstraints.maxHeight),
-                    child: BackgroundGradientProvider(
-                      child: IntrinsicHeight(
+                    child: IntrinsicHeight(
+                      child: BackgroundGradientProvider(
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[

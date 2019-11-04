@@ -16,13 +16,24 @@ class LoginScreenArguments {
   LoginScreenArguments(this.isLogin);
 }
 
-class LoginScreen extends StatelessWidget {
-  final usernameController = TextEditingController();
+class LoginScreen extends StatefulWidget {
+  final bool isLogin;
+  LoginScreen(this.isLogin);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _LoginScreen(this.isLogin);
+  }
+}
+
+class _LoginScreen extends State<LoginScreen> {
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   final bool isLogin;
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
-  LoginScreen(this.isLogin);
+  _LoginScreen(this.isLogin);
   build(context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
     final authBloc = BlocProvider.of<AuthenticationBloc>(context);
@@ -102,12 +113,16 @@ class LoginScreen extends StatelessWidget {
                                       )
                                     ]),
                                     Expanded(child: Container()),
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: <Widget>[
-                                        ..._renderLoginForm(context, isLogin)
-                                      ],
-                                    ),
+                                    Form(
+                                        key: _formKey,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            ..._renderLoginForm(
+                                                context, isLogin)
+                                          ],
+                                        )),
                                     Row(
                                       children: <Widget>[
                                         Expanded(
@@ -163,9 +178,11 @@ class LoginScreen extends StatelessWidget {
   }
 
   _handleRegistration(LoginScreenBloc _loginBloc) {
-    final username = usernameController.text;
+    final username = emailController.text;
     final password = passwordController.text;
-    _loginBloc.add(SignUp(username, password));
+    if (_formKey.currentState.validate()) {
+      _loginBloc.add(SignUp(username, password));
+    }
   }
 
   _renderLoginForm(BuildContext context, bool isLogin) {
@@ -173,9 +190,18 @@ class LoginScreen extends StatelessWidget {
 
     return [
       LoginFormField(
+        validator: (input) {
+          final bool emailValid = RegExp(
+                  r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+              .hasMatch(input);
+          if (!emailValid) {
+            return 'Please enter a valid email address';
+          }
+          return null;
+        },
         icon: Icons.person,
-        label: toBeginningOfSentenceCase(localizations.username),
-        controller: usernameController,
+        label: toBeginningOfSentenceCase(localizations.email),
+        controller: emailController,
       ),
       LoginFormField(
         icon: Icons.lock,
@@ -189,13 +215,21 @@ class LoginScreen extends StatelessWidget {
           icon: Icons.lock,
           label: toBeginningOfSentenceCase(localizations.confirmPassword),
           isObscured: true,
+          validator: (input) {
+            if (confirmPasswordController.text != passwordController.text) {
+              return 'Passwords do not match';
+            }
+            return null;
+          },
         )
     ];
   }
 
   _handleSignIn(LoginScreenBloc _loginBloc) {
-    final username = usernameController.text;
+    final username = emailController.text;
     final password = passwordController.text;
-    _loginBloc.add(LogIn(username, password));
+    if (_formKey.currentState.validate()) {
+      _loginBloc.add(LogIn(username, password));
+    }
   }
 }
