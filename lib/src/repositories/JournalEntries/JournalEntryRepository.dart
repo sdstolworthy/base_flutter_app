@@ -12,6 +12,9 @@ class JournalEntryRepository {
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
   getFeed({take = 50, limit = 50, skip = 50}) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
+    if (user == null) {
+      return null;
+    }
     List<DocumentSnapshot> entries = (await Firestore.instance
             .collection(_userCollectionName)
             .document(user.uid)

@@ -17,8 +17,14 @@ class JournalFeedBloc extends Bloc<JournalFeedEvent, JournalFeedState> {
     JournalFeedEvent event,
   ) async* {
     if (event is FetchFeed) {
-      final journalEntries = await journalEntryRepository.getFeed();
-      yield JournalFeedFetched(journalEntries);
+      try {
+        final journalEntries = await journalEntryRepository.getFeed();
+        if (journalEntries != null) {
+          yield JournalFeedFetched(journalEntries);
+        }
+      } catch (e) {
+        print(e);
+      }
     }
   }
 }
