@@ -14,3 +14,5 @@ class UploadSuccess extends FileUploadState {
   final String imageUrl;
   UploadSuccess(this.imageUrl);
 }
+
+class UploadError extends FileUploadState {}

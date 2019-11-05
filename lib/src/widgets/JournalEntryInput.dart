@@ -13,9 +13,12 @@ class JournalInput extends StatelessWidget {
   build(context) {
     return Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.blue[800],
-        ),
+            borderRadius: BorderRadius.circular(10),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.blue[700], Colors.blue[700].withOpacity(0.0)],
+            )),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: TextFormField(

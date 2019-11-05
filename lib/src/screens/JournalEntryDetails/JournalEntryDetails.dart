@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
@@ -10,8 +9,9 @@ import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
 import 'package:grateful/src/widgets/JournalEntryHero.dart';
-import 'package:grateful/src/widgets/Shadower.dart';
+import 'package:grateful/src/widgets/PhotoViewer.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
 
 class JournalEntryDetailArguments {
   JournalEntry journalEntry;
@@ -80,9 +80,13 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                 context: context,
                 builder: (c) {
                   return AlertDialog(
-                    title: Text('Delete Journal Entry'),
+                    title: Text(
+                      'Delete Journal Entry',
+                      style: theme.accentTextTheme.body1,
+                    ),
                     content: Text(
-                        'Are you sure you want to delete this journal entry? This cannot be undone.'),
+                        'Are you sure you want to delete this journal entry? This cannot be undone.',
+                        style: theme.accentTextTheme.body1),
                     actions: <Widget>[
                       FlatButton(
                         child: Text('No, do not delete',
@@ -125,120 +129,156 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
         EditJournalEntryBloc(journalEntryRepository: JournalEntryRepository());
     final ThemeData theme = Theme.of(context);
     return Scaffold(
-      body: BlocProvider<EditJournalEntryBloc>(
-          builder: (_) => _journalEntryBloc,
-          child: BlocListener<EditJournalEntryBloc, EditJournalEntryState>(
-            listener: (context, state) {
-              if (state is JournalEntryDeleted) {
-                rootNavigationService.goBack();
-              }
-            },
-            bloc: _journalEntryBloc,
-            child: AnimatedBuilder(
-                animation: _animation,
-                builder: (context, snapshot) {
-                  return LayoutBuilder(builder: (context, viewportConstraints) {
-                    return BackgroundGradientProvider(
-                      child: NestedScrollView(
-                        headerSliverBuilder: (context, isScrolled) {
-                          return [_renderAppBar(context)].toList();
-                        },
-                        body: ListView(
-                          children: <Widget>[
-                            Container(
-                              height: journalEntry.photographs != null &&
-                                      journalEntry.photographs.length > 0
-                                  ? 250
-                                  : 0,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 20),
-                                child: Container(
-                                    child: CarouselSlider(
-                                  aspectRatio: 16 / 9,
-                                  enlargeCenterPage: true,
-                                  viewportFraction: 0.8,
-                                  enableInfiniteScroll: false,
-                                  items: <Widget>[
-                                    ...(journalEntry.photographs ?? [])
-                                        .map((p) => CachedNetworkImage(
-                                              imageUrl: p.imageUrl,
-                                              placeholder: (c, i) {
-                                                return Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
-                                              },
-                                              imageBuilder: (c, i) {
-                                                return Shadower(
-                                                    child: Image(
-                                                  image: i,
-                                                ));
-                                              },
-                                            ))
-                                        .toList()
-                                  ],
-                                )),
-                              ),
-                            ),
-                            FractionalTranslation(
-                              translation: _animation.value,
-                              child: Container(
-                                constraints: BoxConstraints(
-                                    minHeight: viewportConstraints.maxHeight),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(30),
-                                        topRight: Radius.circular(30)),
-                                    color: Colors.white),
+      body: GestureDetector(
+        onPanUpdate: (panUpdateDetails) {
+          if (panUpdateDetails.delta.dx > 0 && Navigator.of(context).canPop()) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: BlocProvider<EditJournalEntryBloc>(
+            builder: (_) => _journalEntryBloc,
+            child: BlocListener<EditJournalEntryBloc, EditJournalEntryState>(
+              listener: (context, state) {
+                if (state is JournalEntryDeleted) {
+                  rootNavigationService.goBack();
+                }
+              },
+              bloc: _journalEntryBloc,
+              child: AnimatedBuilder(
+                  animation: _animation,
+                  builder: (context, snapshot) {
+                    return LayoutBuilder(
+                        builder: (context, viewportConstraints) {
+                      return BackgroundGradientProvider(
+                        child: NestedScrollView(
+                          headerSliverBuilder: (context, isScrolled) {
+                            return [_renderAppBar(context)].toList();
+                          },
+                          body: ListView(
+                            children: <Widget>[
+                              Container(
+                                height: journalEntry.photographs != null &&
+                                        journalEntry.photographs.length > 0
+                                    ? 250
+                                    : 0,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10),
+                                  padding: const EdgeInsets.only(bottom: 20),
+                                  child: Container(
+                                      child: Center(
+                                    child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
                                         child: Row(
+                                          children: <Widget>[
+                                            ...(journalEntry.photographs ?? [])
+                                                .map((p) => CachedNetworkImage(
+                                                      imageUrl: p.imageUrl,
+                                                      placeholder: (c, i) {
+                                                        return Container(
+                                                          width: 150,
+                                                          child: Center(
+                                                            child:
+                                                                CircularProgressIndicator(),
+                                                          ),
+                                                        );
+                                                      },
+                                                      imageBuilder: (c, i) {
+                                                        return Material(
+                                                          color: Colors
+                                                              .transparent,
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              Navigator.of(context).push(
+                                                                  MaterialPageRoute(
+                                                                      builder: (c) =>
+                                                                          PhotoViewer(
+                                                                            imageProvider:
+                                                                                i,
+                                                                          )));
+                                                            },
+                                                            child: Image(
+                                                              width: 150,
+                                                              height: 250,
+                                                              fit: BoxFit.cover,
+                                                              image: i,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ))
+                                                .toList()
+                                          ],
+                                        )),
+                                  )),
+                                ),
+                              ),
+                              FractionalTranslation(
+                                translation: _animation.value,
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                      minHeight: viewportConstraints.maxHeight),
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black38,
+                                          spreadRadius: 1,
+                                          blurRadius: 2.0,
+                                          offset: Offset(0, 1),
+                                        )
+                                      ],
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20)),
+                                      color: Colors.white),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                  DateFormat.yMMMMd().format(
+                                                      journalEntry.date),
+                                                  style: theme
+                                                      .accentTextTheme.headline
+                                                      .copyWith(
+                                                          fontStyle: FontStyle
+                                                              .italic)),
+                                            ],
+                                          ),
+                                        ),
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: <Widget>[
-                                            Text(
-                                                DateFormat.yMMMMd()
-                                                    .format(journalEntry.date),
-                                                style: theme
-                                                    .accentTextTheme.headline
-                                                    .copyWith(
-                                                        fontStyle:
-                                                            FontStyle.italic)),
+                                            Flexible(
+                                                child: Column(
+                                              children: <Widget>[
+                                                JournalEntryHero(
+                                                  journalEntry: journalEntry,
+                                                  inverted: true,
+                                                )
+                                              ],
+                                            )),
                                           ],
                                         ),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Flexible(
-                                              child: Column(
-                                            children: <Widget>[
-                                              JournalEntryHero(
-                                                journalEntry: journalEntry,
-                                                inverted: true,
-                                              )
-                                            ],
-                                          )),
-                                        ],
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  });
-                }),
-          )),
+                      );
+                    });
+                  }),
+            )),
+      ),
     );
   }
 }

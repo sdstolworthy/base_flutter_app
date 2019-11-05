@@ -8,6 +8,7 @@ class FileRepository {
 
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: _storageBucketUrl);
+
   StorageUploadTask uploadFile(File file) {
     String filePath = 'images/${Uuid().v4()}.png';
     final storageRef = _storage.ref().child(filePath);

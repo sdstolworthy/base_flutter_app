@@ -115,8 +115,8 @@ class _LoginScreen extends State<LoginScreen> {
                                       Expanded(child: Container()),
                                       Form(
                                           key: _formKey,
-                                          child: _renderLoginForm(
-                                              context, isLogin)),
+                                          child: _renderLoginForm(context,
+                                              isLogin, _loginScreenBloc)),
                                       Row(
                                         children: <Widget>[
                                           Expanded(
@@ -124,11 +124,14 @@ class _LoginScreen extends State<LoginScreen> {
                                             buttonText: isLogin
                                                 ? localizations.logIn
                                                 : localizations.signUp,
-                                            onPressed: isLogin
-                                                ? () => _handleSignIn(
-                                                    _loginScreenBloc)
-                                                : () => _handleRegistration(
-                                                    _loginScreenBloc),
+                                            onPressed: loginState
+                                                    is LoginLoading
+                                                ? null
+                                                : isLogin
+                                                    ? () => _handleSignIn(
+                                                        _loginScreenBloc)
+                                                    : () => _handleRegistration(
+                                                        _loginScreenBloc),
                                           )),
                                         ],
                                       ),
@@ -175,56 +178,65 @@ class _LoginScreen extends State<LoginScreen> {
     }
   }
 
-  _renderLoginForm(BuildContext context, bool isLogin) {
+  _renderLoginForm(
+      BuildContext context, bool isLogin, LoginScreenBloc loginScreenBloc) {
     final AppLocalizations localizations = AppLocalizations.of(context);
-    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
 
-    return Column(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-      LoginFormField(
-        validator: (input) {
-          final bool emailValid = RegExp(
-                  r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-              .hasMatch(input);
-          if (!emailValid) {
-            return 'Please enter a valid email address';
-          }
-          return null;
-        },
-        icon: Icons.person,
-        label: toBeginningOfSentenceCase(localizations.email),
-        controller: emailController,
-      ),
-      LoginFormField(
-        icon: Icons.lock,
-        label: toBeginningOfSentenceCase(localizations.password),
-        isObscured: true,
-        controller: passwordController,
-        validator: (input) {
-          if (passwordController.text == null ||
-              passwordController.text == '') {
-            return 'Password must not be blank';
-          }
-          if (!isLogin &&
-              confirmPasswordController.text != passwordController.text) {
-            return 'Passwords do not match';
-          }
-          return null;
-        },
-      ),
-      if (!isLogin)
-        LoginFormField(
-          controller: confirmPasswordController,
-          icon: Icons.lock,
-          label: toBeginningOfSentenceCase(localizations.confirmPassword),
-          isObscured: true,
-          validator: (input) {
-            if (confirmPasswordController.text != passwordController.text) {
-              return 'Passwords do not match';
-            }
-            return null;
-          },
-        )
-    ]);
+    return BlocBuilder<LoginScreenBloc, LoginScreenState>(
+        bloc: loginScreenBloc,
+        builder: (context, loginScreenState) {
+          return Column(mainAxisAlignment: MainAxisAlignment.end, children: <
+              Widget>[
+            LoginFormField(
+              validator: (input) {
+                final bool emailValid = RegExp(
+                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+                    .hasMatch(input);
+                if (!emailValid) {
+                  return 'Please enter a valid email address';
+                }
+                return null;
+              },
+              enabled: !(loginScreenState is LoginLoading),
+              icon: Icons.person,
+              label: toBeginningOfSentenceCase(localizations.email),
+              controller: emailController,
+            ),
+            LoginFormField(
+              icon: Icons.lock,
+              label: toBeginningOfSentenceCase(localizations.password),
+              isObscured: true,
+              controller: passwordController,
+              enabled: !(loginScreenState is LoginLoading),
+              validator: (input) {
+                if (passwordController.text == null ||
+                    passwordController.text == '') {
+                  return 'Password must not be blank';
+                }
+                if (!isLogin &&
+                    confirmPasswordController.text != passwordController.text) {
+                  return 'Passwords do not match';
+                }
+                return null;
+              },
+            ),
+            if (!isLogin)
+              LoginFormField(
+                controller: confirmPasswordController,
+                icon: Icons.lock,
+                enabled: !(loginScreenState is LoginLoading),
+                label: toBeginningOfSentenceCase(localizations.confirmPassword),
+                isObscured: true,
+                validator: (input) {
+                  if (confirmPasswordController.text !=
+                      passwordController.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+              )
+          ]);
+        });
   }
 
   _handleSignIn(LoginScreenBloc _loginBloc) {

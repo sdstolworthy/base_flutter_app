@@ -6,12 +6,14 @@ class LoginFormField extends StatelessWidget {
   final String label;
   final String Function(String) validator;
   final TextEditingController controller;
+  final bool enabled;
   LoginFormField(
       {this.icon,
       this.isObscured = false,
       this.label,
       this.controller,
-      this.validator});
+      this.validator,
+      this.enabled});
   build(_) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
@@ -22,6 +24,7 @@ class LoginFormField extends StatelessWidget {
         cursorColor: Color.fromRGBO(255, 255, 255, 0.7),
         obscureText: isObscured,
         style: Theme.of(_).primaryTextTheme.body2,
+        enabled: this.enabled,
         decoration: InputDecoration(
             labelText: label,
             labelStyle: Theme.of(_).inputDecorationTheme.labelStyle,

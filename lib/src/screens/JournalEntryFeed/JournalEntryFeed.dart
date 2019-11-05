@@ -13,6 +13,7 @@ import 'package:grateful/src/widgets/AppDrawer/drawer.dart';
 import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
 import 'package:grateful/src/widgets/JournalFeedListItem.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:grateful/src/widgets/NoGlowConfiguration.dart';
 import 'package:grateful/src/widgets/YearSeparator.dart';
 
 class JournalEntryFeed extends StatefulWidget {
@@ -125,11 +126,14 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
                           _journalFeedBloc.add(FetchFeed());
                           return _refreshCompleter.future;
                         },
-                        child: ListView.builder(
-                          itemBuilder: (context, index) {
-                            return compiledList[index];
-                          },
-                          itemCount: compiledList.length,
+                        child: ScrollConfiguration(
+                          behavior: NoGlowScroll(showLeading: false),
+                          child: ListView.builder(
+                            itemBuilder: (context, index) {
+                              return compiledList[index];
+                            },
+                            itemCount: compiledList.length,
+                          ),
                         ),
                       )),
                     );

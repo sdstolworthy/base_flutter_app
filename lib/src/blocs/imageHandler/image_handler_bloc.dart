@@ -16,12 +16,10 @@ class ImageHandlerBloc extends Bloc<ImageHandlerEvent, ImageHandlerState> {
       photographs = List.from(photographs)..add(event.photograph);
       yield PhotographsLoaded(photographs);
     } else if (event is ReplaceFilePhotoWithNetworkPhoto) {
-      final index = photographs.indexWhere((p) =>
-          p is FilePhoto &&
-          p.guid == (event as ReplaceFilePhotoWithNetworkPhoto).filePhotoGuid);
+      final index = photographs
+          .indexWhere((p) => p is FilePhoto && p.guid == event.filePhotoGuid);
       if (index > -1 && index < photographs.length) {
-        photographs.replaceRange(index, index + 1,
-            [(event as ReplaceFilePhotoWithNetworkPhoto).photograph]);
+        photographs.replaceRange(index, index + 1, [event.photograph]);
         yield PhotographsLoaded(photographs);
       }
     } else if (event is SetPhotographs) {

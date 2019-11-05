@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
 
@@ -65,7 +66,6 @@ class NetworkPhoto extends Photograph {
 
   @override
   int get hashCode => title.hashCode ^ description.hashCode ^ imageUrl.hashCode;
-  
 }
 
 class FilePhoto extends Photograph {
@@ -73,6 +73,12 @@ class FilePhoto extends Photograph {
   final File file;
   final String title;
   final String description;
-  FilePhoto({String guid, @required this.file, this.title, this.description})
+  final StorageUploadTask uploadTask;
+  FilePhoto(
+      {String guid,
+      @required this.file,
+      this.title,
+      this.description,
+      @required this.uploadTask})
       : guid = guid ?? Uuid().v4();
 }

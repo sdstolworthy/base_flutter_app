@@ -1,39 +1,34 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/fileUpload/bloc.dart';
-import 'package:uuid/uuid.dart';
 
 typedef void OnCompleteFunction(String imageUrl);
 
-class ImageUploader extends StatefulWidget {
+class ImageUploader extends StatelessWidget {
   final File file;
-  final OnCompleteFunction onComplete;
   final Widget child;
+  final OnCompleteFunction onComplete;
+  final StorageUploadTask uploadTask;
+  FileUploadBloc _fileUploadBloc;
+
+  Future<dynamic> get isComplete => uploadTask.onComplete;
 
   ImageUploader(
-      {@required this.file, @required this.onComplete, @required this.child});
-  @override
-  State<StatefulWidget> createState() {
-    return _ImageUploaderState(
-        file: this.file, onComplete: onComplete, child: child);
+      {@required this.file,
+      @required this.onComplete,
+      @required this.child,
+      @required this.uploadTask}) {
+    _fileUploadBloc = FileUploadBloc(uploadTask: this.uploadTask);
   }
-}
-
-class _ImageUploaderState extends State<ImageUploader> {
-  File file;
-  Widget child;
-  final FileUploadBloc _fileUploadBloc = FileUploadBloc();
-  OnCompleteFunction onComplete;
-  _ImageUploaderState(
-      {@required this.file, @required this.onComplete, @required this.child});
-
+  get fileUploadBloc => _fileUploadBloc;
   build(context) {
     return BlocBuilder<FileUploadBloc, FileUploadState>(
         builder: (context, state) {
           if (state is InitialFileUploadState) {
-            _fileUploadBloc.add(UploadFile(file, Uuid().v4()));
+            _fileUploadBloc.add(SubscribeToProgress(this.uploadTask));
           }
           if (state is UploadSuccess) {
             onComplete(state.imageUrl);
@@ -44,8 +39,15 @@ class _ImageUploaderState extends State<ImageUploader> {
               child,
               if (state is FileUploadProgress)
                 Positioned.fill(
-                    child: Align(
-                  child: CircularProgressIndicator(value: state.progress),
+                    child: Container(
+                  color: Colors.black38,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.black38,
+                      value: state.progress,
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    ),
+                  ),
                 ))
               else
                 Container()

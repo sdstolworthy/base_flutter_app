@@ -16,11 +16,13 @@ class OnboardingButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),
-          child: Text(this.buttonText,
-              style: theme.accentTextTheme.headline.merge(TextStyle(
-                  color: isInverted
-                      ? theme.textTheme.headline.color
-                      : theme.primaryTextTheme.headline.color))),
+          child: onPressed == null
+              ? Center(child: CircularProgressIndicator())
+              : Text(this.buttonText,
+                  style: theme.accentTextTheme.headline.merge(TextStyle(
+                      color: isInverted
+                          ? theme.textTheme.headline.color
+                          : theme.primaryTextTheme.headline.color))),
           color: isInverted ? theme.primaryColorLight : theme.primaryColorDark,
           highlightColor: theme.highlightColor,
           onPressed: this.onPressed,
