@@ -4,13 +4,13 @@ import 'package:flutter/widgets.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import './bloc.dart';
 
-class JournalEntryBloc extends Bloc<JournalFeedEvent, JournalFeedState> {
+class JournalFeedBloc extends Bloc<JournalFeedEvent, JournalFeedState> {
   @override
   JournalFeedState get initialState => JournalFeedUnloaded();
 
   final JournalEntryRepository journalEntryRepository;
 
-  JournalEntryBloc({@required this.journalEntryRepository});
+  JournalFeedBloc({@required this.journalEntryRepository});
 
   @override
   Stream<JournalFeedState> mapEventToState(

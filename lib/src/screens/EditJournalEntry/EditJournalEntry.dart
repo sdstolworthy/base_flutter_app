@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
 import 'package:grateful/src/blocs/imageHandler/bloc.dart';
+import 'package:grateful/src/blocs/journalEntryFeed/item_bloc.dart';
 import 'package:grateful/src/blocs/pageView/page_view_bloc.dart';
 import 'package:grateful/src/blocs/pageView/page_view_event.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
@@ -52,7 +53,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   JournalEntry _journalEntry;
   bool isEdit;
-  final EditJournalEntryBloc _editJournalEntryBloc = EditJournalEntryBloc();
+  EditJournalEntryBloc _editJournalEntryBloc;
 
   _EditJournalEntryState({JournalEntry journalEntry})
       : this._journalEntry = journalEntry ?? JournalEntry(),
@@ -65,6 +66,8 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   final ImageHandlerBloc _imageHandlerBloc = ImageHandlerBloc();
 
   initState() {
+    _editJournalEntryBloc = EditJournalEntryBloc(
+        journalFeedBloc: BlocProvider.of<JournalFeedBloc>(context));
     super.initState();
     _journalEntryController.value =
         TextEditingValue(text: _journalEntry.body ?? '');

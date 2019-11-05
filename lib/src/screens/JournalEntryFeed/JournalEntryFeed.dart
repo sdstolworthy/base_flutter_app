@@ -25,20 +25,18 @@ class JournalEntryFeed extends StatefulWidget {
 
 class _JournalEntryFeedState extends State<JournalEntryFeed> {
   Completer _refreshCompleter;
-  JournalEntryBloc _journalFeedBloc;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   void initState() {
-    _journalFeedBloc =
-        JournalEntryBloc(journalEntryRepository: JournalEntryRepository());
     _refreshCompleter = new Completer<void>();
     super.initState();
   }
 
   build(context) {
+    final _journalFeedBloc = BlocProvider.of<JournalFeedBloc>(context);
     final localizations = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    return BlocListener<JournalEntryBloc, JournalFeedState>(
+    return BlocListener<JournalFeedBloc, JournalFeedState>(
         bloc: _journalFeedBloc,
         listener: (context, state) {
           if (state is JournalFeedFetched) {
@@ -73,7 +71,7 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
                   ),
                 ];
               },
-              body: BlocBuilder<JournalEntryBloc, JournalFeedState>(
+              body: BlocBuilder<JournalFeedBloc, JournalFeedState>(
                 bloc: _journalFeedBloc,
                 builder: (context, state) {
                   if (state is JournalFeedUnloaded) {

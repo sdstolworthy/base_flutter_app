@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
+import 'package:grateful/src/blocs/journalEntryFeed/bloc.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import 'package:grateful/src/screens/JournalPageView/JournalPageView.dart';
@@ -125,8 +126,9 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
   }
 
   build(context) {
-    final EditJournalEntryBloc _journalEntryBloc =
-        EditJournalEntryBloc(journalEntryRepository: JournalEntryRepository());
+    final EditJournalEntryBloc _journalEntryBloc = EditJournalEntryBloc(
+        journalEntryRepository: JournalEntryRepository(),
+        journalFeedBloc: BlocProvider.of<JournalFeedBloc>(context));
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       body: GestureDetector(

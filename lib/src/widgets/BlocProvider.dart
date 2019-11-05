@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
+import 'package:grateful/src/blocs/journalEntryFeed/bloc.dart';
 import 'package:grateful/src/blocs/localization/bloc.dart';
+import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import 'package:grateful/src/repositories/user/userRepository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,6 +19,10 @@ class AppBlocProviders extends StatelessWidget {
           return MultiBlocProvider(providers: [
             BlocProvider<LocalizationBloc>(
               builder: (_) => LocalizationBloc(),
+            ),
+            BlocProvider<JournalFeedBloc>(
+              builder: (_) => JournalFeedBloc(
+                  journalEntryRepository: JournalEntryRepository()),
             )
           ], child: child);
         }));
