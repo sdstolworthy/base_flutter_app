@@ -21,11 +21,11 @@ ThemeData gratefulTheme(ThemeData appTheme) {
             labelStyle:
                 TextStyle(color: Colors.white70, fontFamily: 'Raleway')),
         primaryColorLight: Colors.white,
-        textTheme: TextTheme(
-            body1: appTheme.primaryTextTheme.body1.copyWith(
-                color: Colors.lightBlue[100],
-                decoration: TextDecoration.underline,
-                fontFamily: 'Raleway')),
+        // textTheme: TextTheme(
+        //     body1: appTheme.primaryTextTheme.body1.copyWith(
+        //         color: Colors.lightBlue[700],
+        //         decoration: TextDecoration.underline,
+        //         fontFamily: 'Raleway')),
         primaryTextTheme: TextTheme(
             button: appTheme.primaryTextTheme.button
                 .copyWith(fontFamily: 'Raleway'),
