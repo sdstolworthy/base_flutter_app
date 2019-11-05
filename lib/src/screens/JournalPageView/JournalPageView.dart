@@ -12,8 +12,6 @@ enum Page { entryEdit, entryFeed }
 
 const _pageOrder = <Page>[Page.entryEdit, Page.entryFeed];
 
-
-
 class JournalPageArguments {
   final Page page;
   final JournalEntry entry;
@@ -49,6 +47,7 @@ class _JournalPageView extends State<JournalPageView> {
         PageViewBloc(initialPage: _pageOrder.indexOf(this.initialPage) ?? 0);
     super.initState();
   }
+
   void setActive(active) {
     setState(() {
       isActive = active;
@@ -70,6 +69,10 @@ class _JournalPageView extends State<JournalPageView> {
         child: BlocBuilder<PageViewBloc, PageViewState>(
             bloc: _pageViewBloc,
             builder: (context, state) {
+              _pageViewBloc.pageController.addListener(() {
+                /// When changing pages, hide the keyboard
+                FocusScope.of(context).requestFocus(new FocusNode());
+              });
               if (state is CurrentPage) {
                 return GestureDetector(
                   onTapDown: (_) {
