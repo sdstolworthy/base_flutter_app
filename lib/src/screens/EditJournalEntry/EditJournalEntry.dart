@@ -133,7 +133,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
             },
             body: GestureDetector(
               onTap: () {
-                  FocusScope.of(context).requestFocus(new FocusNode());
+                FocusScope.of(context).requestFocus(new FocusNode());
               },
               child: BackgroundGradientProvider(
                 child: LayoutBuilder(builder: (context, viewportConstraints) {
