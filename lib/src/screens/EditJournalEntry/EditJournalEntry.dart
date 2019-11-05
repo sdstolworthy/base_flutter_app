@@ -186,14 +186,21 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                                 child: BlocBuilder(
                                     bloc: _imageHandlerBloc,
                                     builder: (context, imageHandlerState) {
-                                      return Container(
-                                        child: _editablePhotoSlider(
-                                            context,
-                                            _renderPhotoBlocks(imageHandlerState
-                                                    is PhotographsLoaded
-                                                ? imageHandlerState.photographs
-                                                : [])),
-                                      );
+                                      if (imageHandlerState
+                                          is InitialImageHandlerState) {
+                                        _imageHandlerBloc.add(SetPhotographs(
+                                            _journalEntry.photographs));
+                                      } else if (imageHandlerState
+                                          is PhotographsLoaded) {
+                                        return Container(
+                                          child: _editablePhotoSlider(
+                                              context,
+                                              _renderPhotoBlocks(
+                                                  imageHandlerState
+                                                      .photographs)),
+                                        );
+                                      }
+                                      return Container();
                                     }),
                               ),
                               Row(
