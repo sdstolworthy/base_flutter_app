@@ -1,12 +1,18 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserRepository {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
-  UserRepository({FirebaseAuth firebaseAuth, GoogleSignIn googleSignIn})
+  final FirebaseAnalytics _analytics;
+  UserRepository(
+      {FirebaseAuth firebaseAuth,
+      GoogleSignIn googleSignIn,
+      FirebaseAnalytics analytics})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn();
+        _googleSignIn = googleSignIn ?? GoogleSignIn(),
+        _analytics = analytics ?? FirebaseAnalytics();
 
   Future<FirebaseUser> signInWithGoogle() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -54,6 +60,12 @@ class UserRepository {
 
     final AuthResult authResult =
         await _firebaseAuth.signInWithCredential(credential);
+    if (authResult.additionalUserInfo.isNewUser) {
+      _analytics.logSignUp(signUpMethod: 'google');
+    } else {
+      _analytics.logLogin(loginMethod: 'google');
+    }
+
     final FirebaseUser user = authResult.user;
 
     assert(!user.isAnonymous);

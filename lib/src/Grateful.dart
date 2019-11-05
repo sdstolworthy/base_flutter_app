@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/authentication/authentication_state.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
@@ -12,6 +14,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:grateful/src/blocs/localization/bloc.dart';
 
 class FlutterApp extends StatelessWidget {
+  final FirebaseAnalytics analytics = FirebaseAnalytics()
+    ..logEvent(name: 'opened_app');
   final _journalFeedBloc =
       JournalFeedBloc(journalEntryRepository: JournalEntryRepository());
   build(_) {
@@ -50,6 +54,9 @@ class FlutterApp extends StatelessWidget {
                     supportedLocales: AppLocalizations.availableLocalizations
                         .map((item) => Locale(item.languageCode)),
                     onGenerateRoute: Router.generatedRoute,
+                    navigatorObservers: [
+                      FirebaseAnalyticsObserver(analytics: analytics)
+                    ],
                     navigatorKey: rootNavigationService.navigatorKey,
                   ));
             }),
