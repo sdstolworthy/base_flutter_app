@@ -131,160 +131,170 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                 )
               ];
             },
-            body: BackgroundGradientProvider(
-              child: LayoutBuilder(builder: (context, viewportConstraints) {
-                return ScrollConfiguration(
-                  behavior: NoGlowScroll(showLeading: false),
-                  child: SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          minHeight: viewportConstraints.maxHeight),
-                      child: IntrinsicHeight(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Flexible(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Column(children: [
-                                        Text(
-                                          localizations.gratefulPrompt,
-                                          style: Theme.of(context)
-                                              .primaryTextTheme
-                                              .headline,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 15),
-                                          child: DateSelectorButton(
-                                            onPressed: handlePickDate,
-                                            selectedDate: _journalEntry.date,
-                                            locale: Localizations.localeOf(c),
+            body: GestureDetector(
+              onTap: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+              },
+              child: BackgroundGradientProvider(
+                child: LayoutBuilder(builder: (context, viewportConstraints) {
+                  return ScrollConfiguration(
+                    behavior: NoGlowScroll(showLeading: false),
+                    child: SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                            minHeight: viewportConstraints.maxHeight),
+                        child: IntrinsicHeight(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Flexible(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Column(children: [
+                                          Text(
+                                            localizations.gratefulPrompt,
+                                            style: Theme.of(context)
+                                                .primaryTextTheme
+                                                .headline,
+                                            textAlign: TextAlign.center,
                                           ),
-                                        ),
-                                        JournalInput(
-                                          onChanged: (text) {
-                                            setState(() {
-                                              _journalEntry.body = text;
-                                            });
-                                          },
-                                          controller: _journalEntryController,
-                                        ),
-                                      ]),
-                                    ],
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 15),
+                                            child: DateSelectorButton(
+                                              onPressed: handlePickDate,
+                                              selectedDate: _journalEntry.date,
+                                              locale: Localizations.localeOf(c),
+                                            ),
+                                          ),
+                                          JournalInput(
+                                            onChanged: (text) {
+                                              setState(() {
+                                                _journalEntry.body = text;
+                                              });
+                                            },
+                                            controller: _journalEntryController,
+                                          ),
+                                        ]),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Flexible(
-                                flex: 1,
-                                child: BlocBuilder(
-                                    bloc: _imageHandlerBloc,
-                                    builder: (context, imageHandlerState) {
-                                      if (imageHandlerState
-                                          is InitialImageHandlerState) {
-                                        _imageHandlerBloc.add(SetPhotographs(
-                                            _journalEntry.photographs));
-                                      } else if (imageHandlerState
-                                          is PhotographsLoaded) {
-                                        return Container(
-                                          child: _editablePhotoSlider(
-                                              context,
-                                              _renderPhotoBlocks(
-                                                  imageHandlerState
-                                                      .photographs)),
-                                        );
-                                      }
-                                      return Container();
-                                    }),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  BlocBuilder(
-                                    bloc: _imageHandlerBloc,
-                                    builder: (c, data) {
-                                      final imageCompletionStream =
-                                          Observable.combineLatest(
-                                              _imageHandlerBloc.photographs
-                                                  .where((photo) =>
-                                                      photo is FilePhoto)
-                                                  .map((photo) =>
-                                                      (photo as FilePhoto)
-                                                          .uploadTask
-                                                          .events)
-                                                  .map<Stream<bool>>((events) =>
-                                                      events.transform(
-                                                          StreamTransformer.fromHandlers(
-                                                              handleData:
-                                                                  (data, sink) {
-                                                        if (data.snapshot
-                                                                    .bytesTransferred /
-                                                                data.snapshot
-                                                                    .totalByteCount ==
-                                                            1) {
-                                                          sink.add(true);
-                                                        } else {
-                                                          sink.add(false);
+                                Flexible(
+                                  flex: 1,
+                                  child: BlocBuilder(
+                                      bloc: _imageHandlerBloc,
+                                      builder: (context, imageHandlerState) {
+                                        if (imageHandlerState
+                                            is InitialImageHandlerState) {
+                                          _imageHandlerBloc.add(SetPhotographs(
+                                              _journalEntry.photographs));
+                                        } else if (imageHandlerState
+                                            is PhotographsLoaded) {
+                                          return Container(
+                                            child: _editablePhotoSlider(
+                                                context,
+                                                _renderPhotoBlocks(
+                                                    imageHandlerState
+                                                        .photographs)),
+                                          );
+                                        }
+                                        return Container();
+                                      }),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    BlocBuilder(
+                                      bloc: _imageHandlerBloc,
+                                      builder: (c, data) {
+                                        final imageCompletionStream =
+                                            Observable.combineLatest(
+                                                _imageHandlerBloc.photographs
+                                                    .where((photo) =>
+                                                        photo is FilePhoto)
+                                                    .map((photo) =>
+                                                        (photo as FilePhoto)
+                                                            .uploadTask
+                                                            .events)
+                                                    .map<Stream<bool>>((events) =>
+                                                        events.transform(
+                                                            StreamTransformer.fromHandlers(
+                                                                handleData:
+                                                                    (data, sink) {
+                                                          if (data.snapshot
+                                                                      .bytesTransferred /
+                                                                  data.snapshot
+                                                                      .totalByteCount ==
+                                                              1) {
+                                                            sink.add(true);
+                                                          } else {
+                                                            sink.add(false);
+                                                          }
+                                                        }))), (data) {
+                                          return data.every((d) => d);
+                                        }).startWith(_imageHandlerBloc.photographs.where((ph) => ph is FilePhoto).length > 0 ? false : true);
+                                        return StreamBuilder(
+                                            stream: imageCompletionStream,
+                                            builder: (context, streamSnapshot) {
+                                              return streamSnapshot.data == true
+                                                  ? IconButton(
+                                                      padding:
+                                                          EdgeInsets.all(50),
+                                                      icon: Icon(Icons.check,
+                                                          size: 40),
+                                                      color: Colors.white,
+                                                      onPressed: () {
+                                                        if (_journalEntry
+                                                                .body !=
+                                                            null) {
+                                                          _editJournalEntryBloc.add(
+                                                              SaveJournalEntry(
+                                                                  _journalEntry));
+                                                          this.clearEditState();
                                                         }
-                                                      }))), (data) {
-                                        return data.every((d) => d);
-                                      }).startWith(_imageHandlerBloc.photographs.where((ph) => ph is FilePhoto).length > 0 ? false : true);
-                                      return StreamBuilder(
-                                          stream: imageCompletionStream,
-                                          builder: (context, streamSnapshot) {
-                                            return streamSnapshot.data == true
-                                                ? IconButton(
-                                                    padding: EdgeInsets.all(50),
-                                                    icon: Icon(Icons.check,
-                                                        size: 40),
-                                                    color: Colors.white,
-                                                    onPressed: () {
-                                                      if (_journalEntry.body !=
-                                                          null) {
-                                                        _editJournalEntryBloc.add(
-                                                            SaveJournalEntry(
-                                                                _journalEntry));
-                                                        this.clearEditState();
-                                                      }
 
-                                                      BlocProvider.of<
-                                                                  PageViewBloc>(
-                                                              context)
-                                                          .add(SetPage(1));
-                                                    })
-                                                : IconButton(
-                                                    padding: EdgeInsets.all(50),
-                                                    onPressed: () {
-                                                      Scaffold.of(context)
-                                                        ..removeCurrentSnackBar()
-                                                        ..showSnackBar(SnackBar(
-                                                          content: Text(
-                                                              'Please wait until all images have finished uploading.'),
-                                                        ));
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.check,
-                                                      color: Colors.white38,
-                                                      size: 40,
-                                                    ),
-                                                  );
-                                          });
-                                    },
-                                  )
-                                ],
-                              ),
-                            ]),
+                                                        BlocProvider.of<
+                                                                    PageViewBloc>(
+                                                                context)
+                                                            .add(SetPage(1));
+                                                      })
+                                                  : IconButton(
+                                                      padding:
+                                                          EdgeInsets.all(50),
+                                                      onPressed: () {
+                                                        Scaffold.of(context)
+                                                          ..removeCurrentSnackBar()
+                                                          ..showSnackBar(
+                                                              SnackBar(
+                                                            content: Text(
+                                                                'Please wait until all images have finished uploading.'),
+                                                          ));
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.check,
+                                                        color: Colors.white38,
+                                                        size: 40,
+                                                      ),
+                                                    );
+                                            });
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ]),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+              ),
             ),
           ));
         });
