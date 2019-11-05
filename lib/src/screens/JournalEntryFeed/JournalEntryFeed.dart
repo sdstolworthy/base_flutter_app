@@ -68,7 +68,7 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
                         _scaffoldKey.currentState.openDrawer();
                       },
                     ),
-                  ),
+                  )
                 ];
               },
               body: BlocBuilder<JournalFeedBloc, JournalFeedState>(
@@ -119,21 +119,22 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
                     });
                     return BackgroundGradientProvider(
                       child: SafeArea(
+                          bottom: false,
                           child: RefreshIndicator(
-                        onRefresh: () {
-                          _journalFeedBloc.add(FetchFeed());
-                          return _refreshCompleter.future;
-                        },
-                        child: ScrollConfiguration(
-                          behavior: NoGlowScroll(showLeading: false),
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              return compiledList[index];
+                            onRefresh: () {
+                              _journalFeedBloc.add(FetchFeed());
+                              return _refreshCompleter.future;
                             },
-                            itemCount: compiledList.length,
-                          ),
-                        ),
-                      )),
+                            child: ScrollConfiguration(
+                              behavior: NoGlowScroll(showLeading: false),
+                              child: ListView.builder(
+                                itemBuilder: (context, index) {
+                                  return compiledList[index];
+                                },
+                                itemCount: compiledList.length,
+                              ),
+                            ),
+                          )),
                     );
                   }
                   return Container();
