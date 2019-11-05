@@ -8,3 +8,5 @@ class InitialLoginScreenState extends LoginScreenState {}
 class LoginFailure extends LoginScreenState {}
 
 class LoginSuccess extends LoginScreenState {}
+
+class LoginLoading extends LoginScreenState {}

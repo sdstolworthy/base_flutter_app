@@ -115,14 +115,8 @@ class _LoginScreen extends State<LoginScreen> {
                                       Expanded(child: Container()),
                                       Form(
                                           key: _formKey,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: <Widget>[
-                                              ..._renderLoginForm(
-                                                  context, isLogin)
-                                            ],
-                                          )),
+                                          child: _renderLoginForm(
+                                              context, isLogin)),
                                       Row(
                                         children: <Widget>[
                                           Expanded(
@@ -155,12 +149,6 @@ class _LoginScreen extends State<LoginScreen> {
                                                 ),
                                               ),
                                             )
-                                            // Expanded(
-                                            //   child: GoogleSignInButton(
-                                            //     onPressed: () => _loginScreenBloc
-                                            //         .add(AuthWithGoogle()),
-                                            //   ),
-                                            // )
                                           ],
                                         ),
                                       )
@@ -189,9 +177,10 @@ class _LoginScreen extends State<LoginScreen> {
 
   _renderLoginForm(BuildContext context, bool isLogin) {
     final AppLocalizations localizations = AppLocalizations.of(context);
+    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
 
-    return [
-      LoginFormField( 
+    return Column(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+      LoginFormField(
         validator: (input) {
           final bool emailValid = RegExp(
                   r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
@@ -235,7 +224,7 @@ class _LoginScreen extends State<LoginScreen> {
             return null;
           },
         )
-    ];
+    ]);
   }
 
   _handleSignIn(LoginScreenBloc _loginBloc) {

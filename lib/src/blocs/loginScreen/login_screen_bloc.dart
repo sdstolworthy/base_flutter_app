@@ -31,7 +31,6 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
         await _userRepository.signInWithGoogle();
         _authenticationBloc.add(Authenticate());
       } catch (e) {
-        print(e);
         print('Error with google auth');
         yield LoginFailure();
       }
@@ -41,6 +40,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
   Stream<LoginScreenState> _mapSignUpEventToState(
       String username, String password) async* {
     try {
+      yield LoginLoading();
       await _userRepository.signUp(email: username, password: password);
       _authenticationBloc.add(Authenticate());
     } catch (e) {
@@ -51,11 +51,10 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
   Stream<LoginScreenState> _mapLoginEventToState(
       String username, String password) async* {
     try {
+      yield LoginLoading();
       await _userRepository.signInWithCredentials(username, password);
       _authenticationBloc.add(Authenticate());
     } catch (e, s) {
-      print(e);
-      print(s);
       print("Error during Authentication");
       _authenticationBloc.add(Unauthenticate());
       yield LoginFailure();
