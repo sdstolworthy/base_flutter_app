@@ -99,6 +99,11 @@ class AppLocalizations {
     return Intl.message('Previous Entries',
         name: 'previousEntries', desc: 'Previous Entries title');
   }
+
+  String get journalEntryHint {
+    return Intl.message('Write your thoughts...',
+        name: 'journalEntryHint', desc: 'Journal entry hint text');
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

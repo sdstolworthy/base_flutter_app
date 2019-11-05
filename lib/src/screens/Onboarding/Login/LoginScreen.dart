@@ -5,6 +5,7 @@ import 'package:grateful/src/blocs/loginScreen/bloc.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
+import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
 import 'package:grateful/src/widgets/LoginFormField.dart';
 import 'package:grateful/src/widgets/LogoHero.dart';
 import 'package:grateful/src/widgets/OnboardingButton.dart';
@@ -79,98 +80,99 @@ class _LoginScreen extends State<LoginScreen> {
                             style: theme.primaryTextTheme.body1)));
                   });
                 }
-                return Container(
-                  color: theme.backgroundColor,
-                  child: SafeArea(
-                    child:
-                        LayoutBuilder(builder: (context, viewportConstraints) {
-                      return SingleChildScrollView(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                              minHeight: viewportConstraints.maxHeight),
-                          child: Container(
-                            color: theme.backgroundColor,
-                            child: Padding(
-                              padding: const EdgeInsets.all(20),
-                              child: IntrinsicHeight(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    Row(children: [
-                                      Container(
-                                          constraints: BoxConstraints(
-                                              maxHeight: 100, maxWidth: 100),
-                                          child: LogoHero()),
-                                      Flexible(
-                                        child: Text(
-                                          isLogin
-                                              ? localizations.loginCTA
-                                              : localizations.signupCTA,
-                                          style:
-                                              theme.primaryTextTheme.display1,
-                                        ),
-                                      )
-                                    ]),
-                                    Expanded(child: Container()),
-                                    Form(
-                                        key: _formKey,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: <Widget>[
-                                            ..._renderLoginForm(
-                                                context, isLogin)
-                                          ],
-                                        )),
-                                    Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                            child: OnboardingButton(
-                                          buttonText: isLogin
-                                              ? localizations.logIn
-                                              : localizations.signUp,
-                                          onPressed: isLogin
-                                              ? () => _handleSignIn(
-                                                  _loginScreenBloc)
-                                              : () => _handleRegistration(
-                                                  _loginScreenBloc),
-                                        )),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 20.0),
-                                      child: Row(
+                return BackgroundGradientProvider(
+                  child: Container(
+                    child: SafeArea(
+                      child: LayoutBuilder(
+                          builder: (context, viewportConstraints) {
+                        return SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                                minHeight: viewportConstraints.maxHeight),
+                            child: Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: IntrinsicHeight(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      Row(children: [
+                                        Container(
+                                            constraints: BoxConstraints(
+                                                maxHeight: 100, maxWidth: 100),
+                                            child: LogoHero()),
+                                        Flexible(
+                                          child: Text(
+                                            isLogin
+                                                ? localizations.loginCTA
+                                                : localizations.signupCTA,
+                                            style:
+                                                theme.primaryTextTheme.display1,
+                                          ),
+                                        )
+                                      ]),
+                                      Expanded(child: Container()),
+                                      Form(
+                                          key: _formKey,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              ..._renderLoginForm(
+                                                  context, isLogin)
+                                            ],
+                                          )),
+                                      Row(
                                         children: <Widget>[
                                           Expanded(
-                                            child: Container(
-                                              height: 50,
-                                              child: GoogleSignInButton(
-                                                darkMode: true,
-                                                onPressed: () {
-                                                  _loginScreenBloc
-                                                      .add(AuthWithGoogle());
-                                                },
-                                              ),
-                                            ),
-                                          )
-                                          // Expanded(
-                                          //   child: GoogleSignInButton(
-                                          //     onPressed: () => _loginScreenBloc
-                                          //         .add(AuthWithGoogle()),
-                                          //   ),
-                                          // )
+                                              child: OnboardingButton(
+                                            buttonText: isLogin
+                                                ? localizations.logIn
+                                                : localizations.signUp,
+                                            onPressed: isLogin
+                                                ? () => _handleSignIn(
+                                                    _loginScreenBloc)
+                                                : () => _handleRegistration(
+                                                    _loginScreenBloc),
+                                          )),
                                         ],
                                       ),
-                                    )
-                                  ],
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Container(
+                                                height: 50,
+                                                child: GoogleSignInButton(
+                                                  darkMode: true,
+                                                  onPressed: () {
+                                                    _loginScreenBloc
+                                                        .add(AuthWithGoogle());
+                                                  },
+                                                ),
+                                              ),
+                                            )
+                                            // Expanded(
+                                            //   child: GoogleSignInButton(
+                                            //     onPressed: () => _loginScreenBloc
+                                            //         .add(AuthWithGoogle()),
+                                            //   ),
+                                            // )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
+                    ),
                   ),
                 );
               })),
@@ -189,7 +191,7 @@ class _LoginScreen extends State<LoginScreen> {
     final AppLocalizations localizations = AppLocalizations.of(context);
 
     return [
-      LoginFormField(
+      LoginFormField( 
         validator: (input) {
           final bool emailValid = RegExp(
                   r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
@@ -208,6 +210,17 @@ class _LoginScreen extends State<LoginScreen> {
         label: toBeginningOfSentenceCase(localizations.password),
         isObscured: true,
         controller: passwordController,
+        validator: (input) {
+          if (passwordController.text == null ||
+              passwordController.text == '') {
+            return 'Password must not be blank';
+          }
+          if (!isLogin &&
+              confirmPasswordController.text != passwordController.text) {
+            return 'Passwords do not match';
+          }
+          return null;
+        },
       ),
       if (!isLogin)
         LoginFormField(

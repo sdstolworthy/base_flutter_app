@@ -10,7 +10,7 @@ class BackgroundGradientProvider extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [Colors.blue[900], Colors.blue[800]],
+              colors: [Colors.blue[900], Colors.blue[600]],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter)),
       child: child,

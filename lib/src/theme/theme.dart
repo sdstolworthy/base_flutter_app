@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
 ThemeData gratefulTheme(ThemeData appTheme) {
-  return appTheme
+  final theme = ThemeData(brightness: Brightness.light);
+  return theme
       .copyWith(
-        brightness: Brightness.dark,
-        // accentColor: Colors.white,
-      )
-      .copyWith(
-        // primaryColor: Color.fromRGBO(90, 90, 90, 1),
+        floatingActionButtonTheme:
+            FloatingActionButtonThemeData(backgroundColor: Colors.blue[300]),
         appBarTheme: AppBarTheme(
             iconTheme: IconThemeData(color: Colors.white),
             color: Colors.blue[900]),

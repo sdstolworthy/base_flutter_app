@@ -3,7 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
-import 'package:grateful/src/blocs/journalEntryFeed/item_bloc.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import 'package:grateful/src/screens/JournalPageView/JournalPageView.dart';
@@ -20,9 +19,46 @@ class JournalEntryDetailArguments {
   JournalEntryDetailArguments({@required this.journalEntry});
 }
 
-class JournalEntryDetails extends StatelessWidget {
+class JournalEntryDetails extends StatefulWidget {
   final JournalEntry journalEntry;
   JournalEntryDetails(this.journalEntry);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _JournalEntryDetails(this.journalEntry);
+  }
+}
+
+class _JournalEntryDetails extends State<JournalEntryDetails>
+    with TickerProviderStateMixin {
+  Animation<double> _animationController;
+  Animation<Offset> _animation;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_animation == null) {
+      // _animationController = ModalRoute.of(context).animation;
+      _animationController = ModalRoute.of(context).animation;
+      setState(() {
+        _animation =
+            Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
+                .animate(CurvedAnimation(
+          parent: _animationController,
+          curve: Curves.fastOutSlowIn,
+        ));
+        // _animationController.forward();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // _animationController.dispose();
+  }
+
+  final JournalEntry journalEntry;
+  _JournalEntryDetails(this.journalEntry);
   Widget _renderAppBar(context) {
     final EditJournalEntryBloc _journalEntryBloc =
         BlocProvider.of<EditJournalEntryBloc>(context);
@@ -98,98 +134,110 @@ class JournalEntryDetails extends StatelessWidget {
               }
             },
             bloc: _journalEntryBloc,
-            child: LayoutBuilder(builder: (context, viewportConstraints) {
-              return BackgroundGradientProvider(
-                child: NestedScrollView(
-                  headerSliverBuilder: (context, isScrolled) {
-                    return [_renderAppBar(context)].toList();
-                  },
-                  body: ListView(
-                    children: <Widget>[
-                      SizedBox(
-                        height: journalEntry.photographs != null &&
-                                journalEntry.photographs.length > 0
-                            ? 250
-                            : 0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: Container(
-                              child: CarouselSlider(
-                            aspectRatio: 16 / 9,
-                            enlargeCenterPage: true,
-                            viewportFraction: 0.8,
-                            enableInfiniteScroll: false,
-                            items: <Widget>[
-                              ...(journalEntry.photographs ?? [])
-                                  .map((p) => CachedNetworkImage(
-                                        imageUrl: p.imageUrl,
-                                        placeholder: (c, i) {
-                                          return Center(
-                                            child: CircularProgressIndicator(),
-                                          );
-                                        },
-                                        imageBuilder: (c, i) {
-                                          return Shadower(
-                                              child: Image(
-                                            image: i,
-                                          ));
-                                        },
-                                      ))
-                                  .toList()
-                            ],
-                          )),
-                        ),
-                      ),
-                      Container(
-                        constraints: BoxConstraints(
-                            minHeight: viewportConstraints.maxHeight),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30)),
-                            color: Colors.white),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            children: <Widget>[
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                        DateFormat.yMMMMd()
-                                            .format(journalEntry.date),
-                                        style: theme.accentTextTheme.headline
-                                            .copyWith(
-                                                fontStyle: FontStyle.italic)),
+            child: AnimatedBuilder(
+                animation: _animation,
+                builder: (context, snapshot) {
+                  return LayoutBuilder(builder: (context, viewportConstraints) {
+                    return BackgroundGradientProvider(
+                      child: NestedScrollView(
+                        headerSliverBuilder: (context, isScrolled) {
+                          return [_renderAppBar(context)].toList();
+                        },
+                        body: ListView(
+                          children: <Widget>[
+                            Container(
+                              height: journalEntry.photographs != null &&
+                                      journalEntry.photographs.length > 0
+                                  ? 250
+                                  : 0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 20),
+                                child: Container(
+                                    child: CarouselSlider(
+                                  aspectRatio: 16 / 9,
+                                  enlargeCenterPage: true,
+                                  viewportFraction: 0.8,
+                                  enableInfiniteScroll: false,
+                                  items: <Widget>[
+                                    ...(journalEntry.photographs ?? [])
+                                        .map((p) => CachedNetworkImage(
+                                              imageUrl: p.imageUrl,
+                                              placeholder: (c, i) {
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              },
+                                              imageBuilder: (c, i) {
+                                                return Shadower(
+                                                    child: Image(
+                                                  image: i,
+                                                ));
+                                              },
+                                            ))
+                                        .toList()
                                   ],
+                                )),
+                              ),
+                            ),
+                            FractionalTranslation(
+                              translation: _animation.value,
+                              child: Container(
+                                constraints: BoxConstraints(
+                                    minHeight: viewportConstraints.maxHeight),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(30),
+                                        topRight: Radius.circular(30)),
+                                    color: Colors.white),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                                DateFormat.yMMMMd()
+                                                    .format(journalEntry.date),
+                                                style: theme
+                                                    .accentTextTheme.headline
+                                                    .copyWith(
+                                                        fontStyle:
+                                                            FontStyle.italic)),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          Flexible(
+                                              child: Column(
+                                            children: <Widget>[
+                                              JournalEntryHero(
+                                                journalEntry: journalEntry,
+                                                inverted: true,
+                                              )
+                                            ],
+                                          )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Flexible(
-                                      child: Column(
-                                    children: <Widget>[
-                                      JournalEntryHero(
-                                        journalEntry: journalEntry,
-                                        inverted: true,
-                                      )
-                                    ],
-                                  )),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              );
-            }),
+                    );
+                  });
+                }),
           )),
     );
   }

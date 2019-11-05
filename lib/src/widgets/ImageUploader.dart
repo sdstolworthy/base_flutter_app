@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/fileUpload/bloc.dart';
-import 'package:grateful/src/widgets/Shadower.dart';
 import 'package:uuid/uuid.dart';
 
 typedef void OnCompleteFunction(String imageUrl);
@@ -11,18 +10,24 @@ typedef void OnCompleteFunction(String imageUrl);
 class ImageUploader extends StatefulWidget {
   final File file;
   final OnCompleteFunction onComplete;
-  ImageUploader({@required this.onComplete, @required this.file});
+  final Widget child;
+
+  ImageUploader(
+      {@required this.file, @required this.onComplete, @required this.child});
   @override
   State<StatefulWidget> createState() {
-    return _ImageUploaderState(this.file, onComplete);
+    return _ImageUploaderState(
+        file: this.file, onComplete: onComplete, child: child);
   }
 }
 
 class _ImageUploaderState extends State<ImageUploader> {
   File file;
+  Widget child;
   final FileUploadBloc _fileUploadBloc = FileUploadBloc();
   OnCompleteFunction onComplete;
-  _ImageUploaderState(this.file, this.onComplete);
+  _ImageUploaderState(
+      {@required this.file, @required this.onComplete, @required this.child});
 
   build(context) {
     return BlocBuilder<FileUploadBloc, FileUploadState>(
@@ -36,18 +41,12 @@ class _ImageUploaderState extends State<ImageUploader> {
           return Stack(
             fit: StackFit.passthrough,
             children: <Widget>[
-              Center(
-                  child: Shadower(
-                      child: Image.file(
-                file,
-                fit: BoxFit.contain,
-              ))),
+              child,
               if (state is FileUploadProgress)
-                Container(
-                  child: Center(
-                    child: CircularProgressIndicator(value: state.progress),
-                  ),
-                )
+                Positioned.fill(
+                    child: Align(
+                  child: CircularProgressIndicator(value: state.progress),
+                ))
               else
                 Container()
             ],

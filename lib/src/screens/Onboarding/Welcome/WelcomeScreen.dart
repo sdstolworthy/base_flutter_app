@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
+import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
 import 'package:grateful/src/widgets/LanguagePicker.dart';
 import 'package:grateful/src/widgets/LogoHero.dart';
 import 'package:grateful/src/widgets/OnboardingButton.dart';
-import 'package:grateful/src/widgets/layouts/FullScreenLayout.dart';
 
 class WelcomeScreen extends StatelessWidget {
   build(context) {
@@ -13,8 +13,7 @@ class WelcomeScreen extends StatelessWidget {
 
     final theme = Theme.of(context);
     return Scaffold(
-      body: FullScreenLayout(
-        backgroundColor: theme.backgroundColor,
+      body: BackgroundGradientProvider(
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Column(

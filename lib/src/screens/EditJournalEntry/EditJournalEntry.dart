@@ -174,7 +174,9 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                                   ),
                                 ),
                               ),
-                              _editablePhotoSlider(context),
+                              Container(
+                                child: _editablePhotoSlider(context),
+                              ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
@@ -223,119 +225,111 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     }
   }
 
-  Widget _editablePhotoSlider(BuildContext context) {
-    final localizations = AppLocalizations.of(context);
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30.0),
-        child: BlocBuilder<ImageHandlerBloc, ImageHandlerState>(
-            bloc: _imageHandlerBloc,
-            builder: (context, imageHandlerState) {
-              if (imageHandlerState is InitialImageHandlerState) {
-                _imageHandlerBloc.add(SetPhotographs(
-                    _journalEntry.photographs ?? <Photograph>[]));
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (imageHandlerState is PhotographsLoaded) {
-                return CarouselSlider(
-                    enlargeCenterPage: true,
-                    viewportFraction: 0.5,
-                    enableInfiniteScroll: false,
-                    aspectRatio: 16 / 9,
-                    items: <Widget>[
-                      ...imageHandlerState.photographs.map<Widget>((i) {
-                        Widget child;
-                        if (i is NetworkPhoto) {
-                          child = CachedNetworkImage(
-                            imageUrl: i.imageUrl,
-                            imageBuilder: (c, p) {
-                              return Center(
-                                child: DeletableResource(
-                                  onRemove: () {
-                                    _imageHandlerBloc.add(SetPhotographs(
-                                        List.from(_journalEntry.photographs
-                                          ..removeWhere((p) =>
-                                              p.imageUrl == i.imageUrl))));
-                                  },
-                                  child: Image(
-                                    fit: BoxFit.contain,
-                                    image: p,
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        } else if (i is FilePhoto) {
-                          child = Center(
-                            child: ImageUploader(
-                              file: i.file,
-                              onComplete: (String imageUrl) {
-                                final newPhoto =
-                                    NetworkPhoto(imageUrl: imageUrl);
-                                _imageHandlerBloc.add(
-                                    ReplaceFilePhotoWithNetworkPhoto(
-                                        photograph: newPhoto,
-                                        filePhotoGuid: i.guid));
+  Widget _editablePhotoSlider(
+    BuildContext context,
+  ) {
+    return BlocBuilder<ImageHandlerBloc, ImageHandlerState>(
+        bloc: _imageHandlerBloc,
+        builder: (context, state) {
+          if (state is InitialImageHandlerState) {
+            _imageHandlerBloc.add(SetPhotographs(_journalEntry.photographs));
+          } else if (state is PhotographsLoaded) {
+            final photographs = state.photographs;
 
-                                _journalEntry.photographs.add(newPhoto);
-                              },
-                            ),
-                          );
-                        } else {
-                          child = Container();
-                        }
-                        return Padding(
-                            padding: EdgeInsets.all(3.0), child: child);
-                      }).toList(),
-                      Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.white,
-                              ),
-                              borderRadius: BorderRadius.circular(20)),
-                          child: ClipRRect(
-                            borderRadius: new BorderRadius.circular(20),
-                            child: Container(
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: () async {
-                                    File file = await ImagePicker.pickImage(
-                                        source: ImageSource.gallery);
-                                    if (file == null) {
-                                      return;
-                                    }
-                                    final FilePhoto photo = new FilePhoto(
-                                        file: file, guid: Uuid().v4());
-                                    _imageHandlerBloc.add(AddPhotograph(photo));
-                                  },
-                                  child: Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Icon(Icons.add, color: Colors.white),
-                                        Text(
-                                          localizations.addPhotos,
-                                          style: Theme.of(context)
-                                              .primaryTextTheme
-                                              .body1,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ]);
-              }
-              return Container();
-            }));
+            return Container(
+              height: 150,
+              child: ListView(
+                padding: EdgeInsets.only(left: 20),
+                scrollDirection: Axis.horizontal,
+                children: [
+                  ..._renderPhotoBlocks(photographs),
+                  _renderAddPhotoButton(context)
+                ],
+              ),
+            );
+          }
+          return Container();
+        });
+  }
+
+  _renderPhotoBlocks(List<Photograph> photographs) {
+    return photographs.map((photograph) {
+      if (photograph is NetworkPhoto) {
+        return DeletableResource(
+          onRemove: () {
+            _imageHandlerBloc.add(SetPhotographs(List.from(
+                _journalEntry.photographs
+                  ..removeWhere((p) => p.imageUrl == photograph.imageUrl))));
+          },
+          child: Container(
+            height: 125,
+            width: 125,
+            child: CachedNetworkImage(
+              imageUrl: photograph.imageUrl,
+              fit: BoxFit.cover,
+            ),
+          ),
+        );
+      } else if (photograph is FilePhoto) {
+        return ImageUploader(
+          child: Container(
+            height: 125,
+            width: 125,
+            child: Image.file(
+              photograph.file,
+              fit: BoxFit.cover,
+            ),
+          ),
+          file: photograph.file,
+          onComplete: (String imageUrl) {
+            final newPhoto = NetworkPhoto(imageUrl: imageUrl);
+            _imageHandlerBloc.add(ReplaceFilePhotoWithNetworkPhoto(
+                photograph: newPhoto, filePhotoGuid: photograph.guid));
+
+            _journalEntry.photographs.add(newPhoto);
+          },
+        );
+      }
+      return Container();
+    }).toList();
+  }
+
+  _renderAddPhotoButton(context) {
+    final localizations = AppLocalizations.of(context);
+    return SizedBox(
+        height: 150,
+        width: 150,
+        child: ClipRRect(
+            borderRadius: new BorderRadius.circular(20),
+            child: Container(
+              color: Colors.blue[700],
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () async {
+                    File file = await ImagePicker.pickImage(
+                        source: ImageSource.gallery);
+                    if (file == null) {
+                      return;
+                    }
+                    final FilePhoto photo =
+                        new FilePhoto(file: file, guid: Uuid().v4());
+                    _imageHandlerBloc.add(AddPhotograph(photo));
+                  },
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.add, color: Colors.white),
+                        Text(
+                          localizations.addPhotos,
+                          style: Theme.of(context).primaryTextTheme.body1,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )));
   }
 }

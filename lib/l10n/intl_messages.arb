@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-11-04T09:02:07.640643",
+  "@@last_modified": "2019-11-04T15:22:41.809821",
   "logIn": "Log In",
   "@logIn": {
     "description": "The \"log in\" call to action",
@@ -75,6 +75,12 @@
   "previousEntries": "Previous Entries",
   "@previousEntries": {
     "description": "Previous Entries title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "journalEntryHint": "Write your thoughts...",
+  "@journalEntryHint": {
+    "description": "Journal entry hint text",
     "type": "text",
     "placeholders": {}
   }

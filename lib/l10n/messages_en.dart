@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("confirm password"),
     "email" : MessageLookupByLibrary.simpleMessage("Email"),
     "gratefulPrompt" : MessageLookupByLibrary.simpleMessage("What are you grateful for today?"),
+    "journalEntryHint" : MessageLookupByLibrary.simpleMessage("Write your thoughts..."),
     "language" : MessageLookupByLibrary.simpleMessage("language"),
     "logIn" : MessageLookupByLibrary.simpleMessage("Log In"),
     "logOut" : MessageLookupByLibrary.simpleMessage("Log Out"),
