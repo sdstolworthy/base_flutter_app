@@ -13,50 +13,59 @@ class WelcomeScreen extends StatelessWidget {
 
     final theme = Theme.of(context);
     return Scaffold(
-      body: BackgroundGradientProvider(
-        child: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(
-            children: <Widget>[
-              LogoHero(),
-              Expanded(
+      body: LayoutBuilder(builder: (_, viewportConstraints) {
+        return BackgroundGradientProvider(
+            child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints:
+                BoxConstraints(minHeight: viewportConstraints.maxHeight),
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: IntrinsicHeight(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: OnboardingButton(
-                          buttonText: localizations.logIn,
-                          onPressed: () {
-                            rootNavigationService
-                                .navigateTo(FlutterAppRoutes.loginScreen);
-                          },
-                        )),
-                      ],
+                    LogoHero(),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                  child: OnboardingButton(
+                                buttonText: localizations.logIn,
+                                onPressed: () {
+                                  rootNavigationService
+                                      .navigateTo(FlutterAppRoutes.loginScreen);
+                                },
+                              )),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                  child: OnboardingButton(
+                                buttonText: localizations.signUp,
+                                isInverted: true,
+                                onPressed: () {
+                                  rootNavigationService.navigateTo(
+                                      FlutterAppRoutes.signupScreen);
+                                },
+                              )),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 20),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                            child: OnboardingButton(
-                          buttonText: localizations.signUp,
-                          isInverted: true,
-                          onPressed: () {
-                            rootNavigationService
-                                .navigateTo(FlutterAppRoutes.signupScreen);
-                          },
-                        )),
-                      ],
-                    )
+                    LanguagePicker()
                   ],
                 ),
               ),
-              LanguagePicker()
-            ],
+            ),
           ),
-        ),
-      ),
+        ));
+      }),
     );
   }
 }
