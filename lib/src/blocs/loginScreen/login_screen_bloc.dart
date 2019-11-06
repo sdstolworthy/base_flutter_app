@@ -63,7 +63,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       yield LoginLoading();
       await _userRepository.signInWithCredentials(username, password);
       _authenticationBloc.add(Authenticate());
-      _analytics.logLogin(loginMethod: 'email').catchError(() {
+      _analytics.logLogin(loginMethod: 'email').catchError((e) {
         print('error logging event to GA');
       });
       yield InitialLoginScreenState();

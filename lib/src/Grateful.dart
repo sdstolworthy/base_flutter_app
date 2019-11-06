@@ -33,7 +33,8 @@ class FlutterApp extends StatelessWidget {
         listener: (context, AuthenticationState state) {
           _journalFeedBloc.add(FetchFeed());
           if (state is Authenticated) {
-            rootNavigationService.navigateTo(FlutterAppRoutes.journalPageView);
+            rootNavigationService
+                .pushReplacementNamed(FlutterAppRoutes.journalPageView);
           } else if (state is Unauthenticated) {
             rootNavigationService.returnToLogin();
           }
