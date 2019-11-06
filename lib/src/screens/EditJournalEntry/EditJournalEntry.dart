@@ -406,7 +406,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                 child: InkWell(
                   onTap: () async {
                     File file = await ImagePicker.pickImage(
-                        imageQuality: 75, source: ImageSource.gallery);
+                        imageQuality: 35, source: ImageSource.gallery);
                     if (file == null) {
                       return;
                     }
