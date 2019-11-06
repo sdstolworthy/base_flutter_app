@@ -413,7 +413,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                     final FilePhoto photo = new FilePhoto(
                         file: file,
                         guid: Uuid().v4(),
-                        uploadTask: FileRepository().uploadFile(file));
+                        uploadTask: await FileRepository().uploadFile(file));
                     _imageHandlerBloc.add(AddPhotograph(photo));
                   },
                   child: Center(
