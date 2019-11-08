@@ -11,7 +11,7 @@ description: A base app for your flutter projects.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.2.4+105
+version: 2.2.10+110
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -39,6 +39,7 @@ dependencies:
   intl:
   meta:
   uuid:
+  share: ^0.6.3+1
   image_picker:
   photo_view: ^0.7.0
   cached_network_image: ^1.1.2

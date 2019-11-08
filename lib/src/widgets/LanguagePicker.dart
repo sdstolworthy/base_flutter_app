@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/localization/bloc.dart';
 import 'package:grateful/src/blocs/localization/localization_bloc.dart';
+import 'package:grateful/src/repositories/analytics/AnalyticsRepository.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,6 +28,8 @@ class _LanguagePicker extends State<LanguagePicker> {
                 value: locale.languageCode);
           }).toList(),
           onChanged: (item) {
+            AnalyticsRepository().logEvent(
+                name: 'selectedLanguage', parameters: {'language': item});
             localizationBloc.add(ChangeLocalization(Locale(item)));
           },
         );

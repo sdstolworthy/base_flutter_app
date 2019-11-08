@@ -37,7 +37,9 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
         await _userRepository.signInWithGoogle();
         _authenticationBloc.add(Authenticate());
         yield InitialLoginScreenState();
-      } catch (e) {
+      } catch (e, s) {
+        print(s);
+        print(e);
         print('Error with google auth');
         yield LoginFailure();
       }
