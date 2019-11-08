@@ -43,7 +43,7 @@ class FlutterApp extends StatelessWidget {
                   locale: state.locale,
                   supportedLocales: AppLocalizations.availableLocalizations
                       .map((item) => Locale(item.languageCode)),
-                  theme: flutterAppTheme,
+                  theme: flutterAppTheme(Theme.of(context)),
                   home: Navigator(
                       onGenerateRoute: Router.generatedRoute,
                       key: rootNavigationService.navigatorKey));

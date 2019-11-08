@@ -4,6 +4,7 @@ import 'package:flutter_base_app/src/screens/EditItem/EditItem.dart';
 import 'package:flutter_base_app/src/screens/ItemFeed/ItemFeed.dart';
 import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
 import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
+import 'package:flutter_base_app/src/theme/theme.dart';
 
 class FlutterAppRoutes {
   static const String itemDetails = 'itemDetails';
@@ -17,8 +18,12 @@ typedef Route CurriedRouter(RouteSettings settings);
 
 class Router {
   static _pageRoute(Widget widget, String routeName) {
-    return MaterialPageRoute(
-        builder: (context) => widget, settings: RouteSettings(name: routeName));
+    return PageRouteBuilder(
+      settings: RouteSettings(name: routeName),
+      pageBuilder: (context, animation, s) {
+        return Theme(data: flutterAppTheme(Theme.of(context)), child: widget);
+      },
+    );
   }
 
   static Route<dynamic> generatedRoute(RouteSettings settings) {

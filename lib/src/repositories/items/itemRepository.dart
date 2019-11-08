@@ -38,4 +38,14 @@ class ItemRepository {
         .setData(item.toMap());
     return item;
   }
+
+  deleteItem(Item item) async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    await Firestore.instance
+        .collection(_userCollectionName)
+        .document(user.uid)
+        .collection(_itemCollectionName)
+        .document(item.id.toString())
+        .delete();
+  }
 }
