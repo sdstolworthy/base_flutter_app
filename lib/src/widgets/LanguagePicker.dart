@@ -20,7 +20,10 @@ class _LanguagePicker extends State<LanguagePicker> {
           value: state.locale.languageCode,
           items: AppLocalizations.availableLocalizations.map((locale) {
             return DropdownMenuItem(
-                child: Text('${locale.flag} ${locale.languageCode}'),
+                child: Text(
+                  '${locale.flag} ${locale.title}',
+                  style: Theme.of(outerContext).primaryTextTheme.body1,
+                ),
                 value: locale.languageCode);
           }).toList(),
           onChanged: (item) {
