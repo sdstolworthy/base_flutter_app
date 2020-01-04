@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_base_app/src/screens/EditItem/EditItem.dart';
 import 'package:flutter_base_app/src/screens/ItemFeed/ItemFeed.dart';
 import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
 import 'package:flutter_base_app/src/theme/theme.dart';
 import 'package:flutter_base_app/src/screens/Onboarding/Welcome/WelcomeScreen.dart';
 import 'package:flutter_base_app/src/screens/Onboarding/Login/LoginScreen.dart';
@@ -39,8 +38,6 @@ class Router {
 
   static Route<dynamic> generatedRoute(RouteSettings settings) {
     switch (settings.name) {
-      case FlutterAppRoutes.onboarding:
-        return _pageRoute(OnboardingRoutes(), FlutterAppRoutes.onboarding);
       case FlutterAppRoutes.itemDetails:
         final ItemDetailsArguments args = settings.arguments;
         return _pageRoute(ItemDetails(args.item), FlutterAppRoutes.itemDetails);
@@ -57,7 +54,7 @@ class Router {
         return _pageRoute(
             EditItem(item: args?.item), FlutterAppRoutes.itemEdit);
       default:
-        return _pageRoute(OnboardingRoutes(), FlutterAppRoutes.onboarding);
+        return _pageRoute(WelcomeScreen(), FlutterAppRoutes.onboarding);
     }
   }
 }
