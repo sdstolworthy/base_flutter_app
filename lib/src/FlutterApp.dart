@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/blocs/authentication/authentication_state.dart';
 import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
@@ -11,6 +13,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_base_app/src/blocs/localization/bloc.dart';
 
 class FlutterApp extends StatelessWidget {
+  final FirebaseAnalytics analytics = FirebaseAnalytics()
+    ..logEvent(name: 'opened_app');
   build(_) {
     return AppBlocProviders(child: Builder(builder: (outerContext) {
       return BlocListener<AuthenticationBloc, AuthenticationState>(
@@ -41,6 +45,9 @@ class FlutterApp extends StatelessWidget {
                     AppLocalizations.delegate
                   ],
                   locale: state.locale,
+                  navigatorObservers: [
+                    FirebaseAnalyticsObserver(analytics: analytics)
+                  ],
                   supportedLocales: AppLocalizations.availableLocalizations
                       .map((item) => Locale(item.languageCode)),
                   theme: flutterAppTheme(Theme.of(context)),
