@@ -1,23 +1,18 @@
-import 'package:dio/dio.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_base_app/src/repositories/appHttpHandler.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserRepository {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
-  final Dio _handler;
   final FirebaseAnalytics _analytics;
 
   UserRepository(
       {FirebaseAuth firebaseAuth,
       GoogleSignIn googleSignIn,
-      Dio handler,
       FirebaseAnalytics analytics})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
         _googleSignIn = googleSignIn ?? GoogleSignIn(),
-        _handler = handler ?? appHttpHandler,
         _analytics = analytics ?? FirebaseAnalytics();
 
   Future<FirebaseUser> signInWithGoogle() async {

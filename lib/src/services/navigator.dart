@@ -5,6 +5,9 @@ class _RootNavigationService {
   final GlobalKey<NavigatorState> navigatorKey =
       new GlobalKey<NavigatorState>();
   Future<dynamic> navigateTo(String routeName, {Object arguments}) {
+    if (navigatorKey.currentState == null) {
+      return null;
+    }
     return navigatorKey.currentState.pushNamed(routeName, arguments: arguments);
   }
 
@@ -15,7 +18,7 @@ class _RootNavigationService {
 
   Future<dynamic> returnToLogin() async {
     await navigatorKey.currentState
-        .pushReplacementNamed(FlutterAppRoutes.onboarding);
+        .pushReplacementNamed(FlutterAppRoutes.welcomeScreen);
   }
 
   Future<dynamic> goBack() async {
