@@ -1,11 +1,15 @@
-# flutter_base_app
+# Flutter Base App
+The flutter base app is a starter Flutter app that includes many features common in all apps.
 
-A starter project for Flutter apps.
+The app provides several generic widgets and features to get you started, including:
+* Internationalization
+* Welcome and Login screens
+* Firebase plugins
+* Generic Item Feed
+* Generic Item Edit/Create widgets
+* Bloc state management
+* Theming
+* [COMING SOON] Push notifications
 
-## Housecleaning
-
-It may be worthwhile to wipe the ios and android folders to start with clean native projects. `rm -rf ios android && flutter create -i swift .`
-
-## Making the application work with firebase
-
-In order to get the application set up with Firebase, you must [follow these steps](https://firebase.google.com/docs/android/setup#add_the_sdk).
+# Up and Running
+To get started, clone or fork the repository.
