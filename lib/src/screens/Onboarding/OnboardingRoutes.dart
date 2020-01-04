@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/Login/LoginScreen.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/Welcome/WelcomeScreen.dart';
+import 'package:spencerstolworthy_goals/src/screens/Onboarding/Login/LoginScreen.dart';
+import 'package:spencerstolworthy_goals/src/screens/Onboarding/Welcome/WelcomeScreen.dart';
 
 class _OnboardingNavigation {
   GlobalKey<NavigatorState> onboardingNavigationKey =

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/authentication/authentication_state.dart';
-import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
-import 'package:flutter_base_app/src/services/localizations/localizations.dart';
-import 'package:flutter_base_app/src/services/navigator.dart';
-import 'package:flutter_base_app/src/services/routes.dart';
-import 'package:flutter_base_app/src/theme/theme.dart';
-import 'package:flutter_base_app/src/widgets/BlocProvider.dart';
+import 'package:spencerstolworthy_goals/src/blocs/authentication/authentication_state.dart';
+import 'package:spencerstolworthy_goals/src/blocs/authentication/bloc.dart';
+import 'package:spencerstolworthy_goals/src/services/localizations/localizations.dart';
+import 'package:spencerstolworthy_goals/src/services/navigator.dart';
+import 'package:spencerstolworthy_goals/src/services/routes.dart';
+import 'package:spencerstolworthy_goals/src/theme/theme.dart';
+import 'package:spencerstolworthy_goals/src/widgets/BlocProvider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_base_app/src/blocs/localization/bloc.dart';
+import 'package:spencerstolworthy_goals/src/blocs/localization/bloc.dart';
 
 class FlutterApp extends StatelessWidget {
   build(_) {

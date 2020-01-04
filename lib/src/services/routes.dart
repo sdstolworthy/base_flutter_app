@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_app/src/screens/EditItem/EditItem.dart';
-import 'package:flutter_base_app/src/screens/ItemFeed/ItemFeed.dart';
-import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
-import 'package:flutter_base_app/src/theme/theme.dart';
+import 'package:spencerstolworthy_goals/src/screens/EditItem/EditItem.dart';
+import 'package:spencerstolworthy_goals/src/screens/ItemFeed/ItemFeed.dart';
+import 'package:spencerstolworthy_goals/src/screens/ItemDetails/ItemDetails.dart';
+import 'package:spencerstolworthy_goals/src/screens/Onboarding/OnboardingRoutes.dart';
+import 'package:spencerstolworthy_goals/src/theme/theme.dart';
 
 class FlutterAppRoutes {
   static const String itemDetails = 'itemDetails';

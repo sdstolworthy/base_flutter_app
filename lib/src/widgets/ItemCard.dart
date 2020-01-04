@@ -1,6 +1,6 @@
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:spencerstolworthy_goals/src/models/Item.dart';
 
 typedef void OnPressed();
 

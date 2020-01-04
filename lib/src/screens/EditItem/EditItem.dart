@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/editItem/bloc.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:spencerstolworthy_goals/src/blocs/editItem/bloc.dart';
+import 'package:spencerstolworthy_goals/src/models/Item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditItemArgs {

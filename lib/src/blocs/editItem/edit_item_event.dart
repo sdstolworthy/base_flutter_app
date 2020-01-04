@@ -1,4 +1,4 @@
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:spencerstolworthy_goals/src/models/Item.dart';
 import 'package:meta/meta.dart';
 
 @immutable

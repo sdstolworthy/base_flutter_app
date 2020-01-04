@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
-import 'package:flutter_base_app/src/services/localizations/localizations.dart';
-import 'package:flutter_base_app/src/widgets/LanguagePicker.dart';
-import 'package:flutter_base_app/src/widgets/OnboardingButton.dart';
-import 'package:flutter_base_app/src/widgets/layouts/FullScreenLayout.dart';
+import 'package:spencerstolworthy_goals/src/screens/Onboarding/OnboardingRoutes.dart';
+import 'package:spencerstolworthy_goals/src/services/localizations/localizations.dart';
+import 'package:spencerstolworthy_goals/src/widgets/LanguagePicker.dart';
+import 'package:spencerstolworthy_goals/src/widgets/OnboardingButton.dart';
+import 'package:spencerstolworthy_goals/src/widgets/layouts/FullScreenLayout.dart';
 
 class WelcomeScreen extends StatelessWidget {
   build(context) {

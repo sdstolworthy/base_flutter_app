@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:spencerstolworthy_goals/src/models/Item.dart';
 
 class ItemRepository {
   static const _userCollectionName = 'users';

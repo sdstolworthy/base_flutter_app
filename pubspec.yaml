@@ -1,4 +1,4 @@
-name: flutter_base_app
+name: spencerstolworthy_goals
 description: A goal tracking app for android
 
 # The following defines the version and build number for your application.
@@ -45,6 +45,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   intl_translation: ^0.17.1
+  flutter_launcher_icons: "^0.7.3"
+
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/icon/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
