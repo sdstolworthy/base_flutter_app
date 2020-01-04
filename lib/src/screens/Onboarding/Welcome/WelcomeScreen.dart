@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
 import 'package:flutter_base_app/src/services/localizations/localizations.dart';
 import 'package:flutter_base_app/src/widgets/LanguagePicker.dart';
 import 'package:flutter_base_app/src/widgets/OnboardingButton.dart';
 import 'package:flutter_base_app/src/widgets/layouts/FullScreenLayout.dart';
+import 'package:flutter_base_app/src/services/routes.dart';
+import 'package:flutter_base_app/src/services/navigator.dart';
 
 class WelcomeScreen extends StatelessWidget {
   build(context) {
@@ -31,8 +32,8 @@ class WelcomeScreen extends StatelessWidget {
                             child: OnboardingButton(
                           buttonText: localizations.logIn,
                           onPressed: () {
-                            onboardingNavigator
-                                .navigateTo(OnboardingRouteNames.loginScreen);
+                            rootNavigationService
+                                .navigateTo(FlutterAppRoutes.loginScreen);
                           },
                         )),
                       ],
@@ -45,8 +46,8 @@ class WelcomeScreen extends StatelessWidget {
                           buttonText: localizations.signUp,
                           isInverted: true,
                           onPressed: () {
-                            onboardingNavigator
-                                .navigateTo(OnboardingRouteNames.signupScreen);
+                            rootNavigationService
+                                .navigateTo(FlutterAppRoutes.signupScreen);
                           },
                         )),
                       ],

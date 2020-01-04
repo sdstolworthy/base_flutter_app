@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
-import 'package:flutter_base_app/src/screens/Onboarding/OnboardingRoutes.dart';
 import 'package:flutter_base_app/src/services/localizations/localizations.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
@@ -47,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                     Icons.arrow_back,
                     color: theme.appBarTheme.iconTheme.color,
                   ),
-                  onPressed: () => onboardingNavigator.goBack(),
+                  onPressed: () => rootNavigationService.goBack(),
                 )),
             body: LayoutBuilder(builder: (context, viewportConstraints) {
               return SingleChildScrollView(
