@@ -1,5 +1,5 @@
 name: flutter_base_app
-description: A base app for your flutter projects.
+description: A goal tracking app for android
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -23,13 +23,14 @@ dependencies:
   dio:
   shared_preferences:
   faker:
-  cloud_firestore: ^0.12.7+1
-  firebase_auth: ^0.14.0+5
-  google_sign_in: ^4.0.7
+  cloud_firestore: ^0.13.0+1
+  firebase_auth: ^0.15.3
+  google_sign_in: ^4.1.1
   url_launcher:
-  firebase_core: ^0.4.0+9
-  firebase_storage: ^3.0.6
-  firebase_analytics: ^4.0.2
+  firebase_core: ^0.4.3+1
+  firebase_storage: ^3.1.1
+  firebase_analytics: ^5.0.9
+  firebase_messaging: ^6.0.9
   flutter_localizations:
     sdk: flutter
   flutter_cupertino_localizations:
