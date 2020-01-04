@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_app/src/repositories/items/itemRepository.dart';
+import 'package:spencerstolworthy_goals/src/repositories/items/itemRepository.dart';
 import './bloc.dart';
 
 class ItemBloc extends Bloc<ItemEvent, ItemState> {

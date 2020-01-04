@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_base_app/src/config/config.dart';
-import 'package:flutter_base_app/src/config/constants.dart';
+import 'package:spencerstolworthy_goals/src/config/config.dart';
+import 'package:spencerstolworthy_goals/src/config/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<String> getToken() async {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/itemFeed/bloc.dart';
-import 'package:flutter_base_app/src/repositories/items/itemRepository.dart';
-import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
-import 'package:flutter_base_app/src/services/navigator.dart';
-import 'package:flutter_base_app/src/services/routes.dart';
-import 'package:flutter_base_app/src/widgets/AppDrawer/drawer.dart';
-import 'package:flutter_base_app/src/widgets/ItemCard.dart';
+import 'package:spencerstolworthy_goals/src/blocs/itemFeed/bloc.dart';
+import 'package:spencerstolworthy_goals/src/repositories/items/itemRepository.dart';
+import 'package:spencerstolworthy_goals/src/screens/ItemDetails/ItemDetails.dart';
+import 'package:spencerstolworthy_goals/src/services/navigator.dart';
+import 'package:spencerstolworthy_goals/src/services/routes.dart';
+import 'package:spencerstolworthy_goals/src/widgets/AppDrawer/drawer.dart';
+import 'package:spencerstolworthy_goals/src/widgets/ItemCard.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ItemFeed extends StatefulWidget {

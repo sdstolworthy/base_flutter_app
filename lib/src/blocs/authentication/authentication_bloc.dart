@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter_base_app/src/repositories/user/userRepository.dart';
+import 'package:spencerstolworthy_goals/src/repositories/user/userRepository.dart';
 import './bloc.dart';
 
 class AuthenticationBloc

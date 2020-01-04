@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
+import 'package:spencerstolworthy_goals/src/blocs/authentication/bloc.dart';
 
 class AuthenticationFilter extends StatelessWidget {
   final Widget authenticatedNavigator;

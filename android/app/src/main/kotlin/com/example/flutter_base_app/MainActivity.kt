@@ -1,4 +1,4 @@
-package com.example.flutter_base_app
+package com.spencerstolworthy.goals
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
