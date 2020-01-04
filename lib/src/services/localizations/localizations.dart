@@ -22,8 +22,8 @@ class AppLocalizations {
   }
 
   static List<AppLocale> availableLocalizations = [
-    AppLocale(languageCode: 'en', flag: '🇺🇸'),
-    AppLocale(languageCode: 'es', flag: '🇪🇸')
+    AppLocale(languageCode: 'en', flag: '🇺🇸', title: 'English'),
+    AppLocale(languageCode: 'es', flag: '🇪🇸', title: 'Español')
   ];
 
   static get delegate {
@@ -105,7 +105,9 @@ class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
 class AppLocale {
   final String languageCode;
   final String flag;
-  AppLocale({@required languageCode, @required flag})
+  final String title;
+  AppLocale({@required languageCode, @required flag, title})
       : this.languageCode = languageCode,
-        this.flag = flag;
+        this.flag = flag,
+        title = title ?? languageCode;
 }
