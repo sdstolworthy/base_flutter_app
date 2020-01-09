@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
-import 'package:flutter_base_app/src/widgets/LanguagePicker.dart';
+import 'package:flutter_base_app/src/widgets/language_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -14,8 +14,7 @@ class AppDrawer extends StatelessWidget {
             RaisedButton(
                 child: Text('Log Out'),
                 onPressed: () {
-                  BlocProvider.of<AuthenticationBloc>(context)
-                      .add(LogOut());
+                  BlocProvider.of<AuthenticationBloc>(context).add(LogOut());
                 }),
             LanguagePicker(),
           ],
