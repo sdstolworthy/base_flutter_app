@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/services/localizations/localizations.dart';
-import 'package:flutter_base_app/src/widgets/LanguagePicker.dart';
-import 'package:flutter_base_app/src/widgets/OnboardingButton.dart';
+import 'package:flutter_base_app/src/widgets/language_picker.dart';
+import 'package:flutter_base_app/src/widgets/onboarding_button.dart';
 import 'package:flutter_base_app/src/widgets/layouts/FullScreenLayout.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';

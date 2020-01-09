@@ -3,8 +3,8 @@ import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
 import 'package:flutter_base_app/src/services/localizations/localizations.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
-import 'package:flutter_base_app/src/widgets/LoginFormField.dart';
-import 'package:flutter_base_app/src/widgets/OnboardingButton.dart';
+import 'package:flutter_base_app/src/widgets/login_form_field.dart';
+import 'package:flutter_base_app/src/widgets/onboarding_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 

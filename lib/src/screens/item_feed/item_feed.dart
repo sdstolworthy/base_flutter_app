@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/blocs/itemFeed/bloc.dart';
 import 'package:flutter_base_app/src/repositories/items/itemRepository.dart';
-import 'package:flutter_base_app/src/screens/ItemDetails/ItemDetails.dart';
+import 'package:flutter_base_app/src/screens/item_details/item_details.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
-import 'package:flutter_base_app/src/widgets/AppDrawer/drawer.dart';
-import 'package:flutter_base_app/src/widgets/ItemCard.dart';
+import 'package:flutter_base_app/src/widgets/app_drawer/drawer.dart';
+import 'package:flutter_base_app/src/widgets/item_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ItemFeed extends StatefulWidget {

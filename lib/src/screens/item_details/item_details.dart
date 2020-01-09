@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/models/Item.dart';
-import 'package:flutter_base_app/src/screens/EditItem/EditItem.dart';
+import 'package:flutter_base_app/src/screens/edit_item/edit_item.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 
