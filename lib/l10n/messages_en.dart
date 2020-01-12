@@ -21,6 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "aboutGratefulButtonText" : MessageLookupByLibrary.simpleMessage("About Grateful"),
     "addPhotos" : MessageLookupByLibrary.simpleMessage("Add Photos"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("confirm password"),
     "email" : MessageLookupByLibrary.simpleMessage("Email"),

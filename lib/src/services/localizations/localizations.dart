@@ -104,6 +104,12 @@ class AppLocalizations {
     return Intl.message('Write your thoughts...',
         name: 'journalEntryHint', desc: 'Journal entry hint text');
   }
+
+  String get aboutGratefulButtonText {
+    return Intl.message('About Grateful',
+        name: 'aboutGratefulButtonText',
+        desc: 'Button text for links to the About page');
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

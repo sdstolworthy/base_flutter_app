@@ -26,6 +26,7 @@ ThemeData gratefulTheme(ThemeData appTheme) {
         //         color: Colors.lightBlue[700],
         //         decoration: TextDecoration.underline,
         //         fontFamily: 'Raleway')),
+        iconTheme: IconThemeData(color: Colors.white),
         primaryTextTheme: TextTheme(
             button: appTheme.primaryTextTheme.button
                 .copyWith(fontFamily: 'Raleway'),

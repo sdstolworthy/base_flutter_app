@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
-import 'package:grateful/src/repositories/analytics/AnalyticsRepository.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
@@ -9,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppDrawer extends StatelessWidget {
   build(context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    final theme = Theme.of(context);
     return Drawer(
       child: Container(
         color: Theme.of(context).backgroundColor,
@@ -17,22 +18,31 @@ class AppDrawer extends StatelessWidget {
           padding: const EdgeInsets.all(12.0),
           child: Column(
             children: <Widget>[
-              RaisedButton(
-                  child: Text(AppLocalizations.of(context).logOut,
-                      style: Theme.of(context).primaryTextTheme.body1),
-                  color: Theme.of(context).buttonColor,
-                  onPressed: () {
-                    AnalyticsRepository().logEvent(name: 'logOut');
-                    BlocProvider.of<AuthenticationBloc>(context)
-                        .add(Unauthenticate());
-                  }),
-              FlatButton(
-                child: Text('About Grateful'),
-                onPressed: () {
+              ListTile(
+                title: Text(
+                  localizations.aboutGratefulButtonText,
+                  style: theme.primaryTextTheme.body1,
+                ),
+                leading: Icon(Icons.info, color: theme.iconTheme.color),
+                onTap: () {
                   rootNavigationService.navigateTo(FlutterAppRoutes.aboutApp);
                 },
               ),
-              LanguagePicker(),
+              ListTile(
+                title: LanguagePicker(),
+                leading: Icon(Icons.language, color: theme.iconTheme.color),
+              ),
+              ListTile(
+                leading: Icon(Icons.vpn_key, color: theme.iconTheme.color),
+                title: Text(
+                  localizations.logOut,
+                  style: theme.primaryTextTheme.body1,
+                ),
+                onTap: () {
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .add(Unauthenticate());
+                },
+              ),
             ],
           ),
         )),

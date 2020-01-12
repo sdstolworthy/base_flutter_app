@@ -14,11 +14,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:grateful/src/blocs/localization/bloc.dart';
 
 class FlutterApp extends StatelessWidget {
-  final FirebaseAnalytics analytics = FirebaseAnalytics()
-    ..logEvent(name: 'opened_app');
   final _journalFeedBloc =
       JournalFeedBloc(journalEntryRepository: JournalEntryRepository());
   build(_) {
+    final FirebaseAnalytics analytics = FirebaseAnalytics()
+      ..logEvent(name: 'opened_app');
     return AppBlocProviders(child: Builder(builder: (outerContext) {
       return BlocListener<AuthenticationBloc, AuthenticationState>(
         condition: (prev, curr) {

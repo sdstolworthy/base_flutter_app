@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/Grateful.dart';
 
-void main() => runApp(FlutterApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(FlutterApp());
+}

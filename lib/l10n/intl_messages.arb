@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2019-11-04T15:22:41.809821",
+  "@@last_modified": "2020-01-12T14:43:33.617548",
   "logIn": "Log In",
   "@logIn": {
     "description": "The \"log in\" call to action",
@@ -81,6 +81,12 @@
   "journalEntryHint": "Write your thoughts...",
   "@journalEntryHint": {
     "description": "Journal entry hint text",
+    "type": "text",
+    "placeholders": {}
+  },
+  "aboutGratefulButtonText": "About Grateful",
+  "@aboutGratefulButtonText": {
+    "description": "Button text for links to the About page",
     "type": "text",
     "placeholders": {}
   }

@@ -84,5 +84,11 @@
     "description": "Journal entry hint text",
     "type": "text",
     "placeholders": {}
+  },
+  "aboutGratefulButtonText": "Acerca de Grateful",
+  "@aboutGratefulButtonText": {
+    "description": "Button text for links to the About page",
+    "type": "text",
+    "placeholders": {}
   }
 }
