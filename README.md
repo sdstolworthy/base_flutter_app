@@ -1,11 +1,8 @@
-# grateful
+# Grateful: Give Thanks Daily
+Grateful: Give Thanks Daily is a simple application for expressing gratitude.
 
-A starter project for Flutter apps.
+## Getting started
 
-## Housecleaning
-
-It may be worthwhile to wipe the ios and android folders to start with clean native projects. `rm -rf ios android && flutter create -i swift .`
-
-## Making the application work with firebase
-
-In order to get the application set up with Firebase, you must [follow these steps](https://firebase.google.com/docs/android/setup#add_the_sdk).
+### Build configurations
+The app is structured to require separate Google Services configurations for dev and production.
+Please see [this link](https://medium.com/@matt.goodson.business/separating-build-environment-configurations-in-flutter-with-firebase-doing-it-the-right-way-c72c3ad3621f) for instructions to configure Firebase.
