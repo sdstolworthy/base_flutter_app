@@ -6,6 +6,8 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+
+
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
@@ -31,6 +33,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+
     compileSdkVersion 28
 
     lintOptions {
@@ -48,8 +51,14 @@ android {
 
    signingConfigs {
        release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
+           keyAlias keystoreProperties['prodKeyAlias']
+           keyPassword keystoreProperties['prodKeyPassword']
+           storeFile file(keystoreProperties['storeFile'])
+           storePassword keystoreProperties['storePassword']
+       }
+       development {
+           keyAlias keystoreProperties['devKeyAlias']
+           keyPassword keystoreProperties['devKeyPassword']
            storeFile file(keystoreProperties['storeFile'])
            storePassword keystoreProperties['storePassword']
        }
@@ -58,7 +67,23 @@ android {
        release {
            signingConfig signingConfigs.release
        }
+       debug {
+           signingConfig signingConfigs.development
+       }
    }
+   flavorDimensions "app"
+    productFlavors {
+
+        development {
+            dimension "app"
+            applicationIdSuffix ".dev"
+            signingConfig signingConfigs.development
+        }
+
+        production {
+            dimension "app"
+        }
+    }
 }
 
 flutter {

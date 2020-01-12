@@ -5,9 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Flutter",
+      "name": "DEV Grateful",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "args": ["--flavor", "development"]
+    },
+    {
+      "name": "PROD Grateful",
+      "request": "launch",
+      "type": "dart",
+      "args": ["--flavor", "production"]
     }
   ]
 }
