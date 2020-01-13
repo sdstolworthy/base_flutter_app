@@ -12,38 +12,30 @@ class JournalInput extends StatelessWidget {
 
   build(context) {
     return Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Colors.blue[700], Colors.blue[700].withOpacity(0.0)],
-            )),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: TextFormField(
-            keyboardType: TextInputType.multiline,
-            controller: controller,
-            onChanged: this.onChanged,
-            minLines: 3,
-            cursorColor: Colors.blue[100],
-            autocorrect: true,
-            autovalidate: true,
-            validator: (_) => null,
-            maxLines: null,
-            textCapitalization: TextCapitalization.sentences,
-            style:
-                Theme.of(context).primaryTextTheme.body1.copyWith(fontSize: 18),
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context).journalEntryHint,
-              hintStyle: Theme.of(context)
-                  .primaryTextTheme
-                  .body1
-                  .copyWith(color: Colors.white38, fontStyle: FontStyle.italic),
-              enabledBorder: UnderlineInputBorder(borderSide: BorderSide.none),
-              focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
-            ),
-          ),
-        ));
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: TextFormField(
+        keyboardType: TextInputType.multiline,
+        controller: controller,
+        onChanged: this.onChanged,
+        minLines: 3,
+        cursorColor: Colors.blue[100],
+        autocorrect: true,
+        autovalidate: true,
+        validator: (_) => null,
+        maxLines: null,
+        textCapitalization: TextCapitalization.sentences,
+        style: Theme.of(context).primaryTextTheme.body1.copyWith(fontSize: 18),
+        decoration: InputDecoration(
+          hintText: AppLocalizations.of(context).journalEntryHint,
+          hintStyle: Theme.of(context)
+              .primaryTextTheme
+              .body1
+              .copyWith(color: Colors.white38, fontStyle: FontStyle.italic),
+          enabledBorder: UnderlineInputBorder(borderSide: BorderSide.none),
+          focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
+        ),
+      ),
+    ));
   }
 }

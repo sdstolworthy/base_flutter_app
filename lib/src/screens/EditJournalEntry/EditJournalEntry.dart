@@ -149,37 +149,31 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                               minHeight: viewportConstraints.maxHeight),
                           child: IntrinsicHeight(
                             child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  Flexible(
+                                  Expanded(
                                     flex: 1,
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20.0),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Column(children: [
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
                                             Text(
                                               localizations.gratefulPrompt,
                                               style: Theme.of(context)
                                                   .primaryTextTheme
                                                   .headline,
-                                              textAlign: TextAlign.center,
+                                              textAlign: TextAlign.left,
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 15),
-                                              child: DateSelectorButton(
-                                                onPressed: handlePickDate,
-                                                selectedDate:
-                                                    _journalEntry.date,
-                                                locale:
-                                                    Localizations.localeOf(c),
-                                              ),
+                                            DateSelectorButton(
+                                              onPressed: handlePickDate,
+                                              selectedDate: _journalEntry.date,
+                                              locale: Localizations.localeOf(c),
                                             ),
+                                            Divider(color: Colors.white, ),
+                                            SizedBox(height: 10),
                                             JournalInput(
                                               onChanged: (text) {
                                                 setState(() {
@@ -190,33 +184,28 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                                                   _journalEntryController,
                                             ),
                                           ]),
-                                        ],
-                                      ),
                                     ),
                                   ),
-                                  Flexible(
-                                    flex: 1,
-                                    child: BlocBuilder(
-                                        bloc: _imageHandlerBloc,
-                                        builder: (context, imageHandlerState) {
-                                          if (imageHandlerState
-                                              is InitialImageHandlerState) {
-                                            _imageHandlerBloc.add(
-                                                SetPhotographs(
-                                                    _journalEntry.photographs));
-                                          } else if (imageHandlerState
-                                              is PhotographsLoaded) {
-                                            return Container(
-                                              child: _editablePhotoSlider(
-                                                  context,
-                                                  _renderPhotoBlocks(
-                                                      imageHandlerState
-                                                          .photographs)),
-                                            );
-                                          }
-                                          return Container();
-                                        }),
-                                  ),
+                                  BlocBuilder(
+                                      bloc: _imageHandlerBloc,
+                                      builder: (context, imageHandlerState) {
+                                        if (imageHandlerState
+                                            is InitialImageHandlerState) {
+                                          _imageHandlerBloc.add(
+                                              SetPhotographs(
+                                                  _journalEntry.photographs));
+                                        } else if (imageHandlerState
+                                            is PhotographsLoaded) {
+                                          return Container(
+                                            child: _editablePhotoSlider(
+                                                context,
+                                                _renderPhotoBlocks(
+                                                    imageHandlerState
+                                                        .photographs)),
+                                          );
+                                        }
+                                        return Container();
+                                      }),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[

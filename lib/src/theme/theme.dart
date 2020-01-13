@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 ThemeData gratefulTheme(ThemeData appTheme) {
   final theme = ThemeData(brightness: Brightness.light);
@@ -21,21 +22,16 @@ ThemeData gratefulTheme(ThemeData appTheme) {
             labelStyle:
                 TextStyle(color: Colors.white70, fontFamily: 'Raleway')),
         primaryColorLight: Colors.white,
-        // textTheme: TextTheme(
-        //     body1: appTheme.primaryTextTheme.body1.copyWith(
-        //         color: Colors.lightBlue[700],
-        //         decoration: TextDecoration.underline,
-        //         fontFamily: 'Raleway')),
         iconTheme: IconThemeData(color: Colors.white),
         primaryTextTheme: TextTheme(
             button: appTheme.primaryTextTheme.button
                 .copyWith(fontFamily: 'Raleway'),
-            body1: appTheme.primaryTextTheme.body1.copyWith(
-                color: Colors.white, fontFamily: 'Raleway', fontSize: 16),
+            body1: GoogleFonts.montserrat().copyWith(
+                color: Colors.white, fontSize: 16),
             body2: appTheme.primaryTextTheme.body1.copyWith(
                 color: Colors.white, fontSize: 20, fontFamily: 'Raleway'),
-            headline: appTheme.primaryTextTheme.headline.copyWith(
-                color: Colors.white, fontFamily: 'MontserratSemiBold'),
+            headline: GoogleFonts.merriweather().copyWith(
+                color: Colors.white, fontSize: 40),
             subhead: appTheme.primaryTextTheme.subhead.copyWith(
                 fontFamily: 'MontserratSemiBold',
                 fontStyle: FontStyle.italic,
@@ -52,7 +48,7 @@ ThemeData gratefulTheme(ThemeData appTheme) {
                   fontFamily: 'Raleway',
                 )
                 .apply(color: Colors.black),
-            body1: appTheme.primaryTextTheme.body1.copyWith(
-                color: Colors.black, fontFamily: 'Raleway', fontSize: 16)),
+            body1: GoogleFonts.montserrat().copyWith(
+                color: Colors.black, fontSize: 16)),
       );
 }
