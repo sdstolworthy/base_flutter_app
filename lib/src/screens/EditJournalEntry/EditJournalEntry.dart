@@ -151,49 +151,47 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                             child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
-                                  Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              localizations.gratefulPrompt,
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .headline,
-                                              textAlign: TextAlign.left,
-                                            ),
-                                            DateSelectorButton(
-                                              onPressed: handlePickDate,
-                                              selectedDate: _journalEntry.date,
-                                              locale: Localizations.localeOf(c),
-                                            ),
-                                            Divider(color: Colors.white, ),
-                                            SizedBox(height: 10),
-                                            JournalInput(
-                                              onChanged: (text) {
-                                                setState(() {
-                                                  _journalEntry.body = text;
-                                                });
-                                              },
-                                              controller:
-                                                  _journalEntryController,
-                                            ),
-                                          ]),
-                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            localizations.gratefulPrompt,
+                                            style: Theme.of(context)
+                                                .primaryTextTheme
+                                                .headline,
+                                            textAlign: TextAlign.left,
+                                          ),
+                                          DateSelectorButton(
+                                            onPressed: handlePickDate,
+                                            selectedDate: _journalEntry.date,
+                                            locale: Localizations.localeOf(c),
+                                          ),
+                                          Divider(
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(height: 10),
+                                          JournalInput(
+                                            onChanged: (text) {
+                                              setState(() {
+                                                _journalEntry.body = text;
+                                              });
+                                            },
+                                            controller:
+                                                _journalEntryController,
+                                          ),
+                                        ]),
                                   ),
                                   BlocBuilder(
                                       bloc: _imageHandlerBloc,
                                       builder: (context, imageHandlerState) {
                                         if (imageHandlerState
                                             is InitialImageHandlerState) {
-                                          _imageHandlerBloc.add(
-                                              SetPhotographs(
-                                                  _journalEntry.photographs));
+                                          _imageHandlerBloc.add(SetPhotographs(
+                                              _journalEntry.photographs));
                                         } else if (imageHandlerState
                                             is PhotographsLoaded) {
                                           return Container(
@@ -207,8 +205,10 @@ class _EditJournalEntryState extends State<EditJournalEntry>
                                         return Container();
                                       }),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
+                                      _renderAddPhotoButton(context),
                                       BlocBuilder(
                                         bloc: _imageHandlerBloc,
                                         builder: (c, data) {
@@ -322,7 +322,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: [...children, _renderAddPhotoButton(context)],
+            children: children,
           ),
         ),
       ),
@@ -376,49 +376,27 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   _renderAddPhotoButton(context) {
     final localizations = AppLocalizations.of(context);
-    return SizedBox(
-        height: imageDimension,
-        width: imageDimension,
-        child: ClipRRect(
-            borderRadius: new BorderRadius.circular(10),
-            child: Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Colors.blue[700],
-                    Colors.blue[700].withOpacity(0.0)
-                  ])),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () async {
-                    File file = await ImagePicker.pickImage(
-                        imageQuality: 35, source: ImageSource.gallery);
-                    if (file == null) {
-                      return;
-                    }
-                    final FilePhoto photo = new FilePhoto(
-                        file: file,
-                        guid: Uuid().v4(),
-                        uploadTask: await FileRepository().uploadFile(file));
-                    _imageHandlerBloc.add(AddPhotograph(photo));
-                  },
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.add, color: Colors.white),
-                        Text(
-                          localizations.addPhotos,
-                          style: Theme.of(context).primaryTextTheme.body1,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            )));
+    return FlatButton(
+        onPressed: () async {
+          File file = await ImagePicker.pickImage(
+              imageQuality: 35, source: ImageSource.gallery);
+          if (file == null) {
+            return;
+          }
+          final FilePhoto photo = new FilePhoto(
+              file: file,
+              guid: Uuid().v4(),
+              uploadTask: await FileRepository().uploadFile(file));
+          _imageHandlerBloc.add(AddPhotograph(photo));
+        },
+        child: Column(
+          children: <Widget>[
+            Icon(Icons.add_a_photo),
+            Text(
+              localizations.addPhotos,
+              style: Theme.of(context).primaryTextTheme.body1,
+            ),
+          ],
+        ));
   }
 }
