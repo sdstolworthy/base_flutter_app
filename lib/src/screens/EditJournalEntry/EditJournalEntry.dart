@@ -7,6 +7,7 @@ import 'package:grateful/src/blocs/imageHandler/bloc.dart';
 import 'package:grateful/src/blocs/journalEntryFeed/item_bloc.dart';
 import 'package:grateful/src/blocs/pageView/page_view_bloc.dart';
 import 'package:grateful/src/blocs/pageView/page_view_event.dart';
+import 'package:grateful/src/config/environment.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/models/Photograph.dart';
@@ -45,17 +46,16 @@ const double imageDimension = 125.0;
 
 class _EditJournalEntryState extends State<EditJournalEntry>
     with AutomaticKeepAliveClientMixin {
-  _EditJournalEntryState({JournalEntry journalEntry})
-      : this._journalEntry = journalEntry ?? JournalEntry(),
-        isEdit = journalEntry != null {
+  _EditJournalEntryState({JournalEntry journalEntry}) {
+    this._journalEntry = journalEntry ?? JournalEntry();
     _journalEntryController.value = TextEditingValue(text: '');
+    isEdit = journalEntry != null;
   }
 
   bool isEdit;
 
   EditJournalEntryBloc _editJournalEntryBloc;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  final FileRepository fileRepository = FileRepository();
   List<ImageHandlerBloc> _imageHandlerBlocs = [];
   JournalEntry _journalEntry;
   final TextEditingController _journalEntryController = TextEditingController();
@@ -250,6 +250,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     return IconButton(
         padding: EdgeInsets.all(50),
         icon: Icon(Icons.check, size: 40),
+        disabledColor: Colors.white38,
         onPressed: isJournalEntryNull
             ? null
             : () {
@@ -307,24 +308,35 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     return photoWidgets;
   }
 
+  _handleAddPhotoPress(context) async {
+    final fileRepository = FileRepository(
+        storageBucketUrl: AppEnvironment.of(context).cloudStorageBucket);
+    File file = await ImagePicker.pickImage(
+        imageQuality: 35, source: ImageSource.gallery);
+    if (file == null) {
+      return;
+    }
+    final FilePhoto photo = new FilePhoto(file: file, guid: Uuid().v4());
+    setState(() {
+      _imageHandlerBlocs.add(new ImageHandlerBloc(
+          photograph: photo, fileRepository: fileRepository));
+    });
+  }
+
   _renderAddPhotoButton(context) {
     final localizations = AppLocalizations.of(context);
+
     return FlatButton(
-        onPressed: () async {
-          File file = await ImagePicker.pickImage(
-              imageQuality: 35, source: ImageSource.gallery);
-          if (file == null) {
-            return;
-          }
-          final FilePhoto photo = new FilePhoto(file: file, guid: Uuid().v4());
-          setState(() {
-            _imageHandlerBlocs.add(new ImageHandlerBloc(
-                photograph: photo, fileRepository: fileRepository));
-          });
+        onPressed: () {
+          _handleAddPhotoPress(context);
         },
-        child: Column(
+        child: Row(
           children: <Widget>[
-            Icon(Icons.add_a_photo),
+            Icon(
+              Icons.add_a_photo,
+              color: Colors.white,
+            ),
+            SizedBox(width: 15),
             Text(
               localizations.addPhotos,
               style: Theme.of(context).primaryTextTheme.body1,

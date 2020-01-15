@@ -7,12 +7,14 @@
     {
       "name": "DEV Grateful",
       "request": "launch",
+      "program": "lib/main_development.dart",
       "type": "dart",
       "args": ["--flavor", "development"]
     },
     {
       "name": "PROD Grateful",
       "request": "launch",
+      "program": "lib/main_production.dart",
       "type": "dart",
       "args": ["--flavor", "production"]
     }

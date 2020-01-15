@@ -23,6 +23,7 @@ dependencies:
   bloc:
   dio:
   shared_preferences:
+  json_annotation:
   faker:
   cloud_firestore: ^0.12.7+1
   firebase_auth: ^0.14.0+5
