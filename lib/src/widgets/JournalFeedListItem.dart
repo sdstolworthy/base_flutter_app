@@ -32,9 +32,8 @@ class JournalEntryListItem extends StatelessWidget {
           Flexible(
             child: Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child: JournalEntryHero(
-                journalEntry: journalEntry,
-              ),
+              child: Text(journalEntry.body,
+                  style: Theme.of(context).primaryTextTheme.body1),
             ),
           )
         ],

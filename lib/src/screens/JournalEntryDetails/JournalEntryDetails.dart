@@ -264,10 +264,10 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                                               Flexible(
                                                   child: Column(
                                                 children: <Widget>[
-                                                  JournalEntryHero(
-                                                    journalEntry: journalEntry,
-                                                    inverted: true,
-                                                  )
+                                                  Text(journalEntry.body,
+                                                      style: Theme.of(context)
+                                                          .accentTextTheme
+                                                          .body1)
                                                 ],
                                               )),
                                             ],
