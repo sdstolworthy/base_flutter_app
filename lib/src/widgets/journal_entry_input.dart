@@ -12,30 +12,27 @@ class JournalInput extends StatelessWidget {
 
   build(context) {
     return Container(
-        child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: TextFormField(
-        keyboardType: TextInputType.multiline,
-        controller: controller,
-        onChanged: this.onChanged,
-        minLines: 3,
-        cursorColor: Colors.blue[100],
-        autocorrect: true,
-        autovalidate: true,
-        validator: (_) => null,
-        maxLines: null,
-        textCapitalization: TextCapitalization.sentences,
-        style: Theme.of(context).primaryTextTheme.body1.copyWith(fontSize: 18),
-        decoration: InputDecoration(
-          hintText: AppLocalizations.of(context).journalEntryHint,
-          hintStyle: Theme.of(context)
-              .primaryTextTheme
-              .body1
-              .copyWith(color: Colors.white38, fontStyle: FontStyle.italic),
-          enabledBorder: UnderlineInputBorder(borderSide: BorderSide.none),
-          focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
-        ),
-      ),
-    ));
+        child: TextFormField(
+          keyboardType: TextInputType.multiline,
+          controller: controller,
+          onChanged: this.onChanged,
+          minLines: 3,
+          cursorColor: Colors.blue[100],
+          autocorrect: true,
+          autovalidate: true,
+          validator: (_) => null,
+          maxLines: null,
+          textCapitalization: TextCapitalization.sentences,
+          style: Theme.of(context).primaryTextTheme.body1.copyWith(fontSize: 18),
+          decoration: InputDecoration(
+            hintText: AppLocalizations.of(context).journalEntryHint,
+            hintStyle: Theme.of(context)
+                .primaryTextTheme
+                .body1
+                .copyWith(color: Colors.white38, fontStyle: FontStyle.italic),
+            enabledBorder: UnderlineInputBorder(borderSide: BorderSide.none),
+            focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
+          ),
+        ));
   }
 }

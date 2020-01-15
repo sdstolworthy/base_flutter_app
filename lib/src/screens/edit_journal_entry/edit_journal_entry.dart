@@ -296,8 +296,9 @@ class _EditJournalEntryState extends State<EditJournalEntry>
       return BlocProvider(
           create: (_) => _bloc,
           child: ImageUploader(
-            onRemove: (bloc) {
+            onRemove: (ImageHandlerBloc bloc) {
               setState(() {
+                bloc.close();
                 this._imageHandlerBlocs.remove(bloc);
               });
             },

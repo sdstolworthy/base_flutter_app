@@ -28,8 +28,8 @@ ThemeData gratefulTheme(ThemeData appTheme) {
                 .copyWith(fontFamily: 'Raleway'),
             body1: GoogleFonts.montserrat()
                 .copyWith(color: Colors.white, fontSize: 16),
-            body2: appTheme.primaryTextTheme.body1.copyWith(
-                color: Colors.white, fontSize: 20, fontFamily: 'Raleway'),
+            body2: appTheme.primaryTextTheme.body1
+                .copyWith(color: Colors.white, fontSize: 20),
             headline: GoogleFonts.merriweather()
                 .copyWith(color: Colors.white, fontSize: 40),
             subhead: GoogleFonts.merriweatherSans()
@@ -41,11 +41,9 @@ ThemeData gratefulTheme(ThemeData appTheme) {
       )
       .copyWith(
         accentTextTheme: appTheme.accentTextTheme.copyWith(
-            headline: appTheme.accentTextTheme.headline
-                .copyWith(
-                  fontFamily: 'Raleway',
-                )
-                .apply(color: Colors.black),
+            headline: GoogleFonts.merriweatherSans().copyWith(
+              color: Colors.black,
+            ),
             body1: GoogleFonts.montserrat()
                 .copyWith(color: Colors.black, fontSize: 16)),
       );

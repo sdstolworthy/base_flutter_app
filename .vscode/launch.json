@@ -17,6 +17,14 @@
       "program": "lib/main_production.dart",
       "type": "dart",
       "args": ["--flavor", "production"]
+    },
+    {
+      "name": "Profile",
+      "request": "launch",
+      "program": "lib/main_production.dart",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": ["--flavor", "production"]
     }
   ]
 }
