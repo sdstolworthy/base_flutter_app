@@ -44,7 +44,7 @@ class FlutterApp extends StatelessWidget {
             bloc: BlocProvider.of<LocalizationBloc>(outerContext),
             builder: (context, LocalizationState state) {
               return BlocProvider<JournalFeedBloc>(
-                  builder: (_) => _journalFeedBloc,
+                  create: (_) => _journalFeedBloc,
                   child: MaterialApp(
                     localizationsDelegates: [
                       GlobalMaterialLocalizations.delegate,

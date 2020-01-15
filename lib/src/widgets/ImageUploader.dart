@@ -3,24 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/imageHandler/bloc.dart';
 import 'package:grateful/src/models/Photograph.dart';
+import 'package:grateful/src/widgets/DeletableResource.dart';
 
-typedef void OnCompleteFunction(String imageUrl);
+typedef void OnRemove(ImageHandlerBloc imageHandlerBloc);
 
 class ImageUploader extends StatelessWidget {
+  OnRemove _onRemove;
+
+  ImageUploader({@required onRemove}) : _onRemove = onRemove;
+
   build(context) {
     return BlocBuilder<ImageHandlerBloc, ImageHandlerState>(
         builder: (context, state) {
           if (state is FileUploaded) {
-            return CachedNetworkImage(
-                imageUrl: (state.photograph as NetworkPhoto).imageUrl);
+            return _makeImageDeletable(
+                context,
+                CachedNetworkImage(
+                    imageUrl: (state.photograph as NetworkPhoto).imageUrl,
+                    placeholder: (context, url) {
+                      return state.placeholder != null
+                          ? Image.file(state.placeholder?.file)
+                          : Container();
+                    }));
           }
           return Stack(
             fit: StackFit.passthrough,
             children: <Widget>[
               (state.photograph is FilePhoto)
                   ? Image.file((state.photograph as FilePhoto).file)
-                  : CachedNetworkImage(
-                      imageUrl: (state.photograph as NetworkPhoto).imageUrl),
+                  : _makeImageDeletable(
+                      context,
+                      CachedNetworkImage(
+                        imageUrl: (state.photograph as NetworkPhoto).imageUrl,
+                      )),
               if (state is UploadProgress)
                 Positioned.fill(
                     child: Container(
@@ -39,5 +54,13 @@ class ImageUploader extends StatelessWidget {
           );
         },
         bloc: BlocProvider.of<ImageHandlerBloc>(context));
+  }
+
+  Widget _makeImageDeletable(BuildContext context, Widget child) {
+    return DeletableResource(
+        child: child,
+        onRemove: () {
+          this._onRemove(BlocProvider.of<ImageHandlerBloc>(context));
+        });
   }
 }

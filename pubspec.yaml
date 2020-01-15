@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc:
+  flutter_bloc: ^3.1.0
   bloc:
   dio:
   shared_preferences:
@@ -28,7 +28,7 @@ dependencies:
   firebase_auth: ^0.14.0+5
   google_sign_in: ^4.0.11
   firebase_core: ^0.4.0+9
-  firebase_storage: ^3.0.6
+  firebase_storage: ^3.1.1
   firebase_analytics: ^4.0.2
   firebase_messaging: ^5.1.6
   flutter_auth_buttons: ^0.6.0

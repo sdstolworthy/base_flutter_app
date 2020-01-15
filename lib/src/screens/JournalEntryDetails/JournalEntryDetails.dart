@@ -138,7 +138,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
           }
         },
         child: BlocProvider<EditJournalEntryBloc>(
-            builder: (_) => _journalEntryBloc,
+            create: (_) => _journalEntryBloc,
             child: BlocListener<EditJournalEntryBloc, EditJournalEntryState>(
               listener: (context, state) {
                 if (state is JournalEntryDeleted) {

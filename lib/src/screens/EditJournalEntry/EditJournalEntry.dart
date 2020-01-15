@@ -260,7 +260,11 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   _handleSavePress() {
     if (_journalEntry.body != null) {
-      _editJournalEntryBloc.add(SaveJournalEntry(_journalEntry));
+      _editJournalEntryBloc.add(SaveJournalEntry(_journalEntry.copyWith(
+          photographs: _imageHandlerBlocs
+              .where((bloc) => bloc.photograph is NetworkPhoto)
+              .map<NetworkPhoto>((bloc) => bloc.photograph)
+              .toList())));
       this.clearEditState();
     }
 
@@ -280,7 +284,15 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   _renderPhotoBlocks() {
     final photoWidgets = _imageHandlerBlocs.map((_bloc) {
-      return BlocProvider(builder: (_) => _bloc, child: ImageUploader());
+      return BlocProvider(
+          create: (_) => _bloc,
+          child: ImageUploader(
+            onRemove: (bloc) {
+              setState(() {
+                this._imageHandlerBlocs.remove(bloc);
+              });
+            },
+          ));
     }).toList();
 
     return photoWidgets;
@@ -296,8 +308,10 @@ class _EditJournalEntryState extends State<EditJournalEntry>
             return;
           }
           final FilePhoto photo = new FilePhoto(file: file, guid: Uuid().v4());
-          _imageHandlerBlocs.add(new ImageHandlerBloc(
-              photograph: photo, fileRepository: fileRepository));
+          setState(() {
+            _imageHandlerBlocs.add(new ImageHandlerBloc(
+                photograph: photo, fileRepository: fileRepository));
+          });
         },
         child: Column(
           children: <Widget>[

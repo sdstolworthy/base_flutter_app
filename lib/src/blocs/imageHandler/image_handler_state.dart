@@ -8,11 +8,12 @@ abstract class ImageHandlerState {
 }
 
 class InitialImageHandlerState extends ImageHandlerState {
-  InitialImageHandlerState() : super(null);
+  InitialImageHandlerState(Photograph photograph) : super(photograph);
 }
 
 class FileUploaded extends ImageHandlerState {
-  FileUploaded(NetworkPhoto photograph) : super(photograph);
+  FilePhoto placeholder;
+  FileUploaded(NetworkPhoto photograph, this.placeholder) : super(photograph);
 }
 
 class UploadProgress extends ImageHandlerState {

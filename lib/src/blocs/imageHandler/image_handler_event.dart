@@ -24,7 +24,8 @@ class UploadHasProgress extends ImageHandlerEvent {
 
 class UploadCompleted extends ImageHandlerEvent {
   final NetworkPhoto networkPhoto;
-  UploadCompleted(this.networkPhoto);
+  final FilePhoto placeholder;
+  UploadCompleted(this.networkPhoto, this.placeholder);
 }
 
 class SetPhotographs extends ImageHandlerEvent {

@@ -12,13 +12,12 @@ class AppBlocProviders extends StatelessWidget {
   Widget build(BuildContext _) {
     authBloc.add(AppStarted());
     return BlocProvider(
-        builder: (context) => authBloc,
+        create: (context) => authBloc,
         child: Builder(builder: (subAuthenticationContext) {
           return MultiBlocProvider(providers: [
             BlocProvider<LocalizationBloc>(
-              builder: (_) => LocalizationBloc(),
+              create: (_) => LocalizationBloc(),
             ),
-     
           ], child: child);
         }));
   }
