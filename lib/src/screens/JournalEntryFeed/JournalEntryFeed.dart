@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:grateful/src/blocs/journalEntryFeed/bloc.dart';
 import 'package:grateful/src/blocs/pageView/bloc.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
@@ -22,19 +23,75 @@ class JournalEntryFeed extends StatefulWidget {
   }
 }
 
-class _JournalEntryFeedState extends State<JournalEntryFeed> {
+class _JournalEntryFeedState extends State<JournalEntryFeed>
+    with TickerProviderStateMixin {
   Completer _refreshCompleter;
+  AnimationController _hideFabAnimation;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   void initState() {
     _refreshCompleter = new Completer<void>();
+    _hideFabAnimation =
+        AnimationController(vsync: this, duration: kThemeAnimationDuration);
+    _hideFabAnimation.forward();
     super.initState();
+  }
+
+  List<Widget> _renderAppBar(BuildContext context, bool isScrolled) {
+    final localizations = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+
+    return [
+      SliverAppBar(
+        floating: true,
+        elevation: 0.0,
+        title: Text(localizations.previousEntries,
+            style: theme.primaryTextTheme.title),
+        leading: FlatButton(
+          child: Icon(Icons.menu, color: theme.appBarTheme.iconTheme.color),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          },
+        ),
+      )
+    ];
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            _hideFabAnimation.forward();
+            break;
+          case ScrollDirection.reverse:
+            _hideFabAnimation.reverse();
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
+  }
+
+  Widget renderFab() {
+    return ScaleTransition(
+      scale: _hideFabAnimation,
+      alignment: Alignment.bottomRight,
+      child: FloatingActionButton(
+        onPressed: () {
+          BlocProvider.of<PageViewBloc>(context).add(SetPage(0));
+        },
+        child: Icon(Icons.edit),
+      ),
+    );
   }
 
   build(context) {
     final _journalFeedBloc = BlocProvider.of<JournalFeedBloc>(context);
-    final localizations = AppLocalizations.of(context);
-    final theme = Theme.of(context);
     return BlocListener<JournalFeedBloc, JournalFeedState>(
         bloc: _journalFeedBloc,
         listener: (context, state) {
@@ -45,100 +102,97 @@ class _JournalEntryFeedState extends State<JournalEntryFeed> {
         },
         child: Scaffold(
             key: _scaffoldKey,
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                BlocProvider.of<PageViewBloc>(context).add(SetPage(0));
-              },
-              child: Icon(Icons.edit),
-            ),
+            floatingActionButton: renderFab(),
             drawer: AppDrawer(),
-            body: NestedScrollView(
-              headerSliverBuilder: (context, isScrolled) {
-                return [
-                  SliverAppBar(
-                    floating: true,
-                    elevation: 0.0,
-                    title: Text(localizations.previousEntries,
-                        style: theme.primaryTextTheme.title),
-                    leading: FlatButton(
-                      child: Icon(Icons.menu,
-                          color: theme.appBarTheme.iconTheme.color),
-                      onPressed: () {
-                        _scaffoldKey.currentState.openDrawer();
-                      },
-                    ),
-                  )
-                ];
-              },
-              body: BlocBuilder<JournalFeedBloc, JournalFeedState>(
-                bloc: _journalFeedBloc,
-                builder: (context, state) {
-                  if (state is JournalFeedUnloaded) {
-                    _journalFeedBloc.add(FetchFeed());
-                    return BackgroundGradientProvider(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  } else if (state is JournalFeedFetched) {
-                    final sortedEntries = List.from(state.journalEntries
-                      ..sort((a, b) {
-                        return a.date.isBefore(b.date) ? 1 : -1;
-                      }));
-                    final Map<int, List<JournalEntry>> sortedEntriesYearMap =
-                        sortedEntries.fold({}, (previous, current) {
-                      final year = (current as JournalEntry).date.year;
-                      if (previous[year] == null) {
-                        previous[year] = [];
-                      }
-                      previous[year].add(current);
-                      return previous;
-                    });
-                    final compiledList = sortedEntriesYearMap.keys
-                        .fold<List<Widget>>([], (p, c) {
-                      return p
-                        ..addAll([
-                          YearSeparator(c.toString()),
-                          ...sortedEntriesYearMap[c].map((entry) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 10.0),
-                              child: JournalEntryListItem(
-                                journalEntry: entry,
-                                onPressed: () {
-                                  rootNavigationService.navigateTo(
-                                      FlutterAppRoutes.journalEntryDetails,
-                                      arguments: JournalEntryDetailArguments(
-                                          journalEntry: entry));
-                                },
+            body: NotificationListener<ScrollNotification>(
+              onNotification: _handleScrollNotification,
+              child: NestedScrollView(
+                headerSliverBuilder: _renderAppBar,
+                body: BlocBuilder<JournalFeedBloc, JournalFeedState>(
+                  bloc: _journalFeedBloc,
+                  builder: (context, state) {
+                    if (state is JournalFeedUnloaded) {
+                      _journalFeedBloc.add(FetchFeed());
+                      return BackgroundGradientProvider(
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else if (state is JournalFeedFetched) {
+                      state.journalEntries
+                          .sort(_sortJournalEntriesDescendingDate);
+                      final Map<int, List<JournalEntry>> sortedEntriesYearMap =
+                          _groupEntriesByYear(state.journalEntries);
+
+                      final compiledList =
+                          _getJournalEntryListItemWidgets(sortedEntriesYearMap);
+                      return BackgroundGradientProvider(
+                        child: SafeArea(
+                            bottom: false,
+                            child: RefreshIndicator(
+                              onRefresh: () {
+                                _journalFeedBloc.add(FetchFeed());
+                                return _refreshCompleter.future;
+                              },
+                              child: ScrollConfiguration(
+                                behavior: NoGlowScroll(showLeading: false),
+                                child: ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    return compiledList[index];
+                                  },
+                                  itemCount: compiledList.length,
+                                ),
                               ),
-                            );
-                          })
-                        ]);
-                    });
-                    return BackgroundGradientProvider(
-                      child: SafeArea(
-                          bottom: false,
-                          child: RefreshIndicator(
-                            onRefresh: () {
-                              _journalFeedBloc.add(FetchFeed());
-                              return _refreshCompleter.future;
-                            },
-                            child: ScrollConfiguration(
-                              behavior: NoGlowScroll(showLeading: false),
-                              child: ListView.builder(
-                                itemBuilder: (context, index) {
-                                  return compiledList[index];
-                                },
-                                itemCount: compiledList.length,
-                              ),
-                            ),
-                          )),
-                    );
-                  }
-                  return Container();
-                },
+                            )),
+                      );
+                    }
+                    return Container();
+                  },
+                ),
               ),
             )));
+  }
+
+  int _sortJournalEntriesDescendingDate(JournalEntry a, JournalEntry b) {
+    return a.date.isBefore(b.date) ? 1 : -1;
+  }
+
+  Map<int, List<JournalEntry>> _groupEntriesByYear(
+      List<JournalEntry> journalEntries) {
+    return journalEntries.fold<Map<int, List<JournalEntry>>>({},
+        (previous, current) {
+      final year = current.date.year;
+      if (previous[year] == null) {
+        previous[year] = <JournalEntry>[];
+      }
+      previous[year].add(current);
+      return previous;
+    });
+  }
+
+  Widget _renderEntryListItem(JournalEntry entry) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: JournalEntryListItem(
+        journalEntry: entry,
+        onPressed: () {
+          rootNavigationService.navigateTo(FlutterAppRoutes.journalEntryDetails,
+              arguments: JournalEntryDetailArguments(journalEntry: entry));
+        },
+      ),
+    );
+  }
+
+  List<Widget> _getJournalEntryListItemWidgets(
+      Map<int, List<JournalEntry>> entriesByYear) {
+    return entriesByYear.keys.fold<List<Widget>>([], (p, c) {
+      return p
+        ..addAll([
+          YearSeparator(c.toString()),
+          ...entriesByYear[c].map((entry) {
+            return _renderEntryListItem(entry);
+          })
+        ]);
+    });
   }
 }

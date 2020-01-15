@@ -26,16 +26,14 @@ ThemeData gratefulTheme(ThemeData appTheme) {
         primaryTextTheme: TextTheme(
             button: appTheme.primaryTextTheme.button
                 .copyWith(fontFamily: 'Raleway'),
-            body1: GoogleFonts.montserrat().copyWith(
-                color: Colors.white, fontSize: 16),
+            body1: GoogleFonts.montserrat()
+                .copyWith(color: Colors.white, fontSize: 16),
             body2: appTheme.primaryTextTheme.body1.copyWith(
                 color: Colors.white, fontSize: 20, fontFamily: 'Raleway'),
-            headline: GoogleFonts.merriweather().copyWith(
-                color: Colors.white, fontSize: 40),
-            subhead: appTheme.primaryTextTheme.subhead.copyWith(
-                fontFamily: 'MontserratSemiBold',
-                fontStyle: FontStyle.italic,
-                fontSize: 18),
+            headline: GoogleFonts.merriweather()
+                .copyWith(color: Colors.white, fontSize: 40),
+            subhead: GoogleFonts.merriweatherSans()
+                .copyWith(fontStyle: FontStyle.italic, fontSize: 18),
             title: appTheme.primaryTextTheme.title
                 .apply(fontFamily: 'MontSerratRegular'),
             display1: appTheme.primaryTextTheme.display1
@@ -48,7 +46,7 @@ ThemeData gratefulTheme(ThemeData appTheme) {
                   fontFamily: 'Raleway',
                 )
                 .apply(color: Colors.black),
-            body1: GoogleFonts.montserrat().copyWith(
-                color: Colors.black, fontSize: 16)),
+            body1: GoogleFonts.montserrat()
+                .copyWith(color: Colors.black, fontSize: 16)),
       );
 }

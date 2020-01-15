@@ -331,6 +331,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
           _handleAddPhotoPress(context);
         },
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Icon(
               Icons.add_a_photo,
