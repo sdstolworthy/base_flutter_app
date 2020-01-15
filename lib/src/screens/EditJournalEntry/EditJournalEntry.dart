@@ -108,197 +108,52 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     super.build(c);
     _firebaseMessaging.requestNotificationPermissions();
     _firebaseMessaging.getToken().then(CloudMessagingRepository().setId);
-    final AppLocalizations localizations = AppLocalizations.of(c);
-    return BlocBuilder(
-        bloc: _editJournalEntryBloc,
-        builder: (BuildContext context, EditJournalEntryState state) {
-          return Scaffold(
-              body: NestedScrollView(
-            headerSliverBuilder: (context, isScrolled) {
-              return [
-                SliverAppBar(
-                  elevation: 100,
-                  floating: false,
-                  pinned: false,
-                  leading: Container(),
-                  actions: <Widget>[
-                    if (isEdit)
-                      FlatButton(
-                        child: Icon(
-                          Icons.clear,
-                          color: Colors.white,
-                        ),
-                        onPressed: clearEditState,
-                      )
-                  ],
-                )
-              ];
-            },
-            body: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(new FocusNode());
-              },
-              child: BackgroundGradientProvider(
-                child: SafeArea(
-                  child: LayoutBuilder(builder: (context, viewportConstraints) {
-                    return ScrollConfiguration(
-                      behavior: NoGlowScroll(showLeading: false),
-                      child: SingleChildScrollView(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                              minHeight: viewportConstraints.maxHeight),
-                          child: IntrinsicHeight(
-                            child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0),
-                                    child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            localizations.gratefulPrompt,
-                                            style: Theme.of(context)
-                                                .primaryTextTheme
-                                                .headline,
-                                            textAlign: TextAlign.left,
-                                          ),
-                                          DateSelectorButton(
-                                            onPressed: handlePickDate,
-                                            selectedDate: _journalEntry.date,
-                                            locale: Localizations.localeOf(c),
-                                          ),
-                                          Divider(
-                                            color: Colors.white,
-                                          ),
-                                          SizedBox(height: 10),
-                                          JournalInput(
-                                            onChanged: (text) {
-                                              setState(() {
-                                                _journalEntry.body = text;
-                                              });
-                                            },
-                                            controller:
-                                                _journalEntryController,
-                                          ),
-                                        ]),
-                                  ),
-                                  BlocBuilder(
-                                      bloc: _imageHandlerBloc,
-                                      builder: (context, imageHandlerState) {
-                                        if (imageHandlerState
-                                            is InitialImageHandlerState) {
-                                          _imageHandlerBloc.add(SetPhotographs(
-                                              _journalEntry.photographs));
-                                        } else if (imageHandlerState
-                                            is PhotographsLoaded) {
-                                          return Container(
-                                            child: _editablePhotoSlider(
-                                                context,
-                                                _renderPhotoBlocks(
-                                                    imageHandlerState
-                                                        .photographs)),
-                                          );
-                                        }
-                                        return Container();
-                                      }),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      _renderAddPhotoButton(context),
-                                      BlocBuilder(
-                                        bloc: _imageHandlerBloc,
-                                        builder: (c, data) {
-                                          final imageCompletionStream =
-                                              Observable.combineLatest(
-                                                  _imageHandlerBloc.photographs
-                                                      .where((photo) =>
-                                                          photo is FilePhoto)
-                                                      .map((photo) =>
-                                                          (photo as FilePhoto)
-                                                              .uploadTask
-                                                              .events)
-                                                      .map<Stream<bool>>((events) =>
-                                                          events.transform(
-                                                              StreamTransformer.fromHandlers(
-                                                                  handleData:
-                                                                      (data, sink) {
-                                                            if (data.snapshot
-                                                                        .bytesTransferred /
-                                                                    data.snapshot
-                                                                        .totalByteCount ==
-                                                                1) {
-                                                              sink.add(true);
-                                                            } else {
-                                                              sink.add(false);
-                                                            }
-                                                          }))), (data) {
-                                            return data.every((d) => d);
-                                          }).startWith(_imageHandlerBloc.photographs.where((ph) => ph is FilePhoto).length > 0 ? false : true);
-                                          return StreamBuilder(
-                                              stream: imageCompletionStream,
-                                              builder:
-                                                  (context, streamSnapshot) {
-                                                return streamSnapshot.data ==
-                                                        true
-                                                    ? IconButton(
-                                                        padding:
-                                                            EdgeInsets.all(50),
-                                                        icon: Icon(Icons.check,
-                                                            size: 40),
-                                                        color: Colors.white,
-                                                        onPressed: () {
-                                                          if (_journalEntry
-                                                                  .body !=
-                                                              null) {
-                                                            _editJournalEntryBloc.add(
-                                                                SaveJournalEntry(
-                                                                    _journalEntry));
-                                                            this.clearEditState();
-                                                          }
+    return _renderFullScreenGradientScrollView();
+  }
 
-                                                          BlocProvider.of<
-                                                                      PageViewBloc>(
-                                                                  context)
-                                                              .add(SetPage(1));
-                                                        })
-                                                    : IconButton(
-                                                        padding:
-                                                            EdgeInsets.all(50),
-                                                        onPressed: () {
-                                                          Scaffold.of(context)
-                                                            ..removeCurrentSnackBar()
-                                                            ..showSnackBar(
-                                                                SnackBar(
-                                                              content: Text(
-                                                                  'Please wait until all images have finished uploading.'),
-                                                            ));
-                                                        },
-                                                        icon: Icon(
-                                                          Icons.check,
-                                                          color: Colors.white38,
-                                                          size: 40,
-                                                        ),
-                                                      );
-                                              });
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                ]),
+  Widget _renderFullScreenGradientScrollView() {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(this.context).requestFocus(new FocusNode());
+        },
+        child: BackgroundGradientProvider(
+          child: SafeArea(
+            child: LayoutBuilder(builder: (context, layoutConstraints) {
+              return ScrollConfiguration(
+                behavior: NoGlowScroll(showLeading: true),
+                child: SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints:
+                        BoxConstraints(minHeight: layoutConstraints.maxHeight),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 80,
                           ),
-                        ),
+                          Expanded(
+                            child: _entryEditComponent(context),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              _renderAddPhotoButton(context),
+                              _renderSaveCheck(),
+                            ],
+                          )
+                        ],
                       ),
-                    );
-                  }),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ));
-        });
+              );
+            }),
+          ),
+        ),
+      ),
+    );
   }
 
   void handlePickDate(context) async {
@@ -315,6 +170,52 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     }
   }
 
+  Widget _entryEditComponent(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          AppLocalizations.of(context).gratefulPrompt,
+          style: Theme.of(context).primaryTextTheme.headline,
+          textAlign: TextAlign.left,
+        ),
+        DateSelectorButton(
+          onPressed: handlePickDate,
+          selectedDate: _journalEntry.date,
+          locale: Localizations.localeOf(context),
+        ),
+        Divider(
+          color: Colors.white,
+        ),
+        SizedBox(height: 10),
+        JournalInput(
+          onChanged: (text) {
+            setState(() {
+              _journalEntry.body = text;
+            });
+          },
+          controller: _journalEntryController,
+        ),
+      ]),
+    );
+  }
+
+  Widget _photoSliderProvider() {
+    return BlocBuilder(
+        bloc: _imageHandlerBloc,
+        builder: (context, imageHandlerState) {
+          if (imageHandlerState is InitialImageHandlerState) {
+            _imageHandlerBloc.add(SetPhotographs(_journalEntry.photographs));
+          } else if (imageHandlerState is PhotographsLoaded) {
+            return Container(
+              child: _editablePhotoSlider(
+                  context, _renderPhotoBlocks(imageHandlerState.photographs)),
+            );
+          }
+          return Container();
+        });
+  }
+
   Widget _editablePhotoSlider(BuildContext context, List<Widget> children) {
     return Container(
       height: imageDimension,
@@ -326,6 +227,70 @@ class _EditJournalEntryState extends State<EditJournalEntry>
           ),
         ),
       ),
+    );
+  }
+
+  _renderSaveCheck() {
+    return BlocBuilder(
+      bloc: _imageHandlerBloc,
+      builder: (c, data) {
+        final imageCompletionStream = Observable.combineLatest(
+            _imageHandlerBloc.photographs
+                .where((photo) => photo is FilePhoto)
+                .map((photo) => (photo as FilePhoto).uploadTask.events)
+                .map<Stream<bool>>((events) => events.transform(
+                        StreamTransformer.fromHandlers(
+                            handleData: (data, sink) {
+                      if (data.snapshot.bytesTransferred /
+                              data.snapshot.totalByteCount ==
+                          1) {
+                        sink.add(true);
+                      } else {
+                        sink.add(false);
+                      }
+                    }))), (data) {
+          return data.every((d) => d);
+        }).startWith(_imageHandlerBloc.photographs
+                    .where((ph) => ph is FilePhoto)
+                    .length >
+                0
+            ? false
+            : true);
+        return StreamBuilder(
+            stream: imageCompletionStream,
+            builder: (context, streamSnapshot) {
+              return streamSnapshot.data == true
+                  ? IconButton(
+                      padding: EdgeInsets.all(50),
+                      icon: Icon(Icons.check, size: 40),
+                      color: Colors.white,
+                      onPressed: () {
+                        if (_journalEntry.body != null) {
+                          _editJournalEntryBloc
+                              .add(SaveJournalEntry(_journalEntry));
+                          this.clearEditState();
+                        }
+
+                        BlocProvider.of<PageViewBloc>(context).add(SetPage(1));
+                      })
+                  : IconButton(
+                      padding: EdgeInsets.all(50),
+                      onPressed: () {
+                        Scaffold.of(context)
+                          ..removeCurrentSnackBar()
+                          ..showSnackBar(SnackBar(
+                            content: Text(
+                                'Please wait until all images have finished uploading.'),
+                          ));
+                      },
+                      icon: Icon(
+                        Icons.check,
+                        color: Colors.white38,
+                        size: 40,
+                      ),
+                    );
+            });
+      },
     );
   }
 

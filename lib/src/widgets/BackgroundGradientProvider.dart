@@ -13,7 +13,7 @@ class BackgroundGradientProvider extends StatelessWidget {
               colors: [Colors.blue[900], Colors.blue[600]],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter)),
-      child: child,
+      child: SizedBox.expand(child: child),
     );
   }
 }
