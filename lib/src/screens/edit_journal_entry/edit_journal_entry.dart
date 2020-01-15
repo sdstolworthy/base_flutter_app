@@ -2,11 +2,10 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
-import 'package:grateful/src/blocs/imageHandler/bloc.dart';
-import 'package:grateful/src/blocs/journalEntryFeed/item_bloc.dart';
-import 'package:grateful/src/blocs/pageView/page_view_bloc.dart';
-import 'package:grateful/src/blocs/pageView/page_view_event.dart';
+import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
+import 'package:grateful/src/blocs/image_handler/bloc.dart';
+import 'package:grateful/src/blocs/journal_entry_feed/item_bloc.dart';
+import 'package:grateful/src/blocs/page_view/bloc.dart';
 import 'package:grateful/src/config/environment.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,11 +14,11 @@ import 'package:grateful/src/repositories/cloudMessaging/cloudMessagingRepositor
 import 'package:grateful/src/repositories/files/fileRepository.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/messaging.dart';
-import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
-import 'package:grateful/src/widgets/DateSelectorButton.dart';
-import 'package:grateful/src/widgets/ImageUploader.dart';
-import 'package:grateful/src/widgets/JournalEntryInput.dart';
-import 'package:grateful/src/widgets/NoGlowConfiguration.dart';
+import 'package:grateful/src/widgets/background_gradient_provider.dart';
+import 'package:grateful/src/widgets/date_select_button.dart';
+import 'package:grateful/src/widgets/image_uploader.dart';
+import 'package:grateful/src/widgets/journal_entry_input.dart';
+import 'package:grateful/src/widgets/no_glow_configuration.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 

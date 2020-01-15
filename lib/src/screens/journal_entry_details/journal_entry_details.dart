@@ -1,16 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
-import 'package:grateful/src/blocs/journalEntryFeed/bloc.dart';
+import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
+import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
-import 'package:grateful/src/screens/JournalPageView/JournalPageView.dart';
+import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
-import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
-import 'package:grateful/src/widgets/JournalEntryHero.dart';
-import 'package:grateful/src/widgets/PhotoViewer.dart';
+import 'package:grateful/src/widgets/background_gradient_provider.dart';
+import 'package:grateful/src/widgets/photo_viewer.dart';
 import 'package:intl/intl.dart';
 
 class JournalEntryDetailArguments {

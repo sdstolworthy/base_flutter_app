@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:grateful/src/blocs/journalEntryFeed/bloc.dart';
+import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import './bloc.dart';
 

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:grateful/src/screens/AboutApp/AboutApp.dart';
-import 'package:grateful/src/screens/EditJournalEntry/EditJournalEntry.dart';
-import 'package:grateful/src/screens/JournalEntryFeed/JournalEntryFeed.dart';
-import 'package:grateful/src/screens/JournalEntryDetails/JournalEntryDetails.dart';
-import 'package:grateful/src/screens/JournalPageView/JournalPageView.dart';
-import 'package:grateful/src/screens/Onboarding/Login/LoginScreen.dart';
-import 'package:grateful/src/screens/Onboarding/Welcome/WelcomeScreen.dart';
+import 'package:grateful/src/screens/about_app/about_app.dart';
+import 'package:grateful/src/screens/edit_journal_entry/edit_journal_entry.dart';
+import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart';
+import 'package:grateful/src/screens/journal_entry_details/journal_entry_details.dart';
+import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
+import 'package:grateful/src/screens/login/login.dart';
+import 'package:grateful/src/screens/welcome/welcome.dart';
 import 'package:grateful/src/theme/theme.dart';
 
 class FlutterAppRoutes {
