@@ -3,7 +3,7 @@ import 'package:grateful/src/blocs/authentication/bloc.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
-import 'package:grateful/src/widgets/LanguagePicker.dart';
+import 'package:grateful/src/widgets/language_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppDrawer extends StatelessWidget {

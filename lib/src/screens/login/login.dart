@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
-import 'package:grateful/src/blocs/loginScreen/bloc.dart';
+import 'package:grateful/src/blocs/login_screen/bloc.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
-import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
-import 'package:grateful/src/widgets/LoginFormField.dart';
-import 'package:grateful/src/widgets/LogoHero.dart';
-import 'package:grateful/src/widgets/OnboardingButton.dart';
+import 'package:grateful/src/widgets/background_gradient_provider.dart';
+import 'package:grateful/src/widgets/login_form_field.dart';
+import 'package:grateful/src/widgets/logo_hero.dart';
+import 'package:grateful/src/widgets/onboarding_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 

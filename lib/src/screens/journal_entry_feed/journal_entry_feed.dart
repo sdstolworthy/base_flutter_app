@@ -2,19 +2,19 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:grateful/src/blocs/journalEntryFeed/bloc.dart';
-import 'package:grateful/src/blocs/pageView/bloc.dart';
+import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
+import 'package:grateful/src/blocs/page_view/bloc.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
-import 'package:grateful/src/screens/JournalEntryDetails/JournalEntryDetails.dart';
+import 'package:grateful/src/screens/journal_entry_details/journal_entry_details.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
-import 'package:grateful/src/widgets/AppDrawer/drawer.dart';
-import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
-import 'package:grateful/src/widgets/JournalFeedListItem.dart';
+import 'package:grateful/src/widgets/drawer.dart';
+import 'package:grateful/src/widgets/background_gradient_provider.dart';
+import 'package:grateful/src/widgets/journal_feed_list_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grateful/src/widgets/NoGlowConfiguration.dart';
-import 'package:grateful/src/widgets/YearSeparator.dart';
+import 'package:grateful/src/widgets/no_glow_configuration.dart';
+import 'package:grateful/src/widgets/year_separator.dart';
 
 class JournalEntryFeed extends StatefulWidget {
   @override

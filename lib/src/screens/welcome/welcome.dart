@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
-import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
-import 'package:grateful/src/widgets/LanguagePicker.dart';
-import 'package:grateful/src/widgets/LogoHero.dart';
-import 'package:grateful/src/widgets/OnboardingButton.dart';
+import 'package:grateful/src/widgets/background_gradient_provider.dart';
+import 'package:grateful/src/widgets/language_picker.dart';
+import 'package:grateful/src/widgets/logo_hero.dart';
+import 'package:grateful/src/widgets/onboarding_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
   build(context) {
