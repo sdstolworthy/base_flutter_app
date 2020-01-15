@@ -56,13 +56,16 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   EditJournalEntryBloc _editJournalEntryBloc;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   final FileRepository fileRepository = FileRepository();
-  final List<ImageHandlerBloc> _imageHandlerBlocs = [];
+  List<ImageHandlerBloc> _imageHandlerBlocs = [];
   JournalEntry _journalEntry;
   final TextEditingController _journalEntryController = TextEditingController();
 
   bool get wantKeepAlive => true;
 
   initState() {
+    setState(() {
+      _journalEntry = this._journalEntry;
+    });
     _editJournalEntryBloc = EditJournalEntryBloc(
         journalFeedBloc: BlocProvider.of<JournalFeedBloc>(context));
     super.initState();
@@ -96,6 +99,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     setState(() {
       _journalEntry = JournalEntry();
       isEdit = false;
+      _imageHandlerBlocs = [];
       _journalEntryController.value =
           TextEditingValue(text: _journalEntry.body ?? '');
     });
@@ -241,7 +245,19 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     );
   }
 
-  _renderSaveCheck(BuildContext context) {
+  _renderSaveCheck(BuildContext saveContext) {
+    final isJournalEntryNull = this._journalEntry.body == null;
+    return IconButton(
+        padding: EdgeInsets.all(50),
+        icon: Icon(Icons.check, size: 40),
+        onPressed: isJournalEntryNull
+            ? null
+            : () {
+                _handleSavePress(saveContext);
+              });
+  }
+
+  _handleSavePress(BuildContext saveContext) {
     final photosAreFinishedUploading =
         _imageHandlerBlocs.fold<bool>(true, (prev, curr) {
       if (prev == false) {
@@ -249,16 +265,9 @@ class _EditJournalEntryState extends State<EditJournalEntry>
       }
       return curr.isUploaded;
     });
-    return IconButton(
-        padding: EdgeInsets.all(50),
-        icon: Icon(Icons.check, size: 40),
-        color: photosAreFinishedUploading ? Colors.white : Colors.white38,
-        onPressed: photosAreFinishedUploading
-            ? _handleSavePress
-            : _handleSaveDisabledPress(context));
-  }
-
-  _handleSavePress() {
+    if (!photosAreFinishedUploading) {
+      return _handleSaveDisabledPress(saveContext);
+    }
     if (_journalEntry.body != null) {
       _editJournalEntryBloc.add(SaveJournalEntry(_journalEntry.copyWith(
           photographs: _imageHandlerBlocs

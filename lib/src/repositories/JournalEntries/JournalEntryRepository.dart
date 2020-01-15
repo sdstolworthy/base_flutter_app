@@ -32,7 +32,7 @@ class JournalEntryRepository {
             .toList();
   }
 
-  saveItem(JournalEntry journalEntry) async {
+  Future<JournalEntry> saveItem(JournalEntry journalEntry) async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     await Firestore.instance
         .collection(_userCollectionName)
