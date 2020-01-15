@@ -10,6 +10,5 @@ class NotificationServiceBloc extends Bloc<NotificationServiceEvent, Notificatio
   Stream<NotificationServiceState> mapEventToState(
     NotificationServiceEvent event,
   ) async* {
-    // TODO: Add Logic
   }
 }

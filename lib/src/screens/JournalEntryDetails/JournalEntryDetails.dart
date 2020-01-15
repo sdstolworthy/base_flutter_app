@@ -12,7 +12,6 @@ import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
 import 'package:grateful/src/widgets/JournalEntryHero.dart';
 import 'package:grateful/src/widgets/PhotoViewer.dart';
 import 'package:intl/intl.dart';
-import 'package:photo_view/photo_view.dart';
 
 class JournalEntryDetailArguments {
   JournalEntry journalEntry;

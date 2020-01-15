@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 abstract class FileUploadEvent {}
 
 class SubscribeToProgress extends FileUploadEvent {
-  StorageUploadTask uploadTask;
+  final StorageUploadTask uploadTask;
   SubscribeToProgress(this.uploadTask);
 }
 

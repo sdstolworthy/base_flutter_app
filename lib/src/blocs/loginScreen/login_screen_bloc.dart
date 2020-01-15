@@ -70,6 +70,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       });
       yield InitialLoginScreenState();
     } catch (e, s) {
+      print(s);
       print("Error during Authentication");
       _authenticationBloc.add(Unauthenticate());
       yield LoginFailure();

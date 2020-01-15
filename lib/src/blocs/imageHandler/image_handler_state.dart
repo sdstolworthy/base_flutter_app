@@ -12,7 +12,7 @@ class InitialImageHandlerState extends ImageHandlerState {
 }
 
 class FileUploaded extends ImageHandlerState {
-  FilePhoto placeholder;
+  final FilePhoto placeholder;
   FileUploaded(NetworkPhoto photograph, this.placeholder) : super(photograph);
 }
 

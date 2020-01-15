@@ -8,7 +8,7 @@ import 'package:grateful/src/widgets/DeletableResource.dart';
 typedef void OnRemove(ImageHandlerBloc imageHandlerBloc);
 
 class ImageUploader extends StatelessWidget {
-  OnRemove _onRemove;
+  final OnRemove _onRemove;
 
   ImageUploader({@required onRemove}) : _onRemove = onRemove;
 

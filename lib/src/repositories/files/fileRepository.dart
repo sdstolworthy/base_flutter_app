@@ -5,8 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
 class FileRepository {
-  // TODO: toggle for prod
-  static const _storageBucketUrl = 'gs://dev-gratitude-journal.appspot.com';
+  static const _storageBucketUrl = 'gs://grateful-journal.appspot.com/';
 
   final FirebaseStorage _storage =
       FirebaseStorage(storageBucket: _storageBucketUrl);

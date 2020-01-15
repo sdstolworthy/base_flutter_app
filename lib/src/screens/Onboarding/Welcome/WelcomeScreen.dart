@@ -11,7 +11,6 @@ class WelcomeScreen extends StatelessWidget {
   build(context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
 
-    final theme = Theme.of(context);
     return Scaffold(
       body: LayoutBuilder(builder: (_, viewportConstraints) {
         return BackgroundGradientProvider(
