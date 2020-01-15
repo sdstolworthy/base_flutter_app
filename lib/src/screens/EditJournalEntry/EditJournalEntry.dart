@@ -1,7 +1,5 @@
-import 'dart:async';
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/editJournalEntry/bloc.dart';
@@ -18,52 +16,51 @@ import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/messaging.dart';
 import 'package:grateful/src/widgets/BackgroundGradientProvider.dart';
 import 'package:grateful/src/widgets/DateSelectorButton.dart';
-import 'package:grateful/src/widgets/DeletableResource.dart';
 import 'package:grateful/src/widgets/ImageUploader.dart';
 import 'package:grateful/src/widgets/JournalEntryInput.dart';
 import 'package:grateful/src/widgets/NoGlowConfiguration.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
 class EditJournalEntryArgs {
-  JournalEntry journalEntry;
-
   EditJournalEntryArgs({this.journalEntry});
+
+  JournalEntry journalEntry;
 }
 
 class EditJournalEntry extends StatefulWidget {
-  bool get wantKeepAlive => true;
+  EditJournalEntry({this.item});
 
   final JournalEntry item;
-  EditJournalEntry({this.item});
+
   @override
   State<StatefulWidget> createState() {
     return _EditJournalEntryState(journalEntry: this.item);
   }
+
+  bool get wantKeepAlive => true;
 }
 
 const double imageDimension = 125.0;
 
 class _EditJournalEntryState extends State<EditJournalEntry>
     with AutomaticKeepAliveClientMixin {
-  bool get wantKeepAlive => true;
-
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
-  JournalEntry _journalEntry;
-  bool isEdit;
-  EditJournalEntryBloc _editJournalEntryBloc;
-
   _EditJournalEntryState({JournalEntry journalEntry})
       : this._journalEntry = journalEntry ?? JournalEntry(),
         isEdit = journalEntry != null {
     _journalEntryController.value = TextEditingValue(text: '');
   }
 
+  bool isEdit;
+
+  EditJournalEntryBloc _editJournalEntryBloc;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final FileRepository fileRepository = FileRepository();
+  final List<ImageHandlerBloc> _imageHandlerBlocs = [];
+  JournalEntry _journalEntry;
   final TextEditingController _journalEntryController = TextEditingController();
 
-  final ImageHandlerBloc _imageHandlerBloc = ImageHandlerBloc();
+  bool get wantKeepAlive => true;
 
   initState() {
     _editJournalEntryBloc = EditJournalEntryBloc(
@@ -91,6 +88,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
 
   dispose() {
     _editJournalEntryBloc.close();
+    this._imageHandlerBlocs.map((bloc) => bloc?.close());
     super.dispose();
   }
 
@@ -100,7 +98,6 @@ class _EditJournalEntryState extends State<EditJournalEntry>
       isEdit = false;
       _journalEntryController.value =
           TextEditingValue(text: _journalEntry.body ?? '');
-      _imageHandlerBloc.add(SetPhotographs([]));
     });
   }
 
@@ -108,55 +105,62 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     super.build(c);
     _firebaseMessaging.requestNotificationPermissions();
     _firebaseMessaging.getToken().then(CloudMessagingRepository().setId);
-    return _renderFullScreenGradientScrollView();
+    return _renderFullScreenGradientScrollView(
+      child: Builder(builder: (context) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: _entryEditComponent(context),
+            ),
+            _photoSliderProvider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _renderAddPhotoButton(context),
+                _renderSaveCheck(context),
+              ],
+            )
+          ],
+        );
+      }),
+    );
   }
 
-  Widget _renderFullScreenGradientScrollView() {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(this.context).requestFocus(new FocusNode());
-        },
-        child: BackgroundGradientProvider(
-          child: SafeArea(
-            child: LayoutBuilder(builder: (context, layoutConstraints) {
-              return ScrollConfiguration(
-                behavior: NoGlowScroll(showLeading: true),
-                child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minHeight: layoutConstraints.maxHeight),
-                    child: IntrinsicHeight(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 80,
-                          ),
-                          Expanded(
-                            child: _entryEditComponent(context),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              _renderAddPhotoButton(context),
-                              _renderSaveCheck(),
-                            ],
-                          )
-                        ],
+  Widget _renderFullScreenGradientScrollView({@required Widget child}) {
+    return NestedScrollView(
+      headerSliverBuilder: (context, isScrolled) {
+        return [_renderSliverAppBar(this.context)];
+      },
+      body: Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(this.context).requestFocus(new FocusNode());
+          },
+          child: BackgroundGradientProvider(
+            child: SafeArea(
+              child: LayoutBuilder(builder: (context, layoutConstraints) {
+                return ScrollConfiguration(
+                  behavior: NoGlowScroll(showLeading: true),
+                  child: SingleChildScrollView(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                          minHeight: layoutConstraints.maxHeight),
+                      child: IntrinsicHeight(
+                        child: child,
                       ),
                     ),
                   ),
-                ),
-              );
-            }),
+                );
+              }),
+            ),
           ),
         ),
       ),
     );
   }
 
-  void handlePickDate(context) async {
+  void _handlePickDate(context) async {
     DateTime newDate = await showDatePicker(
       context: context,
       initialDate: _journalEntry.date ?? DateTime.now(),
@@ -180,7 +184,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
           textAlign: TextAlign.left,
         ),
         DateSelectorButton(
-          onPressed: handlePickDate,
+          onPressed: _handlePickDate,
           selectedDate: _journalEntry.date,
           locale: Localizations.localeOf(context),
         ),
@@ -200,20 +204,27 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     );
   }
 
+  Widget _renderSliverAppBar(context) {
+    return SliverAppBar(
+      expandedHeight: 0,
+      floating: false,
+      pinned: false,
+      leading: Container(),
+      actions: <Widget>[
+        if (isEdit)
+          FlatButton(
+            child: Icon(
+              Icons.clear,
+              color: Colors.white,
+            ),
+            onPressed: clearEditState,
+          )
+      ],
+    );
+  }
+
   Widget _photoSliderProvider() {
-    return BlocBuilder(
-        bloc: _imageHandlerBloc,
-        builder: (context, imageHandlerState) {
-          if (imageHandlerState is InitialImageHandlerState) {
-            _imageHandlerBloc.add(SetPhotographs(_journalEntry.photographs));
-          } else if (imageHandlerState is PhotographsLoaded) {
-            return Container(
-              child: _editablePhotoSlider(
-                  context, _renderPhotoBlocks(imageHandlerState.photographs)),
-            );
-          }
-          return Container();
-        });
+    return _editablePhotoSlider(context, _renderPhotoBlocks());
   }
 
   Widget _editablePhotoSlider(BuildContext context, List<Widget> children) {
@@ -230,110 +241,46 @@ class _EditJournalEntryState extends State<EditJournalEntry>
     );
   }
 
-  _renderSaveCheck() {
-    return BlocBuilder(
-      bloc: _imageHandlerBloc,
-      builder: (c, data) {
-        final imageCompletionStream = Observable.combineLatest(
-            _imageHandlerBloc.photographs
-                .where((photo) => photo is FilePhoto)
-                .map((photo) => (photo as FilePhoto).uploadTask.events)
-                .map<Stream<bool>>((events) => events.transform(
-                        StreamTransformer.fromHandlers(
-                            handleData: (data, sink) {
-                      if (data.snapshot.bytesTransferred /
-                              data.snapshot.totalByteCount ==
-                          1) {
-                        sink.add(true);
-                      } else {
-                        sink.add(false);
-                      }
-                    }))), (data) {
-          return data.every((d) => d);
-        }).startWith(_imageHandlerBloc.photographs
-                    .where((ph) => ph is FilePhoto)
-                    .length >
-                0
-            ? false
-            : true);
-        return StreamBuilder(
-            stream: imageCompletionStream,
-            builder: (context, streamSnapshot) {
-              return streamSnapshot.data == true
-                  ? IconButton(
-                      padding: EdgeInsets.all(50),
-                      icon: Icon(Icons.check, size: 40),
-                      color: Colors.white,
-                      onPressed: () {
-                        if (_journalEntry.body != null) {
-                          _editJournalEntryBloc
-                              .add(SaveJournalEntry(_journalEntry));
-                          this.clearEditState();
-                        }
-
-                        BlocProvider.of<PageViewBloc>(context).add(SetPage(1));
-                      })
-                  : IconButton(
-                      padding: EdgeInsets.all(50),
-                      onPressed: () {
-                        Scaffold.of(context)
-                          ..removeCurrentSnackBar()
-                          ..showSnackBar(SnackBar(
-                            content: Text(
-                                'Please wait until all images have finished uploading.'),
-                          ));
-                      },
-                      icon: Icon(
-                        Icons.check,
-                        color: Colors.white38,
-                        size: 40,
-                      ),
-                    );
-            });
-      },
-    );
+  _renderSaveCheck(BuildContext context) {
+    final photosAreFinishedUploading =
+        _imageHandlerBlocs.fold<bool>(true, (prev, curr) {
+      if (prev == false) {
+        return false;
+      }
+      return curr.isUploaded;
+    });
+    return IconButton(
+        padding: EdgeInsets.all(50),
+        icon: Icon(Icons.check, size: 40),
+        color: photosAreFinishedUploading ? Colors.white : Colors.white38,
+        onPressed: photosAreFinishedUploading
+            ? _handleSavePress
+            : _handleSaveDisabledPress(context));
   }
 
-  _renderPhotoBlocks(List<Photograph> photographs) {
-    final photoWidgets = photographs.map((photograph) {
-      if (photograph is NetworkPhoto) {
-        return DeletableResource(
-          onRemove: () {
-            _imageHandlerBloc.add(SetPhotographs(List.from(
-                _journalEntry.photographs
-                  ..removeWhere((p) => p.imageUrl == photograph.imageUrl))));
-          },
-          child: Container(
-            height: imageDimension,
-            width: imageDimension,
-            child: CachedNetworkImage(
-              imageUrl: photograph.imageUrl,
-              fit: BoxFit.cover,
-            ),
-          ),
-        );
-      } else if (photograph is FilePhoto) {
-        return ImageUploader(
-          uploadTask: photograph.uploadTask,
-          child: Container(
-            height: imageDimension,
-            width: imageDimension,
-            child: Image.file(
-              photograph.file,
-              fit: BoxFit.cover,
-            ),
-          ),
-          file: photograph.file,
-          onComplete: (String imageUrl) {
-            final newPhoto = NetworkPhoto(imageUrl: imageUrl);
-            _imageHandlerBloc.add(ReplaceFilePhotoWithNetworkPhoto(
-                photograph: newPhoto, filePhotoGuid: photograph.guid));
+  _handleSavePress() {
+    if (_journalEntry.body != null) {
+      _editJournalEntryBloc.add(SaveJournalEntry(_journalEntry));
+      this.clearEditState();
+    }
 
-            _journalEntry.photographs.add(newPhoto);
-          },
-        );
-      }
-      return Container();
+    BlocProvider.of<PageViewBloc>(context).add(SetPage(1));
+  }
+
+  _handleSaveDisabledPress(BuildContext context) {
+    return () {
+      Scaffold.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(SnackBar(
+          content:
+              Text('Please wait until all images have finished uploading.'),
+        ));
+    };
+  }
+
+  _renderPhotoBlocks() {
+    final photoWidgets = _imageHandlerBlocs.map((_bloc) {
+      return BlocProvider(builder: (_) => _bloc, child: ImageUploader());
     }).toList();
 
     return photoWidgets;
@@ -348,11 +295,9 @@ class _EditJournalEntryState extends State<EditJournalEntry>
           if (file == null) {
             return;
           }
-          final FilePhoto photo = new FilePhoto(
-              file: file,
-              guid: Uuid().v4(),
-              uploadTask: await FileRepository().uploadFile(file));
-          _imageHandlerBloc.add(AddPhotograph(photo));
+          final FilePhoto photo = new FilePhoto(file: file, guid: Uuid().v4());
+          _imageHandlerBlocs.add(new ImageHandlerBloc(
+              photograph: photo, fileRepository: fileRepository));
         },
         child: Column(
           children: <Widget>[

@@ -73,12 +73,6 @@ class FilePhoto extends Photograph {
   final File file;
   final String title;
   final String description;
-  final StorageUploadTask uploadTask;
-  FilePhoto(
-      {String guid,
-      @required this.file,
-      this.title,
-      this.description,
-      @required this.uploadTask})
+  FilePhoto({String guid, @required this.file, this.title, this.description})
       : guid = guid ?? Uuid().v4();
 }

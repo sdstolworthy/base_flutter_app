@@ -16,6 +16,17 @@ class ReplaceFilePhotoWithNetworkPhoto extends ImageHandlerEvent {
       {@required this.photograph, @required this.filePhotoGuid});
 }
 
+class UploadHasProgress extends ImageHandlerEvent {
+  final Photograph photograph;
+  final double progress;
+  UploadHasProgress({@required this.progress, @required this.photograph});
+}
+
+class UploadCompleted extends ImageHandlerEvent {
+  final NetworkPhoto networkPhoto;
+  UploadCompleted(this.networkPhoto);
+}
+
 class SetPhotographs extends ImageHandlerEvent {
   final List<Photograph> photographs;
   SetPhotographs(this.photographs);
