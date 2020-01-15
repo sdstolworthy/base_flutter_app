@@ -159,124 +159,38 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                             },
                             body: ListView(
                               children: <Widget>[
-                                Container(
-                                  height: journalEntry.photographs != null &&
-                                          journalEntry.photographs.length > 0
-                                      ? 250
-                                      : 0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 20),
-                                    child: Container(
-                                        child: Center(
-                                      child: SingleChildScrollView(
-                                          scrollDirection: Axis.horizontal,
-                                          child: Row(
-                                            children: <Widget>[
-                                              ...(journalEntry.photographs ??
-                                                      [])
-                                                  .map((p) =>
-                                                      CachedNetworkImage(
-                                                        imageUrl: p.imageUrl,
-                                                        placeholder: (c, i) {
-                                                          return Container(
-                                                            width: 150,
-                                                            child: Center(
-                                                              child:
-                                                                  CircularProgressIndicator(),
-                                                            ),
-                                                          );
-                                                        },
-                                                        imageBuilder: (c, i) {
-                                                          return Material(
-                                                            color: Colors
-                                                                .transparent,
-                                                            child: InkWell(
-                                                              onTap: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .push(MaterialPageRoute(
-                                                                        builder: (c) => PhotoViewer(
-                                                                              imageProvider: i,
-                                                                            )));
-                                                              },
-                                                              child: Image(
-                                                                width: 150,
-                                                                height: 250,
-                                                                fit: BoxFit
-                                                                    .cover,
-                                                                image: i,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        },
-                                                      ))
-                                                  .toList()
-                                            ],
-                                          )),
-                                    )),
-                                  ),
-                                ),
-                                FractionalTranslation(
-                                  translation: _animation.value,
-                                  child: Container(
-                                    constraints: BoxConstraints(
-                                        minHeight:
-                                            viewportConstraints.maxHeight),
-                                    decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black38,
-                                            spreadRadius: 1,
-                                            blurRadius: 2.0,
-                                            offset: Offset(0, 1),
-                                          )
-                                        ],
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20)),
-                                        color: Colors.white),
+                                _renderPhotoSlider(),
+                                _renderContentSleigh(
                                     child: Padding(
                                       padding: const EdgeInsets.all(20),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                    DateFormat.yMMMMd().format(
-                                                        journalEntry.date),
-                                                    style: theme.accentTextTheme
-                                                        .headline
-                                                        .copyWith(
-                                                            fontStyle: FontStyle
-                                                                .italic)),
-                                              ],
+                                      child: IntrinsicHeight(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10),
+                                              child: Text(
+                                                  DateFormat.yMMMMd().format(
+                                                      journalEntry.date),
+                                                  style: theme
+                                                      .accentTextTheme.headline
+                                                      .copyWith(
+                                                          fontStyle: FontStyle
+                                                              .italic)),
                                             ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: <Widget>[
-                                              Flexible(
-                                                  child: Column(
-                                                children: <Widget>[
-                                                  Text(journalEntry.body,
-                                                      style: Theme.of(context)
-                                                          .accentTextTheme
-                                                          .body1)
-                                                ],
-                                              )),
-                                            ],
-                                          ),
-                                        ],
+                                            Flexible(
+                                                child: Text(journalEntry.body,
+                                                    style: Theme.of(context)
+                                                        .accentTextTheme
+                                                        .body1)),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                                    constraints: viewportConstraints),
                               ],
                             ),
                           ),
@@ -285,6 +199,82 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                     });
                   }),
             )),
+      ),
+    );
+  }
+
+  Widget _renderContentSleigh(
+      {@required Widget child, @required BoxConstraints constraints}) {
+    return FractionalTranslation(
+        translation: _animation.value,
+        child: Container(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black38,
+                    spreadRadius: 1,
+                    blurRadius: 2.0,
+                    offset: Offset(0, 1),
+                  )
+                ],
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+                color: Colors.white),
+            child: child));
+  }
+
+  Widget _renderPhotoSlider() {
+    return Container(
+      height: journalEntry.photographs != null &&
+              journalEntry.photographs.length > 0
+          ? 250
+          : 0,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Container(
+            child: Center(
+          child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: <Widget>[
+                  ...(journalEntry.photographs ?? [])
+                      .map((p) => CachedNetworkImage(
+                            imageUrl: p.imageUrl,
+                            placeholder: (c, i) {
+                              return Container(
+                                width: 150,
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            },
+                            imageBuilder: (c, i) {
+                              return Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (c) => PhotoViewer(
+                                                  imageProvider: i,
+                                                )));
+                                  },
+                                  child: Image(
+                                    width: 150,
+                                    height: 250,
+                                    fit: BoxFit.cover,
+                                    image: i,
+                                  ),
+                                ),
+                              );
+                            },
+                          ))
+                      .toList()
+                ],
+              )),
+        )),
       ),
     );
   }
