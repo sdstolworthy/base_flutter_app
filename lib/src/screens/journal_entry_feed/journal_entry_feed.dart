@@ -15,8 +15,11 @@ import 'package:grateful/src/widgets/journal_feed_list_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/widgets/no_glow_configuration.dart';
 import 'package:grateful/src/widgets/year_separator.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 
 class JournalEntryFeed extends StatefulWidget {
+  bool get wantKeepAlive => false;
+
   @override
   State<StatefulWidget> createState() {
     return _JournalEntryFeedState();
@@ -188,10 +191,13 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
     return entriesByYear.keys.fold<List<Widget>>([], (p, c) {
       return p
         ..addAll([
-          YearSeparator(c.toString()),
-          ...entriesByYear[c].map((entry) {
-            return _renderEntryListItem(entry);
-          })
+          StickyHeader(
+            header: YearSeparator(c.toString()),
+            content: Column(
+                children: entriesByYear[c].map((entry) {
+              return _renderEntryListItem(entry);
+            }).toList()),
+          )
         ]);
     });
   }

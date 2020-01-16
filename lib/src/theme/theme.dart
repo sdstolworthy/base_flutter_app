@@ -22,7 +22,7 @@ ThemeData gratefulTheme(ThemeData appTheme) {
             labelStyle:
                 TextStyle(color: Colors.white70, fontFamily: 'Raleway')),
         primaryColorLight: Colors.white,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Colors.white70),
         primaryTextTheme: TextTheme(
             button: appTheme.primaryTextTheme.button
                 .copyWith(fontFamily: 'Raleway'),

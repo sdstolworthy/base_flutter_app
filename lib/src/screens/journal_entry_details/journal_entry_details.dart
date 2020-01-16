@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
 import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
+import 'package:grateful/src/helpers/get_platform_store_links.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
@@ -11,6 +12,7 @@ import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/background_gradient_provider.dart';
 import 'package:grateful/src/widgets/photo_viewer.dart';
 import 'package:intl/intl.dart';
+import 'package:share/share.dart';
 
 class JournalEntryDetailArguments {
   JournalEntry journalEntry;
@@ -32,6 +34,11 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
     with TickerProviderStateMixin {
   Animation<double> _animationController;
   Animation<Offset> _animation;
+
+  String _getShareText(JournalEntry journalEntry) {
+    return '${journalEntry.body}\n\nI show my gratitude with Grateful. Download it here:\n${getPlatformStoreLink()}';
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -109,14 +116,21 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                 });
           },
         ),
-        FlatButton(
-          child: Icon(
+        IconButton(
+          icon: Icon(
             Icons.edit,
             color: Colors.white,
           ),
           onPressed: () {
             rootNavigationService.navigateTo(FlutterAppRoutes.journalPageView,
                 arguments: JournalPageArguments(entry: journalEntry));
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.share),
+          color: Colors.white,
+          onPressed: () {
+            Share.share(_getShareText(journalEntry));
           },
         )
       ],

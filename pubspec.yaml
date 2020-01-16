@@ -35,13 +35,14 @@ dependencies:
   flutter_auth_buttons: ^0.6.0
   google_fonts: 0.3.2
   url_launcher:
+  sticky_headers: ^0.1.8+1
   flutter_localizations:
     sdk: flutter
   flutter_cupertino_localizations:
   intl:
   meta:
   uuid:
-  share: ^0.6.3+1
+  share: ^0.6.3+5
   image_picker:
   photo_view: ^0.7.0
   cached_network_image: ^2.0.0

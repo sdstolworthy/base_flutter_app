@@ -5,6 +5,7 @@ import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/language_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share/share.dart';
 
 class AppDrawer extends StatelessWidget {
   build(context) {
@@ -31,6 +32,18 @@ class AppDrawer extends StatelessWidget {
               ListTile(
                 title: LanguagePicker(),
                 leading: Icon(Icons.language, color: theme.iconTheme.color),
+              ),
+              ListTile(
+                title:
+                    Text('Share Grateful', style: theme.primaryTextTheme.body1),
+                leading: Icon(
+                  Icons.share,
+                  color: theme.iconTheme.color,
+                ),
+                onTap: () {
+                  Share.share(
+                      'I use Grateful remember to show gratitude. Download it at https://begrateful.app');
+                },
               ),
               ListTile(
                 leading: Icon(Icons.vpn_key, color: theme.iconTheme.color),
