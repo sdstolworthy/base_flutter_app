@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
+import 'package:grateful/src/config/config.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
@@ -34,15 +35,15 @@ class AppDrawer extends StatelessWidget {
                 leading: Icon(Icons.language, color: theme.iconTheme.color),
               ),
               ListTile(
-                title:
-                    Text('Share Grateful', style: theme.primaryTextTheme.body1),
+                title: Text(AppLocalizations.of(context).shareGrateful,
+                    style: theme.primaryTextTheme.body1),
                 leading: Icon(
                   Icons.share,
                   color: theme.iconTheme.color,
                 ),
                 onTap: () {
                   Share.share(
-                      'I use Grateful remember to show gratitude. Download it at https://begrateful.app');
+                      '${AppLocalizations.of(context).shareJournalEntryText} ${Config.oneLinkDownload}');
                 },
               ),
               ListTile(

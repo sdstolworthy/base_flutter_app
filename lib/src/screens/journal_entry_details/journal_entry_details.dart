@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
 import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
-import 'package:grateful/src/helpers/get_platform_store_links.dart';
+import 'package:grateful/src/config/config.dart';
 import 'package:grateful/src/models/JournalEntry.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
+import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
 import 'package:grateful/src/widgets/background_gradient_provider.dart';
@@ -35,8 +36,8 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
   Animation<double> _animationController;
   Animation<Offset> _animation;
 
-  String _getShareText(JournalEntry journalEntry) {
-    return '${journalEntry.body}\n\nI show my gratitude with Grateful. Download it here:\n${getPlatformStoreLink()}';
+  String _getShareText(BuildContext context, JournalEntry journalEntry) {
+    return '${journalEntry.body}\n\n${AppLocalizations.of(context).shareJournalEntryText}\n${Config.oneLinkDownload}';
   }
 
   @override
@@ -87,15 +88,15 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                 builder: (c) {
                   return AlertDialog(
                     title: Text(
-                      'Delete Journal Entry',
+                      AppLocalizations.of(context).deleteEntryHeader,
                       style: theme.accentTextTheme.body1,
                     ),
                     content: Text(
-                        'Are you sure you want to delete this journal entry? This cannot be undone.',
+                        AppLocalizations.of(context).deleteEntryConfirmPrompt,
                         style: theme.accentTextTheme.body1),
                     actions: <Widget>[
                       FlatButton(
-                        child: Text('No, do not delete',
+                        child: Text(AppLocalizations.of(context).deleteEntryNo,
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         onPressed: () {
                           Navigator.of(context).pop();
@@ -107,7 +108,8 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                                 .add(DeleteJournalEntry(journalEntry));
                             Navigator.of(context).pop();
                           },
-                          child: Text('Yes, delete it',
+                          child: Text(
+                              AppLocalizations.of(context).deleteEntryYes,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.red[900])))
@@ -130,7 +132,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
           icon: Icon(Icons.share),
           color: Colors.white,
           onPressed: () {
-            Share.share(_getShareText(journalEntry));
+            Share.share(_getShareText(context, journalEntry));
           },
         )
       ],
