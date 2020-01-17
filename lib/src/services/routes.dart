@@ -4,8 +4,8 @@ import 'package:flutter_base_app/src/screens/edit_item/edit_item.dart';
 import 'package:flutter_base_app/src/screens/item_feed/item_feed.dart';
 import 'package:flutter_base_app/src/screens/item_details/item_details.dart';
 import 'package:flutter_base_app/src/theme/theme.dart';
-import 'package:flutter_base_app/src/screens/onboarding/welcome/welcome_screen.dart';
-import 'package:flutter_base_app/src/screens/onboarding/login/login_screen.dart';
+import 'package:flutter_base_app/src/screens/welcome/welcome_screen.dart';
+import 'package:flutter_base_app/src/screens/login/login_screen.dart';
 
 class FlutterAppRoutes {
   static const String itemDetails = 'itemDetails';

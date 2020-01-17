@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/blocs/editItem/bloc.dart';
 import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/screens/item_details/item_details.dart';
+import 'package:flutter_base_app/src/services/navigator.dart';
+import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditItemArgs {
@@ -73,6 +76,9 @@ class _EditItemState extends State<EditItem> {
                         RaisedButton(
                           onPressed: () {
                             _editItemBloc.add(SaveItem(item));
+                            rootNavigationService.pushReplacementNamed(
+                                FlutterAppRoutes.itemDetails,
+                                arguments: ItemDetailsArguments(item: item));
                           },
                           child: Text('Submit'),
                         )

@@ -14,7 +14,8 @@ class AppDrawer extends StatelessWidget {
             RaisedButton(
                 child: Text('Log Out'),
                 onPressed: () {
-                  BlocProvider.of<AuthenticationBloc>(context).add(LogOut());
+                  BlocProvider.of<AuthenticationBloc>(context)
+                      .add(Unauthenticate());
                 }),
             LanguagePicker(),
           ],
