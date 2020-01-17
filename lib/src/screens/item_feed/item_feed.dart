@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/itemFeed/bloc.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_base_app/src/blocs/item_feed/bloc.dart';
 import 'package:flutter_base_app/src/repositories/items/item_repository.dart';
 import 'package:flutter_base_app/src/screens/item_details/item_details.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
@@ -17,8 +18,9 @@ class ItemFeed extends StatefulWidget {
   }
 }
 
-class _ItemFeedState extends State<ItemFeed> {
+class _ItemFeedState extends State<ItemFeed> with TickerProviderStateMixin {
   ItemBloc _itemBloc;
+  AnimationController _hideFabAnimation;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Completer _refreshCompleter;
@@ -26,7 +28,9 @@ class _ItemFeedState extends State<ItemFeed> {
   void initState() {
     _itemBloc = ItemBloc(itemRepository: ItemRepository());
     _refreshCompleter = new Completer<void>();
-
+    _hideFabAnimation =
+        AnimationController(vsync: this, duration: kThemeAnimationDuration);
+    _hideFabAnimation.forward();
     super.initState();
   }
 
@@ -35,18 +39,45 @@ class _ItemFeedState extends State<ItemFeed> {
     _refreshCompleter.complete();
   }
 
+  Widget _renderFab() {
+    return ScaleTransition(
+      scale: _hideFabAnimation,
+      alignment: Alignment.bottomRight,
+      child: FloatingActionButton(
+        onPressed: () {
+          rootNavigationService.navigateTo(
+            FlutterAppRoutes.itemEdit,
+          );
+        },
+        child: Icon(Icons.edit),
+      ),
+    );
+  }
+
+  bool _handleScrollNotification(ScrollNotification notification) {
+    if (notification.depth == 0) {
+      if (notification is UserScrollNotification) {
+        final UserScrollNotification userScroll = notification;
+        switch (userScroll.direction) {
+          case ScrollDirection.forward:
+            _hideFabAnimation.forward();
+            break;
+          case ScrollDirection.reverse:
+            _hideFabAnimation.reverse();
+            break;
+          case ScrollDirection.idle:
+            break;
+        }
+      }
+    }
+    return false;
+  }
+
   build(context) {
     final theme = Theme.of(context);
     return Scaffold(
         key: _scaffoldKey,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            rootNavigationService.navigateTo(
-              FlutterAppRoutes.itemEdit,
-            );
-          },
-          child: Icon(Icons.edit),
-        ),
+        floatingActionButton: _renderFab(),
         appBar: AppBar(
           backgroundColor: theme.appBarTheme.color,
           textTheme: theme.appBarTheme.textTheme,
@@ -58,47 +89,50 @@ class _ItemFeedState extends State<ItemFeed> {
           ),
         ),
         drawer: AppDrawer(),
-        body: BlocListener<ItemBloc, ItemState>(
-          bloc: _itemBloc,
-          listener: (context, state) {
-            print(state);
-            if (state is ItemsFetched) {
-              _refreshCompleter.complete();
-              _refreshCompleter = new Completer<void>();
-            }
-          },
-          child: BlocBuilder<ItemBloc, ItemState>(
+        body: NotificationListener<ScrollNotification>(
+          onNotification: _handleScrollNotification,
+          child: BlocListener<ItemBloc, ItemState>(
             bloc: _itemBloc,
-            builder: (context, state) {
-              if (state is! ItemsFetched && state.items.length == 0) {
-                _itemBloc.add(FetchItems());
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                return RefreshIndicator(
-                  onRefresh: () {
-                    _itemBloc.add(FetchItems());
-                    return _refreshCompleter.future;
-                  },
-                  child: SafeArea(
-                      child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return ItemCard(
-                        item: state.items[index],
-                        onPressed: () {
-                          rootNavigationService.navigateTo(
-                              FlutterAppRoutes.itemDetails,
-                              arguments: ItemDetailsArguments(
-                                  item: state.items[index]));
-                        },
-                      );
-                    },
-                    itemCount: state.items.length,
-                  )),
-                );
+            listener: (context, state) {
+              print(state);
+              if (state is ItemsFetched) {
+                _refreshCompleter.complete();
+                _refreshCompleter = new Completer<void>();
               }
             },
+            child: BlocBuilder<ItemBloc, ItemState>(
+              bloc: _itemBloc,
+              builder: (context, state) {
+                if (state is! ItemsFetched && state.items.length == 0) {
+                  _itemBloc.add(FetchItems());
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return RefreshIndicator(
+                    onRefresh: () {
+                      _itemBloc.add(FetchItems());
+                      return _refreshCompleter.future;
+                    },
+                    child: SafeArea(
+                        child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        return ItemCard(
+                          item: state.items[index],
+                          onPressed: () {
+                            rootNavigationService.navigateTo(
+                                FlutterAppRoutes.itemDetails,
+                                arguments: ItemDetailsArguments(
+                                    item: state.items[index]));
+                          },
+                        );
+                      },
+                      itemCount: state.items.length,
+                    )),
+                  );
+                }
+              },
+            ),
           ),
         ));
   }

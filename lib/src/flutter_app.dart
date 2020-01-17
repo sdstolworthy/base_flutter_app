@@ -7,8 +7,6 @@ import 'package:flutter_base_app/src/services/localizations/localizations.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/widgets/app_blocs.dart';
-import 'package:flutter_base_app/src/blocs/itemFeed/bloc.dart';
-import 'package:flutter_base_app/src/repositories/items/item_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_base_app/src/blocs/localization/bloc.dart';
@@ -16,7 +14,6 @@ import 'package:flutter_base_app/src/blocs/localization/bloc.dart';
 class FlutterApp extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics()
     ..logEvent(name: 'opened_app');
-  final _itemBloc = ItemBloc(itemRepository: ItemRepository());
   build(_) {
     return AppBlocProviders(child: Builder(builder: (outerContext) {
       return BlocListener<AuthenticationBloc, AuthenticationState>(
@@ -31,8 +28,6 @@ class FlutterApp extends StatelessWidget {
         },
         listener: (context, AuthenticationState state) {
           if (state is Authenticated) {
-            _itemBloc.add(FetchItems());
-
             rootNavigationService
                 .pushReplacementNamed(FlutterAppRoutes.itemFeed);
           } else if (state is Unauthenticated) {
@@ -42,24 +37,22 @@ class FlutterApp extends StatelessWidget {
         child: BlocBuilder(
             bloc: BlocProvider.of<LocalizationBloc>(outerContext),
             builder: (context, LocalizationState state) {
-              return BlocProvider<ItemBloc>(
-                  create: (_) => _itemBloc,
-                  child: MaterialApp(
-                    localizationsDelegates: [
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                      GlobalCupertinoLocalizations.delegate,
-                      AppLocalizations.delegate
-                    ],
-                    locale: state.locale,
-                    supportedLocales: AppLocalizations.availableLocalizations
-                        .map((item) => Locale(item.languageCode)),
-                    onGenerateRoute: Router.generatedRoute,
-                    navigatorObservers: [
-                      FirebaseAnalyticsObserver(analytics: analytics)
-                    ],
-                    navigatorKey: rootNavigationService.navigatorKey,
-                  ));
+              return MaterialApp(
+                localizationsDelegates: [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                  AppLocalizations.delegate
+                ],
+                locale: state.locale,
+                supportedLocales: AppLocalizations.availableLocalizations
+                    .map((item) => Locale(item.languageCode)),
+                onGenerateRoute: Router.generatedRoute,
+                navigatorObservers: [
+                  FirebaseAnalyticsObserver(analytics: analytics)
+                ],
+                navigatorKey: rootNavigationService.navigatorKey,
+              );
             }),
       );
     }));
