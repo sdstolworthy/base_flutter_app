@@ -94,7 +94,6 @@ class _ItemFeedState extends State<ItemFeed> with TickerProviderStateMixin {
           child: BlocListener<ItemBloc, ItemState>(
             bloc: _itemBloc,
             listener: (context, state) {
-              print(state);
               if (state is ItemsFetched) {
                 _refreshCompleter.complete();
                 _refreshCompleter = new Completer<void>();
