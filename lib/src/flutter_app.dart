@@ -8,7 +8,7 @@ import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/widgets/bloc_provider.dart';
 import 'package:flutter_base_app/src/blocs/itemFeed/bloc.dart';
-import 'package:flutter_base_app/src/repositories/items/itemRepository.dart';
+import 'package:flutter_base_app/src/repositories/items/item_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_base_app/src/blocs/localization/bloc.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/blocs/itemFeed/bloc.dart';
-import 'package:flutter_base_app/src/repositories/items/itemRepository.dart';
+import 'package:flutter_base_app/src/repositories/items/item_repository.dart';
 import 'package:flutter_base_app/src/screens/item_details/item_details.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
@@ -16,7 +16,6 @@ class ItemFeed extends StatefulWidget {
 }
 
 class _ItemFeedState extends State<ItemFeed> {
-  // final items = List.generate(20, (_) => Item.random());
   ItemBloc _itemBloc;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
