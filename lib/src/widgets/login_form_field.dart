@@ -4,21 +4,30 @@ class LoginFormField extends StatelessWidget {
   final IconData icon;
   final bool isObscured;
   final String label;
+  final String Function(String) validator;
   final TextEditingController controller;
+  final bool enabled;
   LoginFormField(
-      {this.icon, this.isObscured = false, this.label, this.controller});
+      {this.icon,
+      this.isObscured = false,
+      this.label,
+      this.controller,
+      this.validator,
+      this.enabled});
   build(_) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
+        validator: this.validator ?? (_) => null,
         autocorrect: false,
         cursorColor: Color.fromRGBO(255, 255, 255, 0.7),
         obscureText: isObscured,
-        style: TextStyle(color: Colors.white70, fontSize: 20),
+        style: Theme.of(_).primaryTextTheme.body1,
+        enabled: this.enabled,
         decoration: InputDecoration(
             labelText: label,
-            labelStyle: TextStyle(color: Colors.white70),
+            labelStyle: Theme.of(_).inputDecorationTheme.labelStyle,
             prefixIcon: Icon(icon, color: Colors.white70),
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white60)),

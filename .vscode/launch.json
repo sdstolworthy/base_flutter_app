@@ -5,14 +5,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "DEV Grateful",
+      "name": "DEV Base Flutter",
       "request": "launch",
       "program": "lib/main_development.dart",
       "type": "dart",
       "args": ["--flavor", "development"]
     },
     {
-      "name": "PROD Grateful",
+      "name": "PROD Base Flutter",
       "request": "launch",
       "program": "lib/main_production.dart",
       "type": "dart",

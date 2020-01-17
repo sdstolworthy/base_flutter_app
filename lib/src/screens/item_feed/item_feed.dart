@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/blocs/itemFeed/bloc.dart';
 import 'package:flutter_base_app/src/repositories/items/item_repository.dart';
@@ -17,11 +19,20 @@ class ItemFeed extends StatefulWidget {
 
 class _ItemFeedState extends State<ItemFeed> {
   ItemBloc _itemBloc;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  Completer _refreshCompleter;
 
   void initState() {
     _itemBloc = ItemBloc(itemRepository: ItemRepository());
+    _refreshCompleter = new Completer<void>();
+
     super.initState();
+  }
+
+  void dispose() {
+    super.dispose();
+    _refreshCompleter.complete();
   }
 
   build(context) {
@@ -47,33 +58,48 @@ class _ItemFeedState extends State<ItemFeed> {
           ),
         ),
         drawer: AppDrawer(),
-        body: BlocBuilder<ItemBloc, ItemState>(
+        body: BlocListener<ItemBloc, ItemState>(
           bloc: _itemBloc,
-          builder: (context, state) {
-            if (state is ItemsUnloaded) {
-              _itemBloc.add(FetchItems());
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is ItemsFetched) {
-              return SafeArea(
-                  child: ListView.builder(
-                itemBuilder: (context, index) {
-                  return ItemCard(
-                    item: state.items[index],
-                    onPressed: () {
-                      rootNavigationService.navigateTo(
-                          FlutterAppRoutes.itemDetails,
-                          arguments:
-                              ItemDetailsArguments(item: state.items[index]));
-                    },
-                  );
-                },
-                itemCount: state.items.length,
-              ));
+          listener: (context, state) {
+            print(state);
+            if (state is ItemsFetched) {
+              _refreshCompleter.complete();
+              _refreshCompleter = new Completer<void>();
             }
-            return Container();
           },
+          child: BlocBuilder<ItemBloc, ItemState>(
+            bloc: _itemBloc,
+            builder: (context, state) {
+              if (state is! ItemsFetched && state.items.length == 0) {
+                _itemBloc.add(FetchItems());
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return RefreshIndicator(
+                  onRefresh: () {
+                    _itemBloc.add(FetchItems());
+                    return _refreshCompleter.future;
+                  },
+                  child: SafeArea(
+                      child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return ItemCard(
+                        item: state.items[index],
+                        onPressed: () {
+                          rootNavigationService.navigateTo(
+                              FlutterAppRoutes.itemDetails,
+                              arguments: ItemDetailsArguments(
+                                  item: state.items[index]));
+                        },
+                      );
+                    },
+                    itemCount: state.items.length,
+                  )),
+                );
+              }
+            },
+          ),
         ));
   }
 }

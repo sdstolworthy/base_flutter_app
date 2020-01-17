@@ -6,7 +6,7 @@ import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
 import 'package:flutter_base_app/src/services/localizations/localizations.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
-import 'package:flutter_base_app/src/widgets/bloc_provider.dart';
+import 'package:flutter_base_app/src/widgets/app_blocs.dart';
 import 'package:flutter_base_app/src/blocs/itemFeed/bloc.dart';
 import 'package:flutter_base_app/src/repositories/items/item_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
