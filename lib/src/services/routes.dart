@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_base_app/src/screens/edit_item/edit_item.dart';
 import 'package:flutter_base_app/src/screens/item_feed/item_feed.dart';
 import 'package:flutter_base_app/src/screens/item_details/item_details.dart';
+import 'package:flutter_base_app/src/screens/user_profile/user_profile_screen.dart';
 import 'package:flutter_base_app/src/theme/theme.dart';
 import 'package:flutter_base_app/src/screens/welcome/welcome_screen.dart';
 import 'package:flutter_base_app/src/screens/login/login_screen.dart';
@@ -16,6 +17,7 @@ class FlutterAppRoutes {
   static const String welcomeScreen = 'welcomeScreen';
   static const String loginScreen = 'loginScreen';
   static const String signupScreen = 'signupScreen';
+  static const String userProfileScreen = 'userProfileScreen';
 }
 
 typedef Route CurriedRouter(RouteSettings settings);
@@ -49,6 +51,9 @@ class Router {
         return _pageRoute(LoginScreen(false), FlutterAppRoutes.signupScreen);
       case FlutterAppRoutes.welcomeScreen:
         return _pageRoute(WelcomeScreen(), FlutterAppRoutes.welcomeScreen);
+      case FlutterAppRoutes.userProfileScreen:
+        return _pageRoute(
+            UserProfileScreen(), FlutterAppRoutes.userProfileScreen);
       case FlutterAppRoutes.itemEdit:
         final EditItemArgs args = settings.arguments;
         return _pageRoute(

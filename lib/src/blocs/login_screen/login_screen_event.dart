@@ -9,10 +9,12 @@ class LogIn extends LoginScreenEvent {
   LogIn(this.username, this.password);
 }
 
-class SignUp extends LoginScreenEvent {
+abstract class SignUp extends LoginScreenEvent {}
+
+class EmailPasswordSignup extends SignUp {
   final String username;
   final String password;
-  SignUp(this.username, this.password);
+  EmailPasswordSignup(this.username, this.password);
 }
 
-class AuthWithGoogle extends LoginScreenEvent {}
+class AuthWithGoogle extends SignUp {}

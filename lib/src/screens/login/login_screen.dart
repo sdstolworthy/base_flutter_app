@@ -122,7 +122,7 @@ class LoginScreen extends StatelessWidget {
     final username = emailController.text;
     final password = passwordController.text;
     if (_formKey.currentState.validate()) {
-      _loginBloc.add(SignUp(username, password));
+      _loginBloc.add(EmailPasswordSignup(username, password));
     }
   }
 

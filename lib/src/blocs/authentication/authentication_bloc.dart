@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter_base_app/src/repositories/user/user_repository.dart';
+import 'package:flutter_base_app/src/repositories/auth/auth_repository.dart';
 import './bloc.dart';
 
 class AuthenticationBloc
@@ -8,17 +8,21 @@ class AuthenticationBloc
   @override
   AuthenticationState get initialState => Uninitialized();
 
-  final UserRepository _userRepository;
+  final AuthRepository _authRepository;
 
-  AuthenticationBloc(UserRepository userRepository)
-      : this._userRepository = userRepository;
+  Future<String> getCurrentUserId() async {
+    return _authRepository.getUserId();
+  }
+
+  AuthenticationBloc(AuthRepository userRepository)
+      : this._authRepository = userRepository;
 
   @override
   Stream<AuthenticationState> mapEventToState(
     AuthenticationEvent event,
   ) async* {
     if (event is AppStarted) {
-      if (await _userRepository.isSignedIn()) {
+      if (await _authRepository.isSignedIn()) {
         yield Authenticated();
       } else {
         yield Unauthenticated();
@@ -31,7 +35,7 @@ class AuthenticationBloc
   }
 
   Stream<AuthenticationState> _mapLogoutEventToState() async* {
-    _userRepository.signOut();
+    _authRepository.signOut();
     yield Unauthenticated();
   }
 }

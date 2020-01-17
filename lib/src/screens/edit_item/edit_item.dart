@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/blocs/editItem/bloc.dart';
+import 'package:flutter_base_app/src/blocs/edit_item/bloc.dart';
 import 'package:flutter_base_app/src/models/Item.dart';
 import 'package:flutter_base_app/src/screens/item_details/item_details.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
