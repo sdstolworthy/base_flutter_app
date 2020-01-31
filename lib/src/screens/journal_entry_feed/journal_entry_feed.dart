@@ -41,6 +41,11 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
     super.initState();
   }
 
+  void dispose() {
+    super.dispose();
+    _refreshCompleter.complete();
+  }
+
   List<Widget> _renderAppBar(BuildContext context, bool isScrolled) {
     final localizations = AppLocalizations.of(context);
     final theme = Theme.of(context);
@@ -134,6 +139,8 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
                             bottom: false,
                             child: RefreshIndicator(
                               onRefresh: () {
+                                _refreshCompleter = new Completer<void>();
+
                                 _journalFeedBloc.add(FetchFeed());
                                 return _refreshCompleter.future;
                               },

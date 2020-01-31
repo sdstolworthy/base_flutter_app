@@ -21,6 +21,11 @@ class _RootNavigationService {
   Future<dynamic> goBack() async {
     return navigatorKey.currentState.pop();
   }
+
+  Future<dynamic> pushNamedAndRemoveUntil(
+      String routeName, bool Function(Route<dynamic>) predicate) async {
+    navigatorKey.currentState.pushNamedAndRemoveUntil(routeName, predicate);
+  }
 }
 
 final rootNavigationService = new _RootNavigationService();

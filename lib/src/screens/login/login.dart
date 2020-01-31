@@ -53,8 +53,8 @@ class _LoginScreen extends State<LoginScreen> {
         return false;
       },
       listener: (context, state) {
-        rootNavigationService
-            .pushReplacementNamed(FlutterAppRoutes.journalPageView);
+        rootNavigationService.pushNamedAndRemoveUntil(
+            FlutterAppRoutes.journalPageView, (route) => false);
       },
       child: Scaffold(
           key: _scaffoldKey,

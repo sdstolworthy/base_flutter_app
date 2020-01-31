@@ -55,12 +55,15 @@ class _JournalPageView extends State<JournalPageView> {
       activeCanceller?.cancel();
       activeCanceller =
           Future.delayed(const Duration(seconds: 2)).asStream().listen((_) {
-        setState(() {
-          setActive(false);
-        });
+        if (this.mounted) {
+          setState(() {
+            setActive(false);
+          });
+        }
       });
     }
   }
+
 
   Widget build(BuildContext c) {
     return BlocProvider<PageViewBloc>(
