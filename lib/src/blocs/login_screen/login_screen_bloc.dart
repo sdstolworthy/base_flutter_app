@@ -55,6 +55,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       _analytics.logSignUp(signUpMethod: 'email');
       yield InitialLoginScreenState();
     } catch (e) {
+      print(e);
       yield LoginFailure();
     }
   }
@@ -70,6 +71,7 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       });
       yield InitialLoginScreenState();
     } catch (e, s) {
+      print(e);
       print(s);
       print("Error during Authentication");
       _authenticationBloc.add(Unauthenticate());
