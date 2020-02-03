@@ -25,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.138915362120-perhb7r0kijrfn9fn15amacqbtonnc0p</string>
+				<string>$(GOOGLE_INFO_URL)</string>
 			</array>
 		</dict>
 	</array>
