@@ -27,13 +27,13 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
   Stream<LoginScreenState> mapEventToState(
     LoginScreenEvent event,
   ) async* {
+    yield LoginLoading();
     if (event is LogIn) {
       yield* _mapLoginEventToState(event.username, event.password);
     } else if (event is SignUp) {
       yield* _mapSignUpEventToState(event.username, event.password);
     } else if (event is AuthWithGoogle) {
       try {
-        yield LoginLoading();
         await _userRepository.signInWithGoogle();
         _authenticationBloc.add(Authenticate());
         yield InitialLoginScreenState();
