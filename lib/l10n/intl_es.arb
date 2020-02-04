@@ -90,5 +90,41 @@
     "description": "Button text for links to the About page",
     "type": "text",
     "placeholders": {}
+  },
+  "deleteEntryConfirmPrompt": "Seguro que quieres borrar esta entrada? No se puede deshacer.",
+  "@deleteEntryConfirmPrompt": {
+    "description": "Warning text when deleting a journal entry",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteEntryYes": "Sí, bórralo",
+  "@deleteEntryYes": {
+    "description": "Action button for the user agreeing to delete an entry",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteEntryNo": "No, no lo borres",
+  "@deleteEntryNo": {
+    "description": "Action button for the user not wanting to delete a message",
+    "type": "text",
+    "placeholders": {}
+  },
+  "deleteEntryHeader": "Borrar entrada",
+  "@deleteEntryHeader": {
+    "description": "Header for delete entry dialog",
+    "type": "text",
+    "placeholders": {}
+  },
+  "shareJournalEntryText": "Yo doy las gracias con Grateful. Descárgalo aquí:",
+  "@shareJournalEntryText": {
+    "description": "Default share text when a user shares a journal entry",
+    "type": "text",
+    "placeholders": {}
+  },
+  "shareGrateful": "Compartir Grateful",
+  "@shareGrateful": {
+    "description": "CTA to share grateful",
+    "type": "text",
+    "placeholders": {}
   }
 }

@@ -5,9 +5,26 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Flutter",
+      "name": "DEV Grateful",
       "request": "launch",
-      "type": "dart"
+      "program": "lib/main_development.dart",
+      "type": "dart",
+      "args": ["--flavor", "development"]
+    },
+    {
+      "name": "PROD Grateful",
+      "request": "launch",
+      "program": "lib/main_production.dart",
+      "type": "dart",
+      "args": ["--flavor", "production"]
+    },
+    {
+      "name": "Profile",
+      "request": "launch",
+      "program": "lib/main_production.dart",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": ["--flavor", "production"]
     }
   ]
 }

@@ -110,6 +110,40 @@ class AppLocalizations {
         name: 'aboutGratefulButtonText',
         desc: 'Button text for links to the About page');
   }
+
+  String get deleteEntryConfirmPrompt {
+    return Intl.message('Are you sure you want to delete this entry?',
+        name: 'deleteEntryConfirmPrompt',
+        desc: 'Warning text when deleting a journal entry');
+  }
+
+  String get deleteEntryYes {
+    return Intl.message('Yes, delete it',
+        name: 'deleteEntryYes',
+        desc: 'Action button for the user agreeing to delete an entry');
+  }
+
+  String get deleteEntryNo {
+    return Intl.message('No, do not delete it',
+        name: 'deleteEntryNo',
+        desc: 'Action button for the user not wanting to delete a message');
+  }
+
+  String get deleteEntryHeader {
+    return Intl.message('Delete Journal Entry',
+        name: 'deleteEntryHeader', desc: 'Header for delete entry dialog');
+  }
+
+  String get shareJournalEntryText {
+    return Intl.message('I show my gratitude with Grateful. Download it here:',
+        name: 'shareJournalEntryText',
+        desc: 'Default share text when a user shares a journal entry');
+  }
+
+  String get shareGrateful {
+    return Intl.message('Share Grateful',
+        name: 'shareGrateful', desc: 'CTA to share grateful');
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

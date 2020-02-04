@@ -5,10 +5,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
 class FileRepository {
-  static const _storageBucketUrl = 'gs://grateful-journal.appspot.com/';
+  final String storageBucketUrl;
+  FirebaseStorage _storage;
 
-  final FirebaseStorage _storage =
-      FirebaseStorage(storageBucket: _storageBucketUrl);
+  FileRepository({this.storageBucketUrl}) {
+    _storage = FirebaseStorage(storageBucket: storageBucketUrl);
+  }
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   Future<StorageUploadTask> uploadFile(File file) async {
     final userId = (await _firebaseAuth.currentUser()).uid;
@@ -17,3 +20,5 @@ class FileRepository {
     return storageRef.putFile(file);
   }
 }
+
+// gs://grateful-journal.appspot.com/
