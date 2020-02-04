@@ -20,11 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^3.2.0
-  bloc:
-  dio:
-  shared_preferences:
-  json_annotation:
-  faker:
+  bloc: ^3.0.0
+  shared_preferences: ^0.5.6+1
+  faker: ^1.2.0
   cloud_firestore: ^0.13.0+1
   firebase_auth: ^0.15.4
   google_sign_in: ^4.1.1
@@ -33,20 +31,19 @@ dependencies:
   firebase_analytics: ^5.0.11
   firebase_messaging: ^6.0.9
   flutter_auth_buttons: ^0.6.0
-  google_fonts: 0.3.7
-  url_launcher:
+  google_fonts: ^0.3.7
+  url_launcher: ^5.4.1
   sticky_headers: ^0.1.8+1
   flutter_localizations:
     sdk: flutter
   flutter_cupertino_localizations:
-  intl:
-  meta:
-  uuid:
+  intl: ^0.16.0
+  meta: ^1.1.8
+  uuid: ^2.0.4
   share: ^0.6.3+5
-  image_picker:
+  image_picker: ^0.6.3+1
   photo_view: ^0.9.1
   cached_network_image: ^2.0.0
-  rxdart:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
