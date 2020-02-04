@@ -457,7 +457,7 @@
 				);
 				GOOGLE_INFO_URL = "com.googleusercontent.apps.138915362120-846lnuv7fm59fll93nqsul4pvjfhhdp4";
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -542,7 +542,7 @@
 				);
 				GOOGLE_INFO_URL = "com.googleusercontent.apps.138915362120-846lnuv7fm59fll93nqsul4pvjfhhdp4";
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -625,7 +625,7 @@
 				);
 				GOOGLE_INFO_URL = "com.googleusercontent.apps.138915362120-846lnuv7fm59fll93nqsul4pvjfhhdp4";
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -708,7 +708,7 @@
 				);
 				GOOGLE_INFO_URL = "com.googleusercontent.apps.138915362120-perhb7r0kijrfn9fn15amacqbtonnc0p";
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -848,7 +848,7 @@
 				);
 				GOOGLE_INFO_URL = "com.googleusercontent.apps.138915362120-perhb7r0kijrfn9fn15amacqbtonnc0p";
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -882,7 +882,7 @@
 				);
 				GOOGLE_INFO_URL = "com.googleusercontent.apps.138915362120-perhb7r0kijrfn9fn15amacqbtonnc0p";
 				INFOPLIST_FILE = Runner/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
