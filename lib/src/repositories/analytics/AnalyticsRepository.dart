@@ -7,6 +7,11 @@ class AnalyticsRepository {
       : _firebaseAnalytics = firebaseAnalytics ?? FirebaseAnalytics();
 
   void logEvent({@required String name, Map<String, dynamic> parameters}) {
-    _firebaseAnalytics.logEvent(name: name, parameters: parameters);
+    try {
+      _firebaseAnalytics.logEvent(name: name, parameters: parameters);
+    } catch (e) {
+      print('Error logging analytics event');
+      print(e);
+    }
   }
 }

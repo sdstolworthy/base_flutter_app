@@ -10,6 +10,7 @@ import 'package:grateful/src/config/environment.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/models/photograph.dart';
+import 'package:grateful/src/repositories/analytics/AnalyticsRepository.dart';
 import 'package:grateful/src/repositories/cloudMessaging/cloudMessagingRepository.dart';
 import 'package:grateful/src/repositories/files/fileRepository.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
@@ -66,6 +67,7 @@ class _EditJournalEntryState extends State<EditJournalEntry>
       _journalEntry = this._journalEntry;
     });
     _editJournalEntryBloc = EditJournalEntryBloc(
+        analyticsRepository: new AnalyticsRepository(),
         journalFeedBloc: BlocProvider.of<JournalFeedBloc>(context));
     super.initState();
     _journalEntryController.value =

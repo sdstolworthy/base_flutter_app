@@ -6,6 +6,7 @@ import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
 import 'package:grateful/src/config/config.dart';
 import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
+import 'package:grateful/src/repositories/analytics/AnalyticsRepository.dart';
 import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
@@ -141,6 +142,7 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
 
   build(context) {
     final EditJournalEntryBloc _journalEntryBloc = EditJournalEntryBloc(
+        analyticsRepository: new AnalyticsRepository(),
         journalEntryRepository: JournalEntryRepository(),
         journalFeedBloc: BlocProvider.of<JournalFeedBloc>(context));
     final ThemeData theme = Theme.of(context);

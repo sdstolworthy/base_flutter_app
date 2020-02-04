@@ -204,8 +204,18 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
               final opacity = 1.0 - stuckAmount.clamp(0.0, 1.0);
               return new Container(
                   height: 50,
-                  color: Colors.blue[900].withOpacity(opacity),
-                  child: YearSeparator(currentEntry.toString()));
+                  child: SizedBox.expand(
+                      child: YearSeparator(currentEntry.toString())),
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                    colors: [
+                      Colors.blue[900].withOpacity(opacity),
+                      Colors.blue[900].withOpacity(0.8 * opacity),
+                      Colors.blue[900].withOpacity(0.0)
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  )));
             },
             content: Column(
                 children: entriesByYear[currentEntry].map((entry) {
