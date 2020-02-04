@@ -9,6 +9,7 @@ import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/widgets/language_picker.dart';
 import 'package:flutter_base_app/src/widgets/user_avatar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_base_app/src/screens/feedback_form/feedback_form.dart';
 
 class AppDrawer extends StatelessWidget {
   build(context) {
@@ -53,6 +54,17 @@ class AppDrawer extends StatelessWidget {
                     title: LanguagePicker(),
                     leading: Icon(Icons.language),
                   ),
+                  ListTile(
+                      onTap: () {
+                        rootNavigationService.goBack();
+                        rootNavigationService.navigateTo(
+                            FlutterAppRoutes.feedback,
+                            arguments: FeedbackFormArgs(Scaffold.of(context)));
+                      },
+                      leading:
+                          Icon(Icons.feedback, color: theme.iconTheme.color),
+                      title: Text(localizations.leaveFeedback,
+                          style: theme.primaryTextTheme.body1)),
                   ListTile(
                     title: Text(localizations.logOut),
                     onTap: () {

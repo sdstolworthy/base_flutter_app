@@ -84,6 +84,24 @@ class AppLocalizations {
     return Intl.message('Hi, There.',
         name: 'welcomeCTA', desc: 'Call to Action shown on the welcome page');
   }
+
+  String get leaveFeedback {
+    return Intl.message('Leave Feedback',
+        name: 'leaveFeedback', desc: 'Menu item to leave feedback');
+  }
+
+  String get thanksForYourFeedback {
+    return Intl.message('Thank you for your feedback!',
+        name: 'thanksForYourFeedback',
+        desc:
+            'Message shown to a user when they leave feedback from the feedback form');
+  }
+
+  String get feedbackHint {
+    return Intl.message('Let us know what you think',
+        name: 'feedbackHint',
+        desc: 'Hint text for user in the feedback form textfield');
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

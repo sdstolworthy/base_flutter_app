@@ -23,7 +23,9 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("confirmar contraseña"),
+    "feedbackHint" : MessageLookupByLibrary.simpleMessage("Déjanos saber tu opinión"),
     "language" : MessageLookupByLibrary.simpleMessage("idioma"),
+    "leaveFeedback" : MessageLookupByLibrary.simpleMessage("Dejar comentarios"),
     "logIn" : MessageLookupByLibrary.simpleMessage("Entrar"),
     "logOut" : MessageLookupByLibrary.simpleMessage("Salir"),
     "loginCTA" : MessageLookupByLibrary.simpleMessage("Qué bueno verte."),
@@ -31,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "signUp" : MessageLookupByLibrary.simpleMessage("Registrarte"),
     "signupCTA" : MessageLookupByLibrary.simpleMessage("Un gusto conocerte."),
     "username" : MessageLookupByLibrary.simpleMessage("nombre de usuario"),
+    "thanksForYourFeedback" : MessageLookupByLibrary.simpleMessage("¡Gracias por tus comentarios!"),
     "welcomeCTA" : MessageLookupByLibrary.simpleMessage("Bienvenidos.")
   };
 }

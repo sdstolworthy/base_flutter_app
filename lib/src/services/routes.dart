@@ -5,6 +5,7 @@ import 'package:flutter_base_app/src/screens/item_feed/item_feed.dart';
 import 'package:flutter_base_app/src/screens/item_details/item_details.dart';
 import 'package:flutter_base_app/src/screens/user_profile/user_profile_screen.dart';
 import 'package:flutter_base_app/src/theme/theme.dart';
+import 'package:flutter_base_app/src/screens/feedback_form/feedback_form.dart';
 import 'package:flutter_base_app/src/screens/welcome/welcome_screen.dart';
 import 'package:flutter_base_app/src/screens/login/login_screen.dart';
 
@@ -18,6 +19,7 @@ class FlutterAppRoutes {
   static const String loginScreen = 'loginScreen';
   static const String signupScreen = 'signupScreen';
   static const String userProfileScreen = 'userProfileScreen';
+  static const String feedback = 'feedback';
 }
 
 typedef Route CurriedRouter(RouteSettings settings);
@@ -58,6 +60,9 @@ class Router {
         final EditItemArgs args = settings.arguments;
         return _pageRoute(
             EditItem(item: args?.item), FlutterAppRoutes.itemEdit);
+      case FlutterAppRoutes.feedback:
+        final FeedbackFormArgs feedbackFormArgs = settings.arguments;
+        return _pageRoute(FeedbackForm(feedbackFormArgs), FlutterAppRoutes.feedback);
       default:
         return _pageRoute(WelcomeScreen(), FlutterAppRoutes.onboarding);
     }
