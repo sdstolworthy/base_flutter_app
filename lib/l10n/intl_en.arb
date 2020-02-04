@@ -126,5 +126,23 @@
     "description": "CTA to share grateful",
     "type": "text",
     "placeholders": {}
+  },
+  "leaveFeedback": "Leave Feedback",
+  "@leaveFeedback": {
+    "description": "Menu item to leave feedback",
+    "type": "text",
+    "placeholders": {}
+  },
+  "thanksForYourFeedback": "Thank you for your feedback!",
+  "@thanksForYourFeedback": {
+    "description": "Message shown to a user when they leave feedback from the feedback form",
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedbackHint": "Let us know what you think",
+  "@feedbackHint": {
+    "description": "Hint text for user in the feedback form textfield",
+    "type": "text",
+    "placeholders": {}
   }
 }

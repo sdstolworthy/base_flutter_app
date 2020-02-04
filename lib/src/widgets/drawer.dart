@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grateful/src/blocs/authentication/bloc.dart';
 import 'package:grateful/src/config/config.dart';
+import 'package:grateful/src/screens/feedback_form/feedback_form.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
 import 'package:grateful/src/services/routes.dart';
@@ -35,7 +36,7 @@ class AppDrawer extends StatelessWidget {
                 leading: Icon(Icons.language, color: theme.iconTheme.color),
               ),
               ListTile(
-                title: Text(AppLocalizations.of(context).shareGrateful,
+                title: Text(localizations.shareGrateful,
                     style: theme.primaryTextTheme.body1),
                 leading: Icon(
                   Icons.share,
@@ -43,9 +44,18 @@ class AppDrawer extends StatelessWidget {
                 ),
                 onTap: () {
                   Share.share(
-                      '${AppLocalizations.of(context).shareJournalEntryText} ${Config.oneLinkDownload}');
+                      '${localizations.shareJournalEntryText} ${Config.oneLinkDownload}');
                 },
               ),
+              ListTile(
+                  onTap: () {
+                    rootNavigationService.goBack();
+                    rootNavigationService.navigateTo(FlutterAppRoutes.feedback,
+                        arguments: FeedbackFormArgs(Scaffold.of(context)));
+                  },
+                  leading: Icon(Icons.feedback, color: theme.iconTheme.color),
+                  title: Text(localizations.leaveFeedback,
+                      style: theme.primaryTextTheme.body1)),
               ListTile(
                 leading: Icon(Icons.vpn_key, color: theme.iconTheme.color),
                 title: Text(

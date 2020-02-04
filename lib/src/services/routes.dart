@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:grateful/src/screens/about_app/about_app.dart';
 import 'package:grateful/src/screens/edit_journal_entry/edit_journal_entry.dart';
+import 'package:grateful/src/screens/feedback_form/feedback_form.dart';
 import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart';
 import 'package:grateful/src/screens/journal_entry_details/journal_entry_details.dart';
 import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
@@ -20,6 +21,7 @@ class FlutterAppRoutes {
   static const String welcomeScreen = 'welcomeScreen';
   static const String loginScreen = 'loginScreen';
   static const String signupScreen = 'signupScreen';
+  static const String feedback = 'feedback';
 }
 
 typedef Route CurriedRouter(RouteSettings settings);
@@ -67,6 +69,9 @@ class Router {
         return _pageRoute(WelcomeScreen(), FlutterAppRoutes.welcomeScreen);
       case FlutterAppRoutes.aboutApp:
         return _pageRoute(AboutApp(), FlutterAppRoutes.aboutApp);
+      case FlutterAppRoutes.feedback:
+        final FeedbackFormArgs feedbackFormArgs = settings.arguments;
+        return _pageRoute(FeedbackForm(feedbackFormArgs), FlutterAppRoutes.feedback);
       default:
         return _pageRoute(WelcomeScreen(), FlutterAppRoutes.welcomeScreen);
     }
