@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/image_handler/bloc.dart';
-import 'package:grateful/src/models/Photograph.dart';
+import 'package:grateful/src/models/photograph.dart';
 import 'package:grateful/src/widgets/deletable_resource.dart';
 
 typedef void OnRemove(ImageHandlerBloc imageHandlerBloc);

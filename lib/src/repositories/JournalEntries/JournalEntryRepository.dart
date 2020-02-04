@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/models/journal_entry.dart';
 
 class JournalEntryRepository {
   static const _userCollectionName = 'users';

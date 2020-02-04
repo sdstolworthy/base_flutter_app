@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
 import 'package:grateful/src/blocs/page_view/bloc.dart';
-import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/screens/journal_entry_details/journal_entry_details.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';

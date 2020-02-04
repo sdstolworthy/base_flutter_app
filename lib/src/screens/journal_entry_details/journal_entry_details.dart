@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
 import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
 import 'package:grateful/src/config/config.dart';
-import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';

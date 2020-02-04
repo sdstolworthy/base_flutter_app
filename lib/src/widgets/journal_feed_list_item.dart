@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/models/journal_entry.dart';
 import 'package:intl/intl.dart';
 
 typedef void OnPressed();

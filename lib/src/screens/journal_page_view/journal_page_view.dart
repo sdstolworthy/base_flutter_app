@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grateful/src/blocs/page_view/bloc.dart';
-import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/screens/edit_journal_entry/edit_journal_entry.dart';
 import 'package:grateful/src/screens/journal_entry_feed/journal_entry_feed.dart';
 

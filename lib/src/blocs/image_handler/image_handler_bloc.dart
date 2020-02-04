@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:grateful/src/models/Photograph.dart';
+import 'package:grateful/src/models/photograph.dart';
 import 'package:grateful/src/repositories/files/fileRepository.dart';
 import 'package:meta/meta.dart';
 import './bloc.dart';
