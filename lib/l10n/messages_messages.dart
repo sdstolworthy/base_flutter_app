@@ -29,9 +29,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteEntryNo" : MessageLookupByLibrary.simpleMessage("No, do not delete it"),
     "deleteEntryYes" : MessageLookupByLibrary.simpleMessage("Yes, delete it"),
     "email" : MessageLookupByLibrary.simpleMessage("Email"),
+    "feedbackHint" : MessageLookupByLibrary.simpleMessage("Let us know what you think"),
     "gratefulPrompt" : MessageLookupByLibrary.simpleMessage("What are you grateful for today?"),
     "journalEntryHint" : MessageLookupByLibrary.simpleMessage("Write your thoughts..."),
     "language" : MessageLookupByLibrary.simpleMessage("language"),
+    "leaveFeedback" : MessageLookupByLibrary.simpleMessage("Leave Feedback"),
     "logIn" : MessageLookupByLibrary.simpleMessage("Log In"),
     "logOut" : MessageLookupByLibrary.simpleMessage("Log Out"),
     "loginCTA" : MessageLookupByLibrary.simpleMessage("Welcome Back."),
@@ -41,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "shareJournalEntryText" : MessageLookupByLibrary.simpleMessage("I show my gratitude with Grateful. Download it here:"),
     "signUp" : MessageLookupByLibrary.simpleMessage("Sign Up"),
     "signupCTA" : MessageLookupByLibrary.simpleMessage("Create Account."),
+    "thanksForYourFeedback" : MessageLookupByLibrary.simpleMessage("Thank you for your feedback!"),
     "welcomeCTA" : MessageLookupByLibrary.simpleMessage("Hi, There.")
   };
 }
