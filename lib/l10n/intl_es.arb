@@ -59,5 +59,24 @@
     "description": "Call to Action shown on the welcome page",
     "type": "text",
     "placeholders": {}
+  },
+  "leaveFeedback": "Dejar comentarios",
+  "@leaveFeedback": {
+    "description": "Menu item to leave feedback",
+    "type": "text",
+    "placeholders": {}
+  },
+  "thanksForYourFeedback": "¡Gracias por tus comentarios!",
+  "@thanksForYourFeedback": {
+    "description": "Message shown to a user when they leave feedback from the feedback form",
+    "type": "text",
+    "placeholders": {}
+  },
+  "feedbackHint": "Déjanos saber tu opinión",
+  "@feedbackHint": {
+    "description": "Hint text for user in the feedback form textfield",
+    "type": "text",
+    "placeholders": {}
+>>>>>>> 264cb2f... Merge pull request #9 from sdstolworthy/feedback-form
   }
 }
