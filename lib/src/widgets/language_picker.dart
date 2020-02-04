@@ -18,6 +18,7 @@ class _LanguagePicker extends State<LanguagePicker> {
       bloc: localizationBloc,
       builder: (context, LocalizationState state) {
         return DropdownButton(
+          underline: Container(),
           value: state.locale.languageCode,
           items: AppLocalizations.availableLocalizations.map((locale) {
             return DropdownMenuItem(

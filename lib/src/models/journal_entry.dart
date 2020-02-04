@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:grateful/src/models/Photograph.dart';
+import 'package:grateful/src/models/photograph.dart';
 import 'package:uuid/uuid.dart';
 
 class JournalEntry {
@@ -40,9 +40,18 @@ class JournalEntry {
       'id': id,
       'body': body,
       'description': description,
-      'date': date.millisecondsSinceEpoch,
+      'date': date.toUtc().toIso8601String(),
       'photographs': List<dynamic>.from(photographs.map((x) => x.toMap())),
     };
+  }
+
+  static DateTime _parseDate(dynamic datestamp) {
+    if (datestamp is int) {
+      return DateTime.fromMillisecondsSinceEpoch(datestamp);
+    } else if (datestamp is String) {
+      return DateTime.tryParse(datestamp).toLocal();
+    }
+    return null;
   }
 
   static JournalEntry fromMap(Map<String, dynamic> map) {
@@ -52,7 +61,7 @@ class JournalEntry {
       id: map['id'],
       body: map['body'],
       description: map['description'],
-      date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+      date: _parseDate(map['date']),
       photographs: List<NetworkPhoto>.from(
           map['photographs']?.map((x) => NetworkPhoto.fromMap(x))),
     );

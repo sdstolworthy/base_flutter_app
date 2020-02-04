@@ -2,14 +2,16 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
 import 'package:grateful/src/blocs/image_handler/bloc.dart';
 import 'package:grateful/src/blocs/journal_entry_feed/item_bloc.dart';
 import 'package:grateful/src/blocs/page_view/bloc.dart';
 import 'package:grateful/src/config/environment.dart';
-import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/models/journal_entry.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grateful/src/models/Photograph.dart';
+import 'package:grateful/src/models/photograph.dart';
+import 'package:grateful/src/repositories/analytics/AnalyticsRepository.dart';
 import 'package:grateful/src/repositories/cloudMessaging/cloudMessagingRepository.dart';
 import 'package:grateful/src/repositories/files/fileRepository.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
@@ -59,13 +61,21 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   JournalEntry _journalEntry;
   final TextEditingController _journalEntryController = TextEditingController();
 
+  FileRepository fileRepository;
+
   bool get wantKeepAlive => true;
 
   initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      fileRepository = FileRepository(
+          storageBucketUrl: AppEnvironment.of(context).cloudStorageBucket);
+      _initializePhotographs(_journalEntry);
+    });
     setState(() {
       _journalEntry = this._journalEntry;
     });
     _editJournalEntryBloc = EditJournalEntryBloc(
+        analyticsRepository: new AnalyticsRepository(),
         journalFeedBloc: BlocProvider.of<JournalFeedBloc>(context));
     super.initState();
     _journalEntryController.value =
@@ -86,6 +96,12 @@ class _EditJournalEntryState extends State<EditJournalEntry>
       print(
           'Failed to configure Firebase Cloud Messaging. Are you using the iOS simulator?');
     }
+  }
+
+  _initializePhotographs(JournalEntry journalEntry) {
+    journalEntry.photographs.forEach((photo) => _imageHandlerBlocs.add(
+        new ImageHandlerBloc(
+            fileRepository: fileRepository, photograph: photo)));
   }
 
   dispose() {
@@ -309,8 +325,6 @@ class _EditJournalEntryState extends State<EditJournalEntry>
   }
 
   _handleAddPhotoPress(context) async {
-    final fileRepository = FileRepository(
-        storageBucketUrl: AppEnvironment.of(context).cloudStorageBucket);
     File file = await ImagePicker.pickImage(
         imageQuality: 35, source: ImageSource.gallery);
     if (file == null) {

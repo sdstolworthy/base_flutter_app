@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/models/journal_entry.dart';
 
 class JournalEntryHero extends StatelessWidget {
   final JournalEntry journalEntry;

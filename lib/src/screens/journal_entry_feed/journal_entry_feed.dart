@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
 import 'package:grateful/src/blocs/page_view/bloc.dart';
-import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/models/journal_entry.dart';
 import 'package:grateful/src/screens/journal_entry_details/journal_entry_details.dart';
 import 'package:grateful/src/services/localizations/localizations.dart';
 import 'package:grateful/src/services/navigator.dart';
@@ -195,13 +195,30 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
 
   List<Widget> _getJournalEntryListItemWidgets(
       Map<int, List<JournalEntry>> entriesByYear) {
-    return entriesByYear.keys.fold<List<Widget>>([], (p, c) {
-      return p
+    return entriesByYear.keys.fold<List<Widget>>([],
+        (previousEntries, currentEntry) {
+      return previousEntries
         ..addAll([
-          StickyHeader(
-            header: YearSeparator(c.toString()),
+          StickyHeaderBuilder(
+            builder: (BuildContext context, double stuckAmount) {
+              final opacity = 1.0 - stuckAmount.clamp(0.0, 1.0);
+              return new Container(
+                  height: 50,
+                  child: SizedBox.expand(
+                      child: YearSeparator(currentEntry.toString())),
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                    colors: [
+                      Colors.blue[900].withOpacity(opacity),
+                      Colors.blue[900].withOpacity(0.8 * opacity),
+                      Colors.blue[900].withOpacity(0.0)
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  )));
+            },
             content: Column(
-                children: entriesByYear[c].map((entry) {
+                children: entriesByYear[currentEntry].map((entry) {
               return _renderEntryListItem(entry);
             }).toList()),
           )

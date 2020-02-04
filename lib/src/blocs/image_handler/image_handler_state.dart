@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:grateful/src/models/Photograph.dart';
+import 'package:grateful/src/models/photograph.dart';
 
 @immutable
 abstract class ImageHandlerState {

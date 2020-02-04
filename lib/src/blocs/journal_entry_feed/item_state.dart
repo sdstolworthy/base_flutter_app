@@ -1,4 +1,4 @@
-import 'package:grateful/src/models/JournalEntry.dart';
+import 'package:grateful/src/models/journal_entry.dart';
 import 'package:meta/meta.dart';
 
 @immutable
