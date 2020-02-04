@@ -5,6 +5,7 @@ import 'package:grateful/src/blocs/edit_journal_entry/bloc.dart';
 import 'package:grateful/src/blocs/journal_entry_feed/bloc.dart';
 import 'package:grateful/src/config/config.dart';
 import 'package:grateful/src/models/journal_entry.dart';
+import 'package:grateful/src/models/photograph.dart';
 import 'package:grateful/src/repositories/JournalEntries/JournalEntryRepository.dart';
 import 'package:grateful/src/repositories/analytics/AnalyticsRepository.dart';
 import 'package:grateful/src/screens/journal_page_view/journal_page_view.dart';
@@ -28,7 +29,7 @@ class JournalEntryDetails extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _JournalEntryDetails(this.journalEntry);
+    return _JournalEntryDetails();
   }
 }
 
@@ -36,6 +37,14 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
     with TickerProviderStateMixin {
   Animation<double> _animationController;
   Animation<Offset> _animation;
+  JournalEntry journalEntry;
+  List<NetworkPhoto> photographs;
+
+  initState() {
+    super.initState();
+    this.journalEntry = widget.journalEntry;
+    this.photographs = (widget?.journalEntry?.photographs ?? []);
+  }
 
   String _getShareText(BuildContext context, JournalEntry journalEntry) {
     return '${journalEntry.body}\n\n${AppLocalizations.of(context).shareJournalEntryText}\n${Config.oneLinkDownload}';
@@ -65,8 +74,6 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
     // _animationController.dispose();
   }
 
-  final JournalEntry journalEntry;
-  _JournalEntryDetails(this.journalEntry);
   Widget _renderAppBar(context) {
     final EditJournalEntryBloc _journalEntryBloc =
         BlocProvider.of<EditJournalEntryBloc>(context);
@@ -256,18 +263,19 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: <Widget>[
-                  ...(journalEntry.photographs ?? [])
-                      .map((p) => CachedNetworkImage(
-                            imageUrl: p.imageUrl,
-                            placeholder: (c, i) {
+                  ...Iterable<int>.generate(this.photographs.length)
+                      .toList()
+                      .map((index) => CachedNetworkImage(
+                            imageUrl: this.photographs[index]?.imageUrl,
+                            placeholder: (context, image) {
                               return Container(
-                                width: 150,
+                                height: 250,
                                 child: Center(
                                   child: CircularProgressIndicator(),
                                 ),
                               );
                             },
-                            imageBuilder: (c, i) {
+                            imageBuilder: (context, image) {
                               return Material(
                                 color: Colors.transparent,
                                 child: InkWell(
@@ -275,14 +283,14 @@ class _JournalEntryDetails extends State<JournalEntryDetails>
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
                                             builder: (c) => PhotoViewer(
-                                                  imageProvider: i,
+                                                  photographs: photographs,
+                                                  initialIndex: index,
                                                 )));
                                   },
                                   child: Image(
-                                    width: 150,
                                     height: 250,
                                     fit: BoxFit.cover,
-                                    image: i,
+                                    image: image,
                                   ),
                                 ),
                               );
