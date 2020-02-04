@@ -195,13 +195,20 @@ class _JournalEntryFeedState extends State<JournalEntryFeed>
 
   List<Widget> _getJournalEntryListItemWidgets(
       Map<int, List<JournalEntry>> entriesByYear) {
-    return entriesByYear.keys.fold<List<Widget>>([], (p, c) {
-      return p
+    return entriesByYear.keys.fold<List<Widget>>([],
+        (previousEntries, currentEntry) {
+      return previousEntries
         ..addAll([
-          StickyHeader(
-            header: YearSeparator(c.toString()),
+          StickyHeaderBuilder(
+            builder: (BuildContext context, double stuckAmount) {
+              final opacity = 1.0 - stuckAmount.clamp(0.0, 1.0);
+              return new Container(
+                  height: 50,
+                  color: Colors.blue[900].withOpacity(opacity),
+                  child: YearSeparator(currentEntry.toString()));
+            },
             content: Column(
-                children: entriesByYear[c].map((entry) {
+                children: entriesByYear[currentEntry].map((entry) {
               return _renderEntryListItem(entry);
             }).toList()),
           )

@@ -15,18 +15,21 @@ class JournalEntryListItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                DateFormat.d().format(journalEntry.date),
-                style: theme.primaryTextTheme.headline,
-              ),
-              Text(
-                DateFormat.MMM().format(journalEntry.date),
-                style: theme.primaryTextTheme.body1,
-              )
-            ],
+          Container(
+            width: 60,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  DateFormat.d().format(journalEntry.date),
+                  style: theme.primaryTextTheme.headline,
+                ),
+                Text(
+                  DateFormat.MMM().format(journalEntry.date),
+                  style: theme.primaryTextTheme.body1,
+                )
+              ],
+            ),
           ),
           Flexible(
             child: Padding(
