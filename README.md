@@ -1,6 +1,6 @@
 # Flutter Base App
 
-The flutter base app is a starter Flutter app that includes many features common in all apps.
+The Flutter Base App is a starter Flutter app that includes many features common in all apps.
 
 The app provides several generic widgets and features to get you started, including:
 
