@@ -56,7 +56,7 @@ class AboutApp extends StatelessWidget {
                   ])),
                   RichText(
                       text: TextSpan(children: [
-                    TextSpan(text: 'Please read the Grateful '),
+                    TextSpan(text: 'Please read the flutter_base_app '),
                     TextSpan(
                         text: 'Privacy Policy',
                         style: theme.primaryTextTheme.body2,

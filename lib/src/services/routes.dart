@@ -28,7 +28,7 @@ class Router {
   static _pageRoute(Widget widget, String routeName) {
     return PageRouteBuilder(
         pageBuilder: (c, a, s) =>
-            Theme(data: flutterAppTheme(Theme.of(c)), child: widget),
+            Theme(data: baseAppTheme(Theme.of(c)), child: widget),
         transitionsBuilder: (c, a, s, child) {
           return SlideTransition(
             child: child,
