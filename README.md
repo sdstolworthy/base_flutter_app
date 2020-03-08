@@ -32,16 +32,16 @@ It is a good idea to keep development and production environments separate. If y
 
 #### Custom entry points
 
-Grateful uses distinct variables for development and prod. These are specified in two different entry point files in the `lib/` directory.
+flutter_base_app uses distinct variables for development and prod. These are specified in two different entry point files in the `lib/` directory.
 
-In order to run a debug version of Grateful, use the command `flutter run -t lib/main_development.dart --flavor development`.
+In order to run a debug version of flutter_base_app, use the command `flutter run -t lib/main_development.dart --flavor development`.
 
 This tells flutter to run the app using `lib/main_development.dart` as the entry point, and the `development` flavor specified in `app/build.gradle`.
 
 Likewise, to build the android app, run `flutter build apk -t lib/main_development.dart --flavor development`.
 
 #### Build flavors
-There are two build flavors described for grateful: `development` and `production`. For android, these build flavors' unique resources are specified in `android/app/src/${build_flavor}`. Any file unique to the build flavor should be defined in that directory.
+There are two build flavors described for flutter_base_app: `development` and `production`. For android, these build flavors' unique resources are specified in `android/app/src/${build_flavor}`. Any file unique to the build flavor should be defined in that directory.
 
 **Important**
 The app will not compile if you have not configured Firebase for the target platform (iOS or Android).

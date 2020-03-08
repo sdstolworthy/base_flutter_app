@@ -5,17 +5,10 @@ import './bloc.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  @override
-  AuthenticationState get initialState => Uninitialized();
+  AuthenticationBloc(AuthRepository userRepository)
+      : _authRepository = userRepository;
 
   final AuthRepository _authRepository;
-
-  Future<String> getCurrentUserId() async {
-    return _authRepository.getUserId();
-  }
-
-  AuthenticationBloc(AuthRepository userRepository)
-      : this._authRepository = userRepository;
 
   @override
   Stream<AuthenticationState> mapEventToState(
@@ -32,6 +25,13 @@ class AuthenticationBloc
     } else if (event is Unauthenticate) {
       yield* _mapLogoutEventToState();
     }
+  }
+
+  @override
+  AuthenticationState get initialState => Uninitialized();
+
+  Future<String> getCurrentUserId() async {
+    return _authRepository.getUserId();
   }
 
   Stream<AuthenticationState> _mapLogoutEventToState() async* {

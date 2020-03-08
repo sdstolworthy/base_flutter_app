@@ -10,6 +10,11 @@ import 'package:intl/intl.dart';
 /// and `flutter pub pub run intl_translation:generate_from_arb --output-dir=lib/l10n --no-use-deferred-loading lib/src/services/localizations/localizations.dart lib/l10n/intl_*.arb`
 
 class AppLocalizations {
+  static List<AppLocale> availableLocalizations = <AppLocale>[
+    AppLocale(languageCode: 'en', flag: '🇺🇸', title: 'English'),
+    AppLocale(languageCode: 'es', flag: '🇪🇸', title: 'Español')
+  ];
+
   static Future<AppLocalizations> load(Locale locale) {
     final String name = locale.countryCode == null || locale.countryCode.isEmpty
         ? locale.languageCode
@@ -17,17 +22,12 @@ class AppLocalizations {
     final String localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((bool _) {
       Intl.defaultLocale = localeName;
-      return new AppLocalizations();
+      return AppLocalizations();
     });
   }
 
-  static List<AppLocale> availableLocalizations = [
-    AppLocale(languageCode: 'en', flag: '🇺🇸', title: 'English'),
-    AppLocale(languageCode: 'es', flag: '🇪🇸', title: 'Español')
-  ];
-
-  static get delegate {
-    return AppLocalizationDelegate();
+  static AppLocalizationDelegate get delegate {
+    return const AppLocalizationDelegate();
   }
 
   static AppLocalizations of(BuildContext context) {
@@ -107,25 +107,27 @@ class AppLocalizations {
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
   const AppLocalizationDelegate();
 
+  @override
   bool isSupported(Locale locale) {
-    return ['en', 'es'].contains(locale.languageCode);
+    return <String>['en', 'es'].contains(locale.languageCode);
   }
 
+  @override
   Future<AppLocalizations> load(Locale locale) {
     return AppLocalizations.load(locale);
   }
 
+  @override
   bool shouldReload(LocalizationsDelegate<AppLocalizations> old) {
     return false;
   }
 }
 
 class AppLocale {
-  final String languageCode;
+  AppLocale({@required this.languageCode, @required this.flag, String title})
+      : title = title ?? languageCode;
+
   final String flag;
+  final String languageCode;
   final String title;
-  AppLocale({@required languageCode, @required flag, title})
-      : this.languageCode = languageCode,
-        this.flag = flag,
-        title = title ?? languageCode;
 }

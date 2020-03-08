@@ -1,75 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_base_app/src/blocs/edit_item/bloc.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/models/item.dart';
 import 'package:flutter_base_app/src/screens/item_details/item_details.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EditItemArgs {
-  Item item;
-
   EditItemArgs({this.item});
+
+  Item item;
 }
 
 class EditItem extends StatefulWidget {
+  EditItem({Item item}) : item = item ?? Item();
+
   final Item item;
-  EditItem({Item item}) : this.item = item ?? Item();
+
   @override
   State<StatefulWidget> createState() {
-    return _EditItemState(item: this.item);
+    return _EditItemState(item: item);
   }
 }
 
 class _EditItemState extends State<EditItem> {
-  Item item;
-  final EditItemBloc _editItemBloc = EditItemBloc();
   _EditItemState({this.item});
-  initState() {
+
+  Item item;
+
+  final EditItemBloc _editItemBloc = EditItemBloc();
+
+  @override
+  void initState() {
     super.initState();
   }
 
-  dispose() {
+  @override
+  void dispose() {
     _editItemBloc.close();
     super.dispose();
   }
 
-  build(_) {
-    return BlocBuilder(
+  @override
+  Widget build(_) {
+    return BlocBuilder<EditItemBloc, EditItemState>(
         bloc: _editItemBloc,
-        builder: (context, state) {
+        builder: (BuildContext context, EditItemState state) {
           return Scaffold(
             appBar: AppBar(
-              title: Text('Edit Entry'),
+              title: const Text('Edit Entry'),
             ),
             body: SafeArea(
               child: state is ItemLoading
-                  ? Center(
+                  ? const Center(
                       child: CircularProgressIndicator(),
                     )
                   : ListView(
-                      padding: EdgeInsets.only(left: 20, right: 20),
+                      padding: const EdgeInsets.only(left: 20, right: 20),
                       children: <Widget>[
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         TextFormField(
                           initialValue: item.title,
-                          decoration: InputDecoration(labelText: 'Item Title'),
-                          onChanged: (t) {
+                          decoration:
+                              const InputDecoration(labelText: 'Item Title'),
+                          onChanged: (String t) {
                             item.title = t;
                           },
                         ),
                         TextFormField(
                           initialValue: item.description,
-                          decoration:
-                              InputDecoration(labelText: 'Item Description'),
-                          onChanged: (t) {
+                          decoration: const InputDecoration(
+                              labelText: 'Item Description'),
+                          onChanged: (String t) {
                             item.description = t;
                           },
                         ),
                         TextFormField(
                           initialValue: item.photoUrl,
-                          decoration: InputDecoration(labelText: 'Photo Url'),
-                          onChanged: (t) {
+                          decoration:
+                              const InputDecoration(labelText: 'Photo Url'),
+                          onChanged: (String t) {
                             item.photoUrl = t;
                           },
                         ),
@@ -80,7 +90,7 @@ class _EditItemState extends State<EditItem> {
                                 FlutterAppRoutes.itemDetails,
                                 arguments: ItemDetailsArguments(item: item));
                           },
-                          child: Text('Submit'),
+                          child: const Text('Submit'),
                         )
                       ],
                     ),

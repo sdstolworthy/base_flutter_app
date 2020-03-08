@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flutter_base_app/src/models/item.dart';
 import 'package:flutter_base_app/src/repositories/items/item_repository.dart';
 import './bloc.dart';
 
 class EditItemBloc extends Bloc<EditItemEvent, EditItemState> {
-  final ItemRepository _itemRepository;
-
   EditItemBloc({ItemRepository itemRepository})
-      : this._itemRepository = itemRepository ?? ItemRepository();
+      : _itemRepository = itemRepository ?? ItemRepository();
+
+  final ItemRepository _itemRepository;
 
   @override
   EditItemState get initialState => InitialEdititemState();
@@ -19,7 +20,7 @@ class EditItemBloc extends Bloc<EditItemEvent, EditItemState> {
     if (event is SaveItem) {
       try {
         yield ItemLoading();
-        final item = await _itemRepository.saveItem(event.item);
+        final Item item = await _itemRepository.saveItem(event.item);
         yield ItemSaved(item);
       } catch (e) {
         print(e);

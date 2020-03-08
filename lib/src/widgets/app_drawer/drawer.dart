@@ -12,17 +12,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_base_app/src/screens/feedback_form/feedback_form.dart';
 
 class AppDrawer extends StatelessWidget {
-  build(context) {
-    final localizations = AppLocalizations.of(context);
-    final theme = Theme.of(context);
-    final _userProfileBloc = BlocProvider.of<UserProfileBloc>(context);
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context);
+    final ThemeData theme = Theme.of(context);
+    final UserProfileBloc _userProfileBloc = BlocProvider.of<UserProfileBloc>(context);
     return BlocBuilder<UserProfileBloc, UserProfileState>(
         bloc: _userProfileBloc,
-        builder: (context, userProfileState) {
+        builder: (BuildContext context, UserProfileState userProfileState) {
           if (userProfileState is InitialUserProfileState) {
             BlocProvider.of<AuthenticationBloc>(context)
                 .getCurrentUserId()
-                .then((userId) {
+                .then((String userId) {
               _userProfileBloc.add(FetchUserProfile(userId));
             });
           }
@@ -41,7 +42,7 @@ class AppDrawer extends StatelessWidget {
                         },
                         child: userProfileState is UserProfileFetched
                             ? UserAvatar(userProfileState.user)
-                            : Center(
+                            : const Center(
                                 child: CircularProgressIndicator(),
                               ),
                       ),
@@ -51,7 +52,7 @@ class AppDrawer extends StatelessWidget {
                     child: Container(),
                   ),
                   ListTile(
-                    title: LanguagePicker(),
+                    title: const LanguagePicker(),
                     leading: Icon(Icons.language),
                   ),
                   ListTile(

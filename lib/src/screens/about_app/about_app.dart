@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutApp extends StatelessWidget {
-  _launchUrl(String url) {
+  void Function() _launchUrl(String url) {
     return () async {
       if (await canLaunch(url)) {
         launch(url);
@@ -15,7 +15,7 @@ class AboutApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -24,7 +24,7 @@ class AboutApp extends StatelessWidget {
         color: Theme.of(context).backgroundColor,
         child: SafeArea(
           child: ListView(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 40),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 40),
             children: <Widget>[
               Wrap(
                 children: <Widget>[
@@ -41,7 +41,7 @@ class AboutApp extends StatelessWidget {
                     style: theme.primaryTextTheme.body1,
                   ),
                   RichText(
-                      text: TextSpan(children: [
+                      text: TextSpan(children: <InlineSpan>[
                     TextSpan(
                       text:
                           'If you have any questions or comments, please email me at ',
@@ -55,8 +55,8 @@ class AboutApp extends StatelessWidget {
                               'mailto:${Constants.supportEmail}?subject=Base Flutter App Support&body='))
                   ])),
                   RichText(
-                      text: TextSpan(children: [
-                    TextSpan(text: 'Please read the Grateful '),
+                      text: TextSpan(children: <InlineSpan>[
+                    const TextSpan(text: 'Please read the flutter_base_app '),
                     TextSpan(
                         text: 'Privacy Policy',
                         style: theme.primaryTextTheme.body2,

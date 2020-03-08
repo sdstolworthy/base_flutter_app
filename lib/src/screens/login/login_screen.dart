@@ -10,31 +10,37 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class LoginScreenArguments {
-  final bool isLogin;
   LoginScreenArguments(this.isLogin);
+
+  final bool isLogin;
 }
 
 class LoginScreen extends StatelessWidget {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-
-  final bool isLogin;
   LoginScreen(this.isLogin);
-  build(context) {
+
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final bool isLogin;
+  final TextEditingController passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
-    final authBloc = BlocProvider.of<AuthenticationBloc>(context);
-    final theme = Theme.of(context);
+    final AuthenticationBloc authBloc =
+        BlocProvider.of<AuthenticationBloc>(context);
+    final ThemeData theme = Theme.of(context);
 
     final LoginScreenBloc _loginScreenBloc =
         LoginScreenBloc(authenticationBloc: authBloc);
-    return BlocProvider(
+    return BlocProvider<LoginScreenBloc>(
       create: (_) => _loginScreenBloc,
-      child: Builder(builder: (context) {
-        return BlocListener(
+      child: Builder(builder: (BuildContext context) {
+        return BlocListener<AuthenticationBloc, AuthenticationState>(
             bloc: authBloc,
-            condition: (previousState, currentState) {
+            condition: (AuthenticationState previousState, AuthenticationState currentState) {
               if ((previousState is Unauthenticated ||
                       previousState is Uninitialized) &&
                   currentState is Authenticated) {
@@ -42,7 +48,7 @@ class LoginScreen extends StatelessWidget {
               }
               return false;
             },
-            listener: (context, state) {
+            listener: (BuildContext context, AuthenticationState state) {
               rootNavigationService
                   .pushReplacementNamed(FlutterAppRoutes.itemFeed);
             },
@@ -59,9 +65,9 @@ class LoginScreen extends StatelessWidget {
                     )),
                 body: BlocBuilder<LoginScreenBloc, LoginScreenState>(
                     bloc: _loginScreenBloc,
-                    builder: (context, loginState) {
+                    builder: (BuildContext context, LoginScreenState loginState) {
                       return LayoutBuilder(
-                          builder: (context, viewportConstraints) {
+                          builder: (BuildContext context, BoxConstraints viewportConstraints) {
                         return SingleChildScrollView(
                           child: ConstrainedBox(
                             constraints: BoxConstraints(
@@ -118,25 +124,25 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  _handleRegistration(LoginScreenBloc _loginBloc) {
-    final username = emailController.text;
-    final password = passwordController.text;
+  void _handleRegistration(LoginScreenBloc _loginBloc) {
+    final String username = emailController.text;
+    final String password = passwordController.text;
     if (_formKey.currentState.validate()) {
       _loginBloc.add(EmailPasswordSignup(username, password));
     }
   }
 
-  _renderLoginForm(
+  Widget _renderLoginForm(
       BuildContext context, bool isLogin, LoginScreenBloc loginScreenBloc) {
     final AppLocalizations localizations = AppLocalizations.of(context);
 
     return BlocBuilder<LoginScreenBloc, LoginScreenState>(
         bloc: loginScreenBloc,
-        builder: (context, loginScreenState) {
+        builder: (BuildContext context, LoginScreenState loginScreenState) {
           return Column(mainAxisAlignment: MainAxisAlignment.end, children: <
               Widget>[
             LoginFormField(
-              validator: (input) {
+              validator: (String input) {
                 final bool emailValid = RegExp(
                         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
                     .hasMatch(input);
@@ -145,7 +151,7 @@ class LoginScreen extends StatelessWidget {
                 }
                 return null;
               },
-              enabled: !(loginScreenState is LoginLoading),
+              enabled: loginScreenState is! LoginLoading,
               icon: Icons.person,
               label: toBeginningOfSentenceCase(localizations.username),
               controller: emailController,
@@ -155,8 +161,8 @@ class LoginScreen extends StatelessWidget {
               label: toBeginningOfSentenceCase(localizations.password),
               isObscured: true,
               controller: passwordController,
-              enabled: !(loginScreenState is LoginLoading),
-              validator: (input) {
+              enabled: loginScreenState is! LoginLoading,
+              validator: (String input) {
                 if (passwordController.text == null ||
                     passwordController.text == '') {
                   return 'Password must not be blank';
@@ -172,10 +178,10 @@ class LoginScreen extends StatelessWidget {
               LoginFormField(
                 controller: confirmPasswordController,
                 icon: Icons.lock,
-                enabled: !(loginScreenState is LoginLoading),
+                enabled: loginScreenState is! LoginLoading,
                 label: toBeginningOfSentenceCase(localizations.confirmPassword),
                 isObscured: true,
-                validator: (input) {
+                validator: (String input) {
                   if (confirmPasswordController.text !=
                       passwordController.text) {
                     return 'Passwords do not match';
@@ -187,9 +193,9 @@ class LoginScreen extends StatelessWidget {
         });
   }
 
-  _handleSignIn(LoginScreenBloc _loginBloc) {
-    final username = emailController.text;
-    final password = passwordController.text;
+  void _handleSignIn(LoginScreenBloc _loginBloc) {
+    final String username = emailController.text;
+    final String password = passwordController.text;
     if (_formKey.currentState.validate()) {
       _loginBloc.add(LogIn(username, password));
     }

@@ -14,10 +14,12 @@ import 'package:flutter_base_app/src/blocs/localization/bloc.dart';
 class FlutterApp extends StatelessWidget {
   final FirebaseAnalytics analytics = FirebaseAnalytics()
     ..logEvent(name: 'opened_app');
-  build(_) {
-    return AppBlocProviders(child: Builder(builder: (outerContext) {
+  @override
+  Widget build(BuildContext context) {
+    return AppBlocProviders(
+        child: Builder(builder: (BuildContext outerContext) {
       return BlocListener<AuthenticationBloc, AuthenticationState>(
-        condition: (prev, curr) {
+        condition: (AuthenticationState prev, AuthenticationState curr) {
           if (prev is Uninitialized && curr is Authenticated) {
             return true;
           }
@@ -26,7 +28,7 @@ class FlutterApp extends StatelessWidget {
           }
           return false;
         },
-        listener: (context, AuthenticationState state) {
+        listener: (BuildContext context, AuthenticationState state) {
           if (state is Authenticated) {
             rootNavigationService
                 .pushReplacementNamed(FlutterAppRoutes.itemFeed);
@@ -34,11 +36,11 @@ class FlutterApp extends StatelessWidget {
             rootNavigationService.returnToLogin();
           }
         },
-        child: BlocBuilder(
+        child: BlocBuilder<LocalizationBloc, LocalizationState>(
             bloc: BlocProvider.of<LocalizationBloc>(outerContext),
-            builder: (context, LocalizationState state) {
+            builder: (BuildContext context, LocalizationState state) {
               return MaterialApp(
-                localizationsDelegates: [
+                localizationsDelegates: <LocalizationsDelegate<dynamic>>[
                   GlobalMaterialLocalizations.delegate,
                   GlobalWidgetsLocalizations.delegate,
                   GlobalCupertinoLocalizations.delegate,
@@ -46,9 +48,9 @@ class FlutterApp extends StatelessWidget {
                 ],
                 locale: state.locale,
                 supportedLocales: AppLocalizations.availableLocalizations
-                    .map((item) => Locale(item.languageCode)),
+                    .map((AppLocale item) => Locale(item.languageCode)),
                 onGenerateRoute: Router.generatedRoute,
-                navigatorObservers: [
+                navigatorObservers: <NavigatorObserver>[
                   FirebaseAnalyticsObserver(analytics: analytics)
                 ],
                 navigatorKey: rootNavigationService.navigatorKey,

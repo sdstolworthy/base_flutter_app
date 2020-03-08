@@ -2,12 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 
 class _RootNavigationService {
-  final GlobalKey<NavigatorState> navigatorKey =
-      new GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   Future<dynamic> navigateTo(String routeName, {Object arguments}) {
-    if (navigatorKey.currentState == null) {
-      return null;
-    }
     return navigatorKey.currentState.pushNamed(routeName, arguments: arguments);
   }
 
@@ -18,12 +14,17 @@ class _RootNavigationService {
 
   Future<dynamic> returnToLogin() async {
     await navigatorKey.currentState
-        .pushReplacementNamed(FlutterAppRoutes.welcomeScreen);
+        .pushNamedAndRemoveUntil(FlutterAppRoutes.welcomeScreen, (_) => false);
   }
 
   Future<dynamic> goBack() async {
     return navigatorKey.currentState.pop();
   }
+
+  Future<dynamic> pushNamedAndRemoveUntil(
+      String routeName, bool Function(Route<dynamic>) predicate) async {
+    navigatorKey.currentState.pushNamedAndRemoveUntil(routeName, predicate);
+  }
 }
 
-final rootNavigationService = new _RootNavigationService();
+final _RootNavigationService rootNavigationService = _RootNavigationService();

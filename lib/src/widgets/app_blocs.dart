@@ -10,25 +10,30 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Combines application level bloc stores above the rest of the application
 class AppBlocProviders extends StatelessWidget {
-  final Widget child;
   AppBlocProviders({this.child});
-  final AuthenticationBloc authBloc = AuthenticationBloc(new AuthRepository());
-  Widget build(BuildContext _) {
+
+  final AuthenticationBloc authBloc = AuthenticationBloc(AuthRepository());
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
     authBloc.add(AppStarted());
-    return BlocProvider(
-        create: (context) => authBloc,
-        child: Builder(builder: (subAuthenticationContext) {
-          return MultiBlocProvider(providers: [
-            BlocProvider<LocalizationBloc>(
-              create: (_) => LocalizationBloc(),
-            ),
-            BlocProvider<ItemBloc>(
-              create: (_) => ItemBloc(itemRepository: ItemRepository()),
-            ),
-            BlocProvider<UserProfileBloc>(
-              create: (_) => UserProfileBloc(UserRepository()),
-            )
-          ], child: child);
+    return BlocProvider<AuthenticationBloc>(
+        create: (BuildContext context) => authBloc,
+        child: Builder(builder: (BuildContext subAuthenticationContext) {
+          return MultiBlocProvider(
+              providers: <BlocProvider<Bloc<dynamic, dynamic>>>[
+                BlocProvider<LocalizationBloc>(
+                  create: (_) => LocalizationBloc(),
+                ),
+                BlocProvider<ItemBloc>(
+                  create: (_) => ItemBloc(itemRepository: ItemRepository()),
+                ),
+                BlocProvider<UserProfileBloc>(
+                  create: (_) => UserProfileBloc(UserRepository()),
+                )
+              ],
+              child: child);
         }));
   }
 }

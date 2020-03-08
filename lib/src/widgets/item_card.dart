@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/models/item.dart';
 
-typedef void OnPressed();
+typedef OnPressed = void Function();
 
 class ItemCard extends StatelessWidget {
+  const ItemCard({@required this.item, this.onPressed});
+
   final Item item;
   final OnPressed onPressed;
-  ItemCard({@required this.item, this.onPressed});
-  build(context) {
-    final theme = Theme.of(context);
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Card(
       shape: theme.cardTheme.shape,
       color: theme.cardTheme.color,

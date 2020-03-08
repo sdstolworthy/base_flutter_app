@@ -5,28 +5,32 @@ import 'package:flutter_base_app/src/services/localizations/localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LanguagePicker extends StatefulWidget {
-  LanguagePicker({Key key}) : super(key: key);
+  const LanguagePicker({Key key}) : super(key: key);
+  @override
   _LanguagePicker createState() => _LanguagePicker();
 }
 
 class _LanguagePicker extends State<LanguagePicker> {
   String selectedLanguage = 'en';
-  build(BuildContext outerContext) {
-    final localizationBloc = BlocProvider.of<LocalizationBloc>(outerContext);
-    return BlocBuilder(
+  @override
+  Widget build(BuildContext outerContext) {
+    final LocalizationBloc localizationBloc =
+        BlocProvider.of<LocalizationBloc>(outerContext);
+    return BlocBuilder<LocalizationBloc, LocalizationState>(
       bloc: localizationBloc,
-      builder: (context, LocalizationState state) {
-        return DropdownButton(
+      builder: (BuildContext context, LocalizationState state) {
+        return DropdownButton<String>(
           value: state.locale.languageCode,
-          items: AppLocalizations.availableLocalizations.map((locale) {
-            return DropdownMenuItem(
+          items:
+              AppLocalizations.availableLocalizations.map((AppLocale locale) {
+            return DropdownMenuItem<String>(
                 child: Text(
                   '${locale.flag} ${locale.title}',
                   style: Theme.of(outerContext).primaryTextTheme.body1,
                 ),
                 value: locale.languageCode);
           }).toList(),
-          onChanged: (item) {
+          onChanged: (String item) {
             localizationBloc.add(ChangeLocalization(Locale(item)));
           },
         );

@@ -7,10 +7,11 @@ import 'package:flutter_base_app/src/services/routes.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  build(context) {
+  @override
+  Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context);
 
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
       body: FullScreenLayout(
         backgroundColor: theme.backgroundColor,
@@ -38,7 +39,7 @@ class WelcomeScreen extends StatelessWidget {
                         )),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Row(
                       children: <Widget>[
                         Expanded(
@@ -55,7 +56,7 @@ class WelcomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              LanguagePicker()
+              const LanguagePicker()
             ],
           ),
         ),

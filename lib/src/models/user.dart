@@ -4,26 +4,6 @@ import 'package:faker/faker.dart';
 import 'package:flutter/widgets.dart';
 
 class User {
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String photoUrl;
-  final String displayName;
-  final String id;
-  get fullName {
-    return displayName ?? '$firstName $lastName';
-  }
-
-  get initials {
-    if (this.firstName != null &&
-        this.lastName != null &&
-        this.firstName.length > 0 &&
-        this.lastName.length > 0) {
-      return '${this.firstName[0]}${this.lastName[0]}';
-    } else
-      return 'XX';
-  }
-
   User({
     @required this.firstName,
     @required this.lastName,
@@ -41,9 +21,56 @@ class User {
         displayName = faker.person.name(),
         photoUrl = 'https://via.placeholder.com/100';
 
+  final String displayName;
+  final String email;
+  final String firstName;
+  final String id;
+  final String lastName;
+  final String photoUrl;
+
+  @override
+  int get hashCode {
+    return firstName.hashCode ^
+        lastName.hashCode ^
+        email.hashCode ^
+        photoUrl.hashCode ^
+        displayName.hashCode ^
+        id.hashCode;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+
+    return other is User &&
+        other.firstName == firstName &&
+        other.lastName == lastName &&
+        other.email == email &&
+        other.photoUrl == photoUrl &&
+        other.displayName == displayName &&
+        other.id == id;
+  }
+
   @override
   String toString() {
     return 'User firstName: $firstName, lastName: $lastName, email: $email, photoUrl: $photoUrl, displayName: $displayName, id: $id';
+  }
+
+  String get fullName {
+    return displayName ?? '$firstName $lastName';
+  }
+
+  String get initials {
+    if (firstName != null &&
+        lastName != null &&
+        firstName.isNotEmpty &&
+        lastName.isNotEmpty) {
+      return '${firstName[0]}${lastName[0]}';
+    } else {
+      return 'XX';
+    }
   }
 
   User copyWith({
@@ -65,7 +92,7 @@ class User {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
@@ -76,42 +103,22 @@ class User {
   }
 
   static User fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+    if (map == null) {
+      return null;
+    }
 
     return User(
-      firstName: map['firstName'],
-      lastName: map['lastName'],
-      email: map['email'],
-      photoUrl: map['photoUrl'],
-      displayName: map['displayName'],
-      id: map['id'],
+      firstName: map['firstName'] as String,
+      lastName: map['lastName'] as String,
+      email: map['email'] as String,
+      photoUrl: map['photoUrl'] as String,
+      displayName: map['displayName'] as String,
+      id: map['id'] as String,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  static User fromJson(String source) => fromMap(json.decode(source));
-
-  @override
-  bool operator ==(Object o) {
-    if (identical(this, o)) return true;
-
-    return o is User &&
-        o.firstName == firstName &&
-        o.lastName == lastName &&
-        o.email == email &&
-        o.photoUrl == photoUrl &&
-        o.displayName == displayName &&
-        o.id == id;
-  }
-
-  @override
-  int get hashCode {
-    return firstName.hashCode ^
-        lastName.hashCode ^
-        email.hashCode ^
-        photoUrl.hashCode ^
-        displayName.hashCode ^
-        id.hashCode;
-  }
+  static User fromJson(String source) =>
+      fromMap(json.decode(source) as Map<String, dynamic>);
 }
