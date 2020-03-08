@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/models/item.dart';
 import 'package:flutter_base_app/src/screens/edit_item/edit_item.dart';
 import 'package:flutter_base_app/src/services/navigator.dart';
 import 'package:flutter_base_app/src/services/routes.dart';
 
 class ItemDetailsArguments {
-  Item item;
-
   ItemDetailsArguments({@required this.item});
+
+  Item item;
 }
 
 class ItemDetails extends StatelessWidget {
+  const ItemDetails(this.item);
+
   final Item item;
-  ItemDetails(this.item);
-  build(context) {
+
+  @override
+  Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
@@ -40,7 +43,7 @@ class ItemDetails extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Padding(
-              padding: EdgeInsets.all(30),
+              padding: const EdgeInsets.all(30),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -49,12 +52,10 @@ class ItemDetails extends StatelessWidget {
                       Text(item.title, style: theme.textTheme.display1),
                     ],
                   ),
-                  item.photoUrl != null
-                      ? Padding(
+                  if (item.photoUrl != null) Padding(
                           padding: const EdgeInsets.only(top: 20, bottom: 20),
                           child: Image.network(item.photoUrl),
-                        )
-                      : Container(),
+                        ) else Container(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[

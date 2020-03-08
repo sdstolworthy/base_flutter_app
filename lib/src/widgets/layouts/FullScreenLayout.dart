@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class FullScreenLayout extends StatelessWidget {
+  const FullScreenLayout({this.backgroundColor, this.child});
+
   final Color backgroundColor;
   final Widget child;
-  FullScreenLayout({this.backgroundColor, this.child});
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -5,34 +5,36 @@ import 'package:flutter_base_app/src/widgets/user_avatar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  build(context) {
-    final theme = Theme.of(context);
-    final _userProfileBloc = BlocProvider.of<UserProfileBloc>(context);
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final UserProfileBloc _userProfileBloc =
+        BlocProvider.of<UserProfileBloc>(context);
     return BlocBuilder<UserProfileBloc, UserProfileState>(
         bloc: _userProfileBloc,
-        builder: (context, userProfileState) {
+        builder: (BuildContext context, UserProfileState userProfileState) {
           if (userProfileState is InitialUserProfileState) {
             BlocProvider.of<AuthenticationBloc>(context)
                 .getCurrentUserId()
-                .then((userId) {
+                .then((String userId) {
               _userProfileBloc.add(FetchUserProfile(userId));
             });
           }
           return Scaffold(
             body: NestedScrollView(
-              headerSliverBuilder: (context, isScrolled) {
-                return [SliverAppBar()];
+              headerSliverBuilder: (BuildContext context, bool isScrolled) {
+                return <Widget>[const SliverAppBar()];
               },
               body: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ListView(children: [
+                child: ListView(children: <Widget>[
                   if (userProfileState is UserProfileFetched)
                     UserAvatar(userProfileState.user)
                   else
-                    Center(
+                    const Center(
                       child: CircularProgressIndicator(),
                     ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(

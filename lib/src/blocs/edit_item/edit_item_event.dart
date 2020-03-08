@@ -1,10 +1,11 @@
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/models/item.dart';
 import 'package:meta/meta.dart';
 
 @immutable
 abstract class EditItemEvent {}
 
 class SaveItem extends EditItemEvent {
-  final Item item;
   SaveItem(this.item);
+
+  final Item item;
 }

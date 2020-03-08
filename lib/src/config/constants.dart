@@ -1,6 +1,7 @@
 class Constants {
-  static String tokenStorageKey = 'tokenStorageKey';
-  static String supportEmail = 'support@example.com';
-  static String privacyPolicyUrl = 'https://google.com';
-  static String termsOfServiceUrl = 'https://google.com';
+  static const String tokenStorageKey = 'tokenStorageKey';
+  static const String supportEmail = 'support@example.com';
+  static const String privacyPolicyUrl = 'https://google.com';
+  static const String termsOfServiceUrl = 'https://google.com';
+  static const String userRepositoryName = 'userRepository';
 }

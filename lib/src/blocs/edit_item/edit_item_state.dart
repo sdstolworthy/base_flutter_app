@@ -1,4 +1,4 @@
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/models/item.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -7,13 +7,15 @@ abstract class EditItemState {}
 class InitialEdititemState extends EditItemState {}
 
 class ItemLoaded extends EditItemState {
-  final Item item;
   ItemLoaded(this.item);
+
+  final Item item;
 }
 
 class ItemSaved extends EditItemState {
-  final Item item;
   ItemSaved(this.item);
+
+  final Item item;
 }
 
 class ItemLoading extends EditItemState {}

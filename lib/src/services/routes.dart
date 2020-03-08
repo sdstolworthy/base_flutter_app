@@ -22,17 +22,17 @@ class FlutterAppRoutes {
   static const String feedback = 'feedback';
 }
 
-typedef Route CurriedRouter(RouteSettings settings);
+typedef CurriedRouter = Route<dynamic> Function(RouteSettings settings);
 
 class Router {
-  static _pageRoute(Widget widget, String routeName) {
-    return PageRouteBuilder(
-        pageBuilder: (c, a, s) =>
-            Theme(data: flutterAppTheme(Theme.of(c)), child: widget),
-        transitionsBuilder: (c, a, s, child) {
+  static PageRouteBuilder<dynamic> _pageRoute(Widget widget, String routeName) {
+    return PageRouteBuilder<dynamic>(
+        pageBuilder: (BuildContext c, Animation<double> a, Animation<double> s) =>
+            Theme(data: baseAppTheme(Theme.of(c)), child: widget),
+        transitionsBuilder: (BuildContext c, Animation<double> a, Animation<double> s, Widget child) {
           return SlideTransition(
             child: child,
-            position: new Tween<Offset>(
+            position: Tween<Offset>(
                     begin: const Offset(1.0, 0.0), end: Offset.zero)
                 .animate(a),
           );
@@ -43,7 +43,8 @@ class Router {
   static Route<dynamic> generatedRoute(RouteSettings settings) {
     switch (settings.name) {
       case FlutterAppRoutes.itemDetails:
-        final ItemDetailsArguments args = settings.arguments;
+        final ItemDetailsArguments args =
+            settings.arguments as ItemDetailsArguments;
         return _pageRoute(ItemDetails(args.item), FlutterAppRoutes.itemDetails);
       case FlutterAppRoutes.itemFeed:
         return _pageRoute(ItemFeed(), FlutterAppRoutes.itemFeed);
@@ -57,12 +58,14 @@ class Router {
         return _pageRoute(
             UserProfileScreen(), FlutterAppRoutes.userProfileScreen);
       case FlutterAppRoutes.itemEdit:
-        final EditItemArgs args = settings.arguments;
+        final EditItemArgs args = settings.arguments as EditItemArgs;
         return _pageRoute(
             EditItem(item: args?.item), FlutterAppRoutes.itemEdit);
       case FlutterAppRoutes.feedback:
-        final FeedbackFormArgs feedbackFormArgs = settings.arguments;
-        return _pageRoute(FeedbackForm(feedbackFormArgs), FlutterAppRoutes.feedback);
+        final FeedbackFormArgs feedbackFormArgs =
+            settings.arguments as FeedbackFormArgs;
+        return _pageRoute(
+            FeedbackForm(feedbackFormArgs), FlutterAppRoutes.feedback);
       default:
         return _pageRoute(WelcomeScreen(), FlutterAppRoutes.onboarding);
     }

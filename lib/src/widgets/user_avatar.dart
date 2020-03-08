@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base_app/src/models/User.dart';
+import 'package:flutter_base_app/src/models/user.dart';
 
 class UserAvatar extends StatelessWidget {
+  const UserAvatar(this.user, {Key key}) : super(key: key);
+
   final User user;
 
-  UserAvatar(this.user);
   @override
   Widget build(BuildContext context) {
+    final String initials = user.initials;
     return Container(
       child: Center(
         child: CircleAvatar(
@@ -17,8 +19,8 @@ class UserAvatar extends StatelessWidget {
           child: user.photoUrl != null
               ? null
               : Text(
-                  user.initials,
-                  style: TextStyle(fontSize: 25),
+                  initials,
+                  style: const TextStyle(fontSize: 25),
                 ),
         ),
       ),

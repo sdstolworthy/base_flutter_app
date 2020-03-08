@@ -1,19 +1,18 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/models/item.dart';
 import 'package:flutter_base_app/src/repositories/items/item_repository.dart';
 import './bloc.dart';
 
 class ItemBloc extends Bloc<ItemEvent, ItemState> {
-  @override
-  ItemState get initialState => ItemsUnloaded([]);
-
-  List<Item> previousItems = [];
+  ItemBloc({@required this.itemRepository});
 
   final ItemRepository itemRepository;
+  List<Item> previousItems = const <Item>[];
 
-  ItemBloc({@required this.itemRepository});
+  @override
+  ItemState get initialState => const ItemsUnloaded(<Item>[]);
 
   @override
   Stream<ItemState> mapEventToState(
@@ -21,7 +20,7 @@ class ItemBloc extends Bloc<ItemEvent, ItemState> {
   ) async* {
     if (event is FetchItems) {
       yield ItemsLoading(previousItems);
-      final items = await itemRepository.getItems();
+      final List<Item> items = await itemRepository.getItems();
       previousItems = items;
       yield ItemsFetched(items);
     }
