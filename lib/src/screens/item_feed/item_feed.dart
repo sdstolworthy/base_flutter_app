@@ -22,18 +22,20 @@ class _ItemFeedState extends State<ItemFeed> with TickerProviderStateMixin {
   ItemBloc _itemBloc;
   AnimationController _hideFabAnimation;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Completer _refreshCompleter;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  Completer<void> _refreshCompleter;
 
+  @override
   void initState() {
     _itemBloc = ItemBloc(itemRepository: ItemRepository());
-    _refreshCompleter = new Completer<void>();
+    _refreshCompleter = Completer<void>();
     _hideFabAnimation =
         AnimationController(vsync: this, duration: kThemeAnimationDuration);
     _hideFabAnimation.forward();
     super.initState();
   }
 
+  @override
   void dispose() {
     super.dispose();
     _refreshCompleter.complete();
@@ -73,8 +75,9 @@ class _ItemFeedState extends State<ItemFeed> with TickerProviderStateMixin {
     return false;
   }
 
-  build(context) {
-    final theme = Theme.of(context);
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
         key: _scaffoldKey,
         floatingActionButton: _renderFab(),
@@ -93,18 +96,18 @@ class _ItemFeedState extends State<ItemFeed> with TickerProviderStateMixin {
           onNotification: _handleScrollNotification,
           child: BlocListener<ItemBloc, ItemState>(
             bloc: _itemBloc,
-            listener: (context, state) {
+            listener: (BuildContext context, ItemState state) {
               if (state is ItemsFetched) {
                 _refreshCompleter.complete();
-                _refreshCompleter = new Completer<void>();
+                _refreshCompleter = Completer<void>();
               }
             },
             child: BlocBuilder<ItemBloc, ItemState>(
               bloc: _itemBloc,
-              builder: (context, state) {
-                if (state is! ItemsFetched && state.items.length == 0) {
+              builder: (BuildContext context, ItemState state) {
+                if (state is! ItemsFetched && state.items.isEmpty) {
                   _itemBloc.add(FetchItems());
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 } else {
@@ -115,7 +118,7 @@ class _ItemFeedState extends State<ItemFeed> with TickerProviderStateMixin {
                     },
                     child: SafeArea(
                         child: ListView.builder(
-                      itemBuilder: (context, index) {
+                      itemBuilder: (BuildContext context, int index) {
                         return ItemCard(
                           item: state.items[index],
                           onPressed: () {

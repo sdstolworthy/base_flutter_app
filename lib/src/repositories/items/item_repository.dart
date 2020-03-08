@@ -1,18 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_base_app/src/models/Item.dart';
+import 'package:flutter_base_app/src/models/item.dart';
 
 class ItemRepository {
-  static const _userCollectionName = 'users';
-  static const _itemCollectionName = 'items';
-
-  FirebaseAuth _firebaseAuth;
-
   ItemRepository({FirebaseAuth firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
-  getItems({take = 50, limit = 50, skip = 50}) async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
-    List<DocumentSnapshot> entries = (await Firestore.instance
+
+  static const String _itemCollectionName = 'items';
+  static const String _userCollectionName = 'users';
+
+  final FirebaseAuth _firebaseAuth;
+
+  Future<List<Item>> getItems(
+      {int take = 50, int limit = 50, int skip = 50}) async {
+    final FirebaseUser user = await _firebaseAuth.currentUser();
+    final List<DocumentSnapshot> entries = (await Firestore.instance
             .collection(_userCollectionName)
             .document(user.uid)
             .collection(_itemCollectionName)
@@ -28,8 +30,8 @@ class ItemRepository {
             .toList();
   }
 
-  saveItem(Item item) async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+  Future<Item> saveItem(Item item) async {
+    final FirebaseUser user = await _firebaseAuth.currentUser();
     await Firestore.instance
         .collection(_userCollectionName)
         .document(user.uid)
@@ -39,8 +41,8 @@ class ItemRepository {
     return item;
   }
 
-  deleteItem(Item item) async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+  Future<void> deleteItem(Item item) async {
+    final FirebaseUser user = await _firebaseAuth.currentUser();
     await Firestore.instance
         .collection(_userCollectionName)
         .document(user.uid)

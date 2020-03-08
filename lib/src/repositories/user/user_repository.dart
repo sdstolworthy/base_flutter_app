@@ -1,21 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_base_app/src/models/User.dart';
+import 'package:flutter_base_app/src/models/user.dart';
 
 class UserRepository {
-  static const _userCollectionName = 'users';
+  static const String _userCollectionName = 'users';
 
   Future<User> getProfile(String userId) async {
-    DocumentSnapshot profile = await Firestore.instance
+    final DocumentSnapshot profile = await Firestore.instance
         .collection(_userCollectionName)
         .document(userId)
         .get();
     return User.fromMap(profile.data).copyWith(id: userId);
   }
 
-  setProfile(User user) {
-    Firestore.instance
+  Future<void> setProfile(User user) async {
+    await Firestore.instance
         .collection(_userCollectionName)
         .document(user.id)
         .setData(user.toMap());
+    return;
   }
 }

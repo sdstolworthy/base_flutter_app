@@ -2,22 +2,13 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_base_app/src/blocs/authentication/bloc.dart';
-import 'package:flutter_base_app/src/models/User.dart';
+import 'package:flutter_base_app/src/models/user.dart';
 import 'package:flutter_base_app/src/repositories/auth/auth_repository.dart';
 import 'package:flutter_base_app/src/repositories/user/user_repository.dart';
 import 'package:meta/meta.dart';
 import './bloc.dart';
 
 class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
-  @override
-  LoginScreenState get initialState => InitialLoginScreenState();
-
-  AuthenticationBloc _authenticationBloc;
-  final AuthRepository _authRepository;
-  final UserRepository userRepository;
-
-  FirebaseAnalytics _analytics;
-
   LoginScreenBloc(
       {AuthRepository authRepository,
       UserRepository userRepository,
@@ -25,8 +16,17 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       FirebaseAnalytics analytics})
       : _authenticationBloc = authenticationBloc,
         userRepository = userRepository ?? UserRepository(),
-        this._authRepository = userRepository ?? AuthRepository(),
+        _authRepository = authRepository ?? AuthRepository(),
         _analytics = analytics ?? FirebaseAnalytics();
+
+  final UserRepository userRepository;
+
+  final FirebaseAnalytics _analytics;
+  final AuthenticationBloc _authenticationBloc;
+  final AuthRepository _authRepository;
+
+  @override
+  LoginScreenState get initialState => InitialLoginScreenState();
 
   @override
   Stream<LoginScreenState> mapEventToState(
@@ -54,9 +54,8 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
   Stream<LoginScreenState> _mapSignUpEventToState(SignUp event) async* {
     try {
       yield LoginLoading();
-      User user;
       if (event is EmailPasswordSignup) {
-        final user = await _authRepository.signUp(
+        final User user = await _authRepository.signUp(
             email: event.username, password: event.password);
         _authenticationBloc.add(Authenticate());
         _analytics.logSignUp(signUpMethod: 'email');
@@ -74,13 +73,13 @@ class LoginScreenBloc extends Bloc<LoginScreenEvent, LoginScreenState> {
       yield LoginLoading();
       await _authRepository.signInWithCredentials(username, password);
       _authenticationBloc.add(Authenticate());
-      _analytics.logLogin(loginMethod: 'email').catchError((e) {
+      _analytics.logLogin(loginMethod: 'email').catchError((Error e) {
         print('error logging event to GA');
       });
       yield InitialLoginScreenState();
     } catch (e, s) {
       print(s);
-      print("Error during Authentication");
+      print('Error during Authentication');
       _authenticationBloc.add(Unauthenticate());
       yield LoginFailure();
     }

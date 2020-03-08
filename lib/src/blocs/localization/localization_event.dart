@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 abstract class LocalizationEvent {}
 
 class ChangeLocalization extends LocalizationEvent {
-  final Locale locale;
   ChangeLocalization(this.locale);
+
+  final Locale locale;
 }
